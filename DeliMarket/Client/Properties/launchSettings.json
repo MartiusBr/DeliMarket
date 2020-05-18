@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BlazorPeliculas.Client": {
+    "DeliMarket.Client": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

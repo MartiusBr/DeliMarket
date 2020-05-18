@@ -1,5 +1,5 @@
 ﻿function pruebaPuntoNetStatic() {
-    DotNet.invokeMethodAsync("BlazorPeliculas.Client", "ObtenerCurrentCount")
+    DotNet.invokeMethodAsync("DeliMarket.Client", "ObtenerCurrentCount")
         .then(resultado => {
             console.log("conteo desde javascript " + resultado);
         });

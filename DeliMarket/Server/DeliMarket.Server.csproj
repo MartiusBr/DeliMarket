@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Shared\DeliMarket.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
