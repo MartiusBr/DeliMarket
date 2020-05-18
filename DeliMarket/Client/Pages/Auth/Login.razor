@@ -10,7 +10,7 @@
 <h3>Login</h3>
 
 <div class="row">
-    <div class="col-md-6 card p-2">
+    <div class="col-md-6  p-4 border">
         <EditForm Model="@userInfo" OnValidSubmit="LoginUsuario">
             <DataAnnotationsValidator />
 
@@ -30,9 +30,12 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary d-flex mx-auto">Login</button>
 
         </EditForm>
+
+        <a class="dropdown-item text-center" href="#">Eres nuevo? Registrate</a>
+        <a class="dropdown-item text-center" href="#">Olvidaste tu contraseña?</a>
     </div>
 </div>
 
