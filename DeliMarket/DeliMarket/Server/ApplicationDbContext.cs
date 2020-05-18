@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,9 +38,12 @@ namespace DeliMarket.Server
         public DbSet<PeliculaActor> PeliculasActores { get; set; }
         public DbSet<VotoPelicula> VotosPeliculas { get; set; }
 
+        //Personalizando Tabla Usuarios(Agregando campos)
         public class Usuario : IdentityUser
         {
-             
+          [Required (ErrorMessage = "El campo {0} es requerido")]
+          public string DNI { get; set; }    
+          
         }
     }
 }
