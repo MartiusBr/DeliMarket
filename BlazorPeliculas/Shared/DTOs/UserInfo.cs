@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace BlazorPeliculas.Shared.DTOs
+namespace DeliMarket.Shared.DTOs
 {
     public class UserInfo
     {

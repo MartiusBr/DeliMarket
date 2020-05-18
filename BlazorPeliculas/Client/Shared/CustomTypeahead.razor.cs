@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace BlazorPeliculas.Client.Shared
+namespace DeliMarket.Client.Shared
 {
     public class CustomTypeaheadBase<TItem> : ComponentBase, IDisposable
     {

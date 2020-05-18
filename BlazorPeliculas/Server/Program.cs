@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace BlazorPeliculas.Server
+namespace DeliMarket.Server
 {
     public class Program
     {

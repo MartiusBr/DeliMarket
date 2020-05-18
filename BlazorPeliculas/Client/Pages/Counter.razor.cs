@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static BlazorPeliculas.Client.Shared.MainLayout;
+using static DeliMarket.Client.Shared.MainLayout;
 
-namespace BlazorPeliculas.Client.Pages
+namespace DeliMarket.Client.Pages
 {
     public class CounterBase : ComponentBase
     {

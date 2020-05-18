@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace BlazorPeliculas.Client.Auth
+namespace DeliMarket.Client.Auth
 {
     public class RenovadorToken : IDisposable
     {

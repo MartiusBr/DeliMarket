@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Client.Repositorios
+namespace DeliMarket.Client.Repositorios
 {
     public class HttpResponseWrapper<T>
     {

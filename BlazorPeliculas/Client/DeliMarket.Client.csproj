@@ -18,7 +18,7 @@
 
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\BlazorPeliculas.Shared.csproj" />
+    <ProjectReference Include="..\Shared\DeliMarket.Shared.csproj" />
   </ItemGroup>
 
 </Project>

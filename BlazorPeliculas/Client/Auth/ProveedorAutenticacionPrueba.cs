@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Client.Auth
+namespace DeliMarket.Client.Auth
 {
     public class ProveedorAutenticacionPrueba : AuthenticationStateProvider
     {

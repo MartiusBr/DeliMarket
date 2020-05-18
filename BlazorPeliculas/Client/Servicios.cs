@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Client
+namespace DeliMarket.Client
 {
     public class ServicioSingleton
     {

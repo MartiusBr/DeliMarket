@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlazorPeliculas.Shared.DTOs
+namespace DeliMarket.Shared.DTOs
 {
     public class UserToken
     {

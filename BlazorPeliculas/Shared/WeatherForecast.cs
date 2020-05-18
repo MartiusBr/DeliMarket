@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlazorPeliculas.Shared
+namespace DeliMarket.Shared
 {
     public class WeatherForecast
     {

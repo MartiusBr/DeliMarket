@@ -5,9 +5,9 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using BlazorPeliculas.Shared.Entidades;
+using DeliMarket.Shared.Entidades;
 
-namespace BlazorPeliculas.Client.Repositorios
+namespace DeliMarket.Client.Repositorios
 {
     public class Repositorio : IRepositorio
     {

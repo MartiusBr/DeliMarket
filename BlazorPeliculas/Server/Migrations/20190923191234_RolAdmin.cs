@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BlazorPeliculas.Server.Migrations
+namespace DeliMarket.Server.Migrations
 {
     public partial class RolAdmin : Migration
     {

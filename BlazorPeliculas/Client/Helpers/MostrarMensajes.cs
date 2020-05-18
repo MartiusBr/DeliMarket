@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Client.Helpers
+namespace DeliMarket.Client.Helpers
 {
     public class MostrarMensajes : IMostrarMensajes
     {

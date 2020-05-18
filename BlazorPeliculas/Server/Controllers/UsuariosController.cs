@@ -1,5 +1,5 @@
-﻿using BlazorPeliculas.Server.Helpers;
-using BlazorPeliculas.Shared.DTOs;
+﻿using DeliMarket.Server.Helpers;
+using DeliMarket.Shared.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Server.Controllers
+namespace DeliMarket.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

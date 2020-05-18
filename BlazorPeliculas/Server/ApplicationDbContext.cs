@@ -1,4 +1,4 @@
-﻿using BlazorPeliculas.Shared.Entidades;
+﻿using DeliMarket.Shared.Entidades;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Server
+namespace DeliMarket.Server
 {
     public class ApplicationDbContext: IdentityDbContext
     {

@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Server.Helpers
+namespace DeliMarket.Server.Helpers
 {
     public class AlmacenadorArchivosAzStorage : IAlmacenadorDeArchivos
     {

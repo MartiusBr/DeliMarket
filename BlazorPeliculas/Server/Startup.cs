@@ -1,5 +1,5 @@
 using AutoMapper;
-using BlazorPeliculas.Server.Helpers;
+using DeliMarket.Server.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +15,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace BlazorPeliculas.Server
+namespace DeliMarket.Server
 {
     public class Startup
     {

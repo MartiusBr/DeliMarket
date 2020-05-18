@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace BlazorPeliculas.Shared.Entidades
+namespace DeliMarket.Shared.Entidades
 {
     public class Persona
     {

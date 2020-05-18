@@ -1,9 +1,9 @@
-﻿using BlazorPeliculas.Shared.Entidades;
+﻿using DeliMarket.Shared.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlazorPeliculas.Shared.DTOs
+namespace DeliMarket.Shared.DTOs
 {
     public class PeliculaVisualizarDTO
     {

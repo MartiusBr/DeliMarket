@@ -1,6 +1,6 @@
-﻿using BlazorPeliculas.Client.Helpers;
-using BlazorPeliculas.Client.Repositorios;
-using BlazorPeliculas.Shared.DTOs;
+﻿using DeliMarket.Client.Helpers;
+using DeliMarket.Client.Repositorios;
+using DeliMarket.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System;
@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Client.Auth
+namespace DeliMarket.Client.Auth
 {
     public class ProveedorAutenticacionJWT : AuthenticationStateProvider, ILoginService
     {

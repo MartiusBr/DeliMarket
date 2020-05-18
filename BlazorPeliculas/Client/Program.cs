@@ -1,7 +1,7 @@
 ﻿using Blazor.FileReader;
-using BlazorPeliculas.Client.Auth;
-using BlazorPeliculas.Client.Helpers;
-using BlazorPeliculas.Client.Repositorios;
+using DeliMarket.Client.Auth;
+using DeliMarket.Client.Helpers;
+using DeliMarket.Client.Repositorios;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +9,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Client
+namespace DeliMarket.Client
 {
     public class Program
     {

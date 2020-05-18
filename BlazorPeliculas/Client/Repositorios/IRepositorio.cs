@@ -1,10 +1,10 @@
-﻿using BlazorPeliculas.Shared.Entidades;
+﻿using DeliMarket.Shared.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Client.Repositorios
+namespace DeliMarket.Client.Repositorios
 {
     public interface IRepositorio
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlazorPeliculas.Shared.Entidades
+namespace DeliMarket.Shared.Entidades
 {
     public class GeneroPelicula
     {
