@@ -1,0 +1,84 @@
+﻿@page "/RegistroRepartidor"
+
+@inject IRepositorio repositorio
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+@inject IMostrarMensajes mostrarMensajes
+
+@using DeliMarket.Client.Auth
+
+<h3>Registro</h3>
+
+<EditForm Model="@repartidorInfo" OnValidSubmit="CrearRepartidor">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label>Nombre:</label>
+        <div>
+            <InputText Class="form-control" @bind-Value="@repartidorInfo.Nombre" />
+            <ValidationMessage For="@(() => repartidorInfo.Nombre)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>DNI:</label>
+        <div>
+            <InputText Class="form-control" @bind-Value="@repartidorInfo.DNI" />
+            <ValidationMessage For="@(() => repartidorInfo.DNI)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Email:</label>
+        <div>
+            <InputText Class="form-control" @bind-Value="@repartidorInfo.Email" />
+            <ValidationMessage For="@(() => repartidorInfo.Email)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Numero de Celular:</label>
+        <div>
+            <InputText Class="form-control" @bind-Value="@repartidorInfo.NumeroCel" />
+            <ValidationMessage For="@(() => repartidorInfo.NumeroCel)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Placa del Vehículo:</label>
+        <div>
+            <InputText Class="form-control" @bind-Value="@repartidorInfo.PlacaVehiculo" />
+            <ValidationMessage For="@(() => repartidorInfo.PlacaVehiculo)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Password:</label>
+        <div>
+            <InputPassword Class="form-control" @bind-Value="@repartidorInfo.Password" />
+            <ValidationMessage For="@(() => repartidorInfo.Password)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+
+</EditForm>
+
+@code {
+    private RepartidorInfo repartidorInfo = new RepartidorInfo();
+
+    private async Task CrearRepartidor()
+    {
+        var httpResponse = await repositorio.Post<RepartidorInfo, UserToken>("api/cuentas/crear", repartidorInfo);
+
+        if (httpResponse.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
+        }
+        else
+        {
+            //await loginService.Login(httpResponse.Response);
+            navigationManager.NavigateTo("EstadoSolicitud");
+        }
+    }
+}
