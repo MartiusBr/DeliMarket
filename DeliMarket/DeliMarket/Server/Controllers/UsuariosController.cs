@@ -42,14 +42,21 @@ namespace DeliMarket.Server.Controllers
         [HttpGet("roles")]
         public async Task<ActionResult<List<RolDTO>>> Get()
         {
-            return await context.Roles
+            var ListaRoles = await context.Roles
                 .Select(x => new RolDTO { Nombre = x.Name, RoleId = x.Id }).ToListAsync();
+            return ListaRoles;
         }
 
         [HttpPost("asignarRol")]
         public async Task<ActionResult> AsignarRolUsuario(EditarRolDTO editarRolDTO)
         {
-            var usuario = await userManager.FindByIdAsync(editarRolDTO.UserId);
+            var usuario = await userManager.FindByIdAsync(editarRolDTO.UserId); //Buscamos al usuario por el Id Proporcionado en el model
+            if (await userManager.IsInRoleAsync(usuario, editarRolDTO.RoleId)) //Si el usuario ya posee el rol no lo sobreescribiremos y le mostramos el mensaje
+            {
+                var rolsito = await roleManager.FindByNameAsync(editarRolDTO.RoleId);
+                Console.WriteLine($"El usuario ya posee el rol de {rolsito.NormalizedName}");
+                return NoContent();
+            }
             await userManager.AddToRoleAsync(usuario, editarRolDTO.RoleId);
             return NoContent();
         }
