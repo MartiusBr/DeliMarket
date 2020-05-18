@@ -52,7 +52,9 @@ namespace DeliMarket.Server
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<IAlmacenadorDeArchivos, AlmacenadorArchivosAzStorage>();
+            services.AddScoped<IAlmacenadorDeArchivos, AlmacenadorArchivosLocal>();
+            //services.AddScoped<IAlmacenadorDeArchivos, AlmacenadorArchivosAzStorage>();
+            services.AddHttpContextAccessor();//Para poder configurar el servicio de IHttpContextAccesor
 
             services.AddMvc().AddNewtonsoftJson(options => 
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
