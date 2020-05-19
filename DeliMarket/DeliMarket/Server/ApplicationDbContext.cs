@@ -39,11 +39,11 @@ namespace DeliMarket.Server
         public DbSet<VotoProducto> VotosProductos { get; set; }
 
         //Personalizando Tabla Usuarios(Agregando campos)
-        public class Usuario : IdentityUser
-        {
-          [Required (ErrorMessage = "El campo {0} es requerido")]
-          public string DNI { get; set; }    
+        //public class Usuario : IdentityUser
+        //{
+        //  [Required (ErrorMessage = "El campo {0} es requerido")]
+        //  public string DNI { get; set; }    
           
-        }
+        //}
     }
 }
