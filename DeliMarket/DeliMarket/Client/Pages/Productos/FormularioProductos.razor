@@ -1,69 +1,76 @@
 ﻿@inject IRepositorio repositorio
 
-<EditForm Model="Producto" OnValidSubmit="OnDataAnnonationsValidated">
-    <DataAnnotationsValidator />
-    <div class="form-group">
-        <label>Título:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Producto.Titulo" />
-            <ValidationMessage For="@(() => Producto.Titulo)" />
+    <EditForm Model="Producto" OnValidSubmit="OnDataAnnonationsValidated"> 
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Título:</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@Producto.Titulo" />
+                <ValidationMessage For="@(() => Producto.Titulo)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Entrega Rápida:</label>
-        <div>
-            <InputCheckbox @bind-Value="@Producto.EntregaRapida" />
-            <ValidationMessage For="@(() => Producto.EntregaRapida)" />
+        <div class="form-group">
+            <label>Entrega Rápida:</label>
+            <div>
+                <InputCheckbox @bind-Value="@Producto.EntregaRapida" />
+                <ValidationMessage For="@(() => Producto.EntregaRapida)" />
+            </div>
+            <label>Entrega Programada:</label>
+            <div>
+                <InputCheckbox @bind-Value="@Producto.EntregaProgramada" />
+                <ValidationMessage For="@(() => Producto.EntregaProgramada)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Trailer:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Producto.Trailer" />
-            <ValidationMessage For="@(() => Producto.Trailer)" />
+        <div class="form-group">
+            <label>Trailer:</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@Producto.Trailer" />
+                <ValidationMessage For="@(() => Producto.Trailer)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Fecha Lanzamiento:</label>
-        <div>
-            <InputDate class="form-control" @bind-Value="@Producto.Lanzamiento" />
-            <ValidationMessage For="@(() => Producto.Lanzamiento)" />
+        <div class="form-group">
+            <label>Fecha Lanzamiento:</label>
+            <div>
+                <InputDate class="form-control" @bind-Value="@Producto.Lanzamiento" />
+                <ValidationMessage For="@(() => Producto.Lanzamiento)" />
+            </div>
         </div>
-    </div>
-    <div class="form-group form-markdown">
-        <InputMarkdown @bind-Value="@Producto.Resumen"
-                       For="@(() => Producto.Resumen)"
-                       Label="Resumen" />
-    </div>
-    <div class="form-group">
-        <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada" ImagenTemporal="@posterTemporal" />
-    </div>
-    <div class="form-group">
-        <label>Categorias:</label>
-        <div>
-            <SelectorMultiple Seleccionados="Seleccionados"
-                              NoSeleccionados="NoSeleccionados"></SelectorMultiple>
+        <div class="form-group">
+            <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada" ImagenTemporal="@posterTemporal" />
         </div>
-    </div>
-    <div class="form-group">
-        <label>Actores:</label>
-        <div>
-            <SelectorMultipleTypeahead Context="persona"
-                                       SearchMethod="BuscarActores"
-                                       ElementosSeleccionados="ActoresSeleccionados">
-                <MyListTemplate>
-                    @persona.Nombre / <input type="text" placeholder="Personaje" @bind="persona.Personaje" />
-                </MyListTemplate>
-                <MyResultTemplate>
-                    <img style="width: 50px" src="@persona.Foto" />
-                    @persona.Nombre
-                </MyResultTemplate>
-            </SelectorMultipleTypeahead>
+        <div class="form-group">
+            <label>Categorias:</label>
+            <div>
+                <SelectorMultiple Seleccionados="Seleccionados"
+                                  NoSeleccionados="NoSeleccionados"></SelectorMultiple>
+            </div>
         </div>
-    </div>
+        <div class="form-group">
+            <label>Actores:</label>
+            <div>
+                <SelectorMultipleTypeahead Context="persona"
+                                           SearchMethod="BuscarActores"
+                                           ElementosSeleccionados="ActoresSeleccionados">
+                    <MyListTemplate>
+                        @persona.Nombre / <input type="text" placeholder="Personaje" @bind="persona.Personaje" />
+                    </MyListTemplate>
+                    <MyResultTemplate>
+                        <img style="width: 50px" src="@persona.Foto" />
+                        @persona.Nombre
+                    </MyResultTemplate>
+                </SelectorMultipleTypeahead>
+            </div>
+        </div>
+        <div class="form-group container">
+            <div class="row">
+                <InputMarkdown @bind-Value="@Producto.Resumen"
+                               For="@(() => Producto.Resumen)"
+                               Label="Resumen" />
+            </div>
+        </div>
 
-    <button type="submit" class="btn btn-success">Salvar Producto</button>
-</EditForm>
+        <button type="submit" class="btn btn-success">Salvar Producto</button>
+    </EditForm>
 
 @code {
     [Parameter] public Producto Producto { get; set; }

@@ -13,17 +13,17 @@
     <DataAnnotationsValidator />
 
     <div class="form-group">
-        <label>Email:</label>
+        <label for="email">Email:</label>
         <div>
-            <InputText Class="form-control" @bind-Value="@userInfo.Email" />
+            <InputText name="email" Class="form-control" @bind-Value="@userInfo.Email" />
             <ValidationMessage For="@(() => userInfo.Email)" />
         </div>
     </div>
 
     <div class="form-group">
-        <label>Password:</label>
+        <label for="paswd">Password:</label>
         <div>
-            <InputPassword Class="form-control" @bind-Value="@userInfo.Password" />
+            <InputPassword name="paswd" Class="form-control" @bind-Value="@userInfo.Password" />
             <ValidationMessage For="@(() => userInfo.Password)" />
         </div>
     </div>

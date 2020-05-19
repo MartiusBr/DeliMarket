@@ -2,14 +2,14 @@
 @using System.Linq.Expressions
 @typeparam TValue
 
-<div>
+<div class="col-md-6">
     <label>@Label</label>
     <div>
         <InputTextArea @bind-Value="CurrentValue" />
         <ValidationMessage For="For" />
     </div>
 </div>
-<div>
+<div class="col-md-6">
     <label>@Label (preview):</label>
     <div class="markdown-container" style="overflow: auto;">
         <MostrarMarkdown ContenidoMarkdown="@CurrentValue">

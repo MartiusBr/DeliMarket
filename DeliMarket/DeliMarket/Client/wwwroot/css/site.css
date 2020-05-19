@@ -26,7 +26,7 @@ app {
     }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-image: linear-gradient(180deg, rgb(104 108 31) 0%, #202313 70%);
 }
 
     .sidebar .top-row {
@@ -138,17 +138,17 @@ app {
     display: flex;
 }
 
-    .form-markdown textarea {
-        width: 500px;
-        height: 500px;
-        margin-right: 15px;
-    }
+textarea {
+    width: 100%;
+    height: 500px;
+    margin-right: 15px;
+}
 
-    .form-markdown .markdown-container {
-        border: 1px dashed black;
-        width: 500px;
-        height: 500px;
-    }
+.markdown-container {
+    border: 1px dashed black;
+    width: 100%;
+    height: 500px;
+}
 
 
 .selector-multiple {

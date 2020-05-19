@@ -31,7 +31,7 @@ namespace DeliMarket.Server
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<CategoriaProducto> CategoriasProducto { get; set; }
+        public DbSet<CategoriaProducto> CategoriasProductos { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Persona> Personas { get; set; }
