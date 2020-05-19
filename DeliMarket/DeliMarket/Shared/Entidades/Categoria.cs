@@ -5,11 +5,11 @@ using System.Text;
 
 namespace DeliMarket.Shared.Entidades
 {
-    public class Genero
+    public class Categoria
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string Nombre { get; set; }
-        public List<GeneroPelicula> GeneroPeliculas { get; set; }
+        public List<CategoriaProducto> CategoriaProductos { get; set; }
     }
 }

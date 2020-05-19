@@ -27,23 +27,23 @@ namespace DeliMarket.Server.Controllers
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> Votar(VotoPelicula votoPelicula)
+        public async Task<ActionResult> Votar(VotoProducto votoProducto)
         {
             var user = await userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
             var userId = user.Id;
-            var votoActual = await context.VotosPeliculas
-                .FirstOrDefaultAsync(x => x.PeliculaId == votoPelicula.PeliculaId && x.UserId == userId);
+            var votoActual = await context.VotosProductos
+                .FirstOrDefaultAsync(x => x.ProductoId == votoProducto.ProductoId && x.UserId == userId);
 
             if (votoActual == null)
             {
-                votoPelicula.UserId = userId;
-                votoPelicula.FechaVoto = DateTime.Today;
-                context.Add(votoPelicula);
+                votoProducto.UserId = userId;
+                votoProducto.FechaVoto = DateTime.Today;
+                context.Add(votoProducto);
                 await context.SaveChangesAsync();
             }
             else
             {
-                votoActual.Voto = votoPelicula.Voto;
+                votoActual.Voto = votoProducto.Voto;
                 await context.SaveChangesAsync();
             }
 

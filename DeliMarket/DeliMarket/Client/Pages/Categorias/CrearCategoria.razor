@@ -1,19 +1,19 @@
-﻿@page "/generos/crear"
+﻿@page "/categorias/crear"
 @inject IRepositorio repositorio
 @inject NavigationManager navigationManager
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-<h3>Crear Genero</h3>
+<h3>Crear Categoria</h3>
 
-<FormularioGenero OnValidSubmit="Crear" Genero="Genero" />
+<FormularioCategoria OnValidSubmit="Crear" Categoria="Categoria" />
 
 @code {
-    private Genero Genero = new Genero();
+    private Categoria Categoria = new Categoria();
 
     private async Task Crear()
     {
-        var httpResponse = await repositorio.Post("api/generos", Genero);
+        var httpResponse = await repositorio.Post("api/categorias", Categoria);
         if (httpResponse.Error)
         {
             var body = await httpResponse.GetBody();
@@ -21,7 +21,7 @@
         }
         else
         {
-            navigationManager.NavigateTo("/generos");
+            navigationManager.NavigateTo("/categorias");
         }
     }
 }

@@ -1,35 +1,35 @@
-﻿@page "/peliculas/buscar"
+﻿@page "/productos/buscar"
 @inject IRepositorio repositorio
 @inject NavigationManager navigationManager
 
-<h3>Filtro Películas</h3>
+<h3>Filtro Productos</h3>
 
 <div class="form-inline">
     <div class="form-group mb-2">
         <label for="titulo" class="sr-only">Título</label>
         <input @bind-value="titulo" @bind-value:event="oninput"
                @onkeypress="@((KeyboardEventArgs e) => TituloKeyPress(e))"
-               type="text" class="form-control" id="titulo" placeholder="Título Película" />
+               type="text" class="form-control" id="titulo" placeholder="Título Productos" />
     </div>
     <div class="form-group mx-sm-3 mb-2">
-        <select class="form-control" @bind="generoSeleccionado">
+        <select class="form-control" @bind="categoriaSeleccionado">
             <option value="0">--Seleccione un género--</option>
-            @foreach (var item in generos)
+            @foreach (var item in categorias)
             {
                 <option value="@item.Id">@item.Nombre</option>
             }
         </select>
     </div>
     <div class="form-group mx-sm-3 mb-2">
-        <input type="checkbox" class="form-check-input" id="estrenos" @bind="futurosEstrenos" />
-        <label class="form-check-label" for="estrenos">
-            Futuros Estrenos
+        <input type="checkbox" class="form-check-input" id="entregaProgramada" @bind="entregaProgramada" />
+        <label class="form-check-label" for="entregaProgramada">
+            Entrega Programada
         </label>
     </div>
     <div class="form-group mx-sm-3 mb-2">
-        <input type="checkbox" class="form-check-input" id="cartelera" @bind="enCartelera" />
-        <label class="form-check-label" for="cartelera">
-            En Cartelera
+        <input type="checkbox" class="form-check-input" id="entregaRapida" @bind="entregaRapida" />
+        <label class="form-check-label" for="entregaRapida">
+            Entrega Rápida
         </label>
     </div>
     <div class="form-group mx-sm-3 mb-2">
@@ -39,30 +39,30 @@
         </label>
     </div>
 
-    <button type="button" class="btn btn-primary mb-2 mx-sm-3" @onclick="CargarNuevasPeliculas">Filtrar</button>
+    <button type="button" class="btn btn-primary mb-2 mx-sm-3" @onclick="CargarNuevasProductos">Filtrar</button>
     <button type="button" class="btn btn-danger mb-2" @onclick="LimpiarOnClick">Limpiar</button>
 </div>
 
-<ListadoPeliculas Peliculas="Peliculas"></ListadoPeliculas>
+<ListadoProductos Productos="Productos"></ListadoProductos>
 
 <Paginacion PaginaActual="paginaActual" PaginasTotales="paginasTotales" 
             PaginaSeleccionada="PaginaSeleccionada" />
 
 @code {
-    private List<Pelicula> Peliculas;
+    private List<Producto> Productos;
     string titulo = "";
-    string generoSeleccionado = "0";
-    private bool futurosEstrenos = false;
-    private bool enCartelera = false;
+    string categoriaSeleccionado = "0";
+    private bool entregaProgramada = false;
+    private bool entregaRapida = false;
     private bool masVotadas = false;
-    private List<Genero> generos = new List<Genero>();
+    private List<Categoria> categorias = new List<Categoria>();
     Dictionary<string, string> queryStringsDict = new Dictionary<string, string>();
     private int paginaActual = 1;
     private int paginasTotales;
 
     protected override async Task OnInitializedAsync()
     {
-        await ObtenerGeneros();
+        await ObtenerCategorias();
 
         var url = navigationManager.Uri;
 
@@ -83,9 +83,9 @@
 
     private void LlenarCampos()
     {
-        if (queryStringsDict.ContainsKey("generoid"))
+        if (queryStringsDict.ContainsKey("categoriaid"))
         {
-            generoSeleccionado = queryStringsDict["generoid"];
+            categoriaSeleccionado = queryStringsDict["categoriaid"];
         }
 
         if (queryStringsDict.ContainsKey("titulo"))
@@ -93,14 +93,14 @@
             titulo = queryStringsDict["titulo"];
         }
 
-        if (queryStringsDict.ContainsKey("encartelera"))
+        if (queryStringsDict.ContainsKey("entregarapida"))
         {
-            bool.TryParse(queryStringsDict["encartelera"], out enCartelera);
+            bool.TryParse(queryStringsDict["entregarapida"], out entregaRapida);
         }
 
-        if (queryStringsDict.ContainsKey("estrenos"))
+        if (queryStringsDict.ContainsKey("entregaprogramada"))
         {
-            bool.TryParse(queryStringsDict["estrenos"], out futurosEstrenos);
+            bool.TryParse(queryStringsDict["entregaprogramada"], out entregaProgramada);
         }
 
         if (queryStringsDict.ContainsKey("masvotadas"))
@@ -117,50 +117,50 @@
     private async Task PaginaSeleccionada(int pagina)
     {
         paginaActual = pagina;
-        await CargarNuevasPeliculas();
+        await CargarNuevasProductos();
     }
 
-    private async Task ObtenerGeneros()
+    private async Task ObtenerCategorias()
     {
-        var httpResponse = await repositorio.Get<List<Genero>>("api/generos");
-        generos = httpResponse.Response;
+        var httpResponse = await repositorio.Get<List<Categoria>>("api/categorias");
+        categorias = httpResponse.Response;
     }
 
     private async Task TituloKeyPress(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
-            await CargarNuevasPeliculas();
+            await CargarNuevasProductos();
         }
     }
 
-    private async Task CargarNuevasPeliculas()
+    private async Task CargarNuevasProductos()
     {
         var queryStrings = GenerarQueryStrings();
-        navigationManager.NavigateTo("/peliculas/buscar?" + queryStrings);
+        navigationManager.NavigateTo("/productos/buscar?" + queryStrings);
         await RealizarBusqueda(queryStrings);
     }
 
     private async Task RealizarBusqueda(string queryStrings)
     {
-        var httpResponse = await repositorio.Get<List<Pelicula>>("api/peliculas/filtrar?" + queryStrings);
+        var httpResponse = await repositorio.Get<List<Producto>>("api/productos/filtrar?" + queryStrings);
         paginasTotales = int.Parse(httpResponse.HttpResponseMessage.Headers.GetValues("totalPaginas").FirstOrDefault());
-        Peliculas = httpResponse.Response;
+        Productos = httpResponse.Response;
     }
 
     private string GenerarQueryStrings()
     {
         if (queryStringsDict == null) { queryStringsDict = new Dictionary<string, string>(); }
-        queryStringsDict["generoid"] = generoSeleccionado;
+        queryStringsDict["categoriaid"] = categoriaSeleccionado;
         queryStringsDict["titulo"] = titulo;
-        queryStringsDict["encartelera"] = enCartelera.ToString();
-        queryStringsDict["estrenos"] = futurosEstrenos.ToString();
+        queryStringsDict["entregarapida"] = entregaRapida.ToString();
+        queryStringsDict["entregaprogramada"] = entregaProgramada.ToString();
         queryStringsDict["masvotadas"] = masVotadas.ToString();
         queryStringsDict["pagina"] = paginaActual.ToString();
 
         var valoresPorDefecto = new List<string>() { "false", "", "0" };
 
-        // generoid=7&titulo=spider ...
+        // categoriaid=7&titulo=spider ...
 
         return string.Join("&", queryStringsDict
             .Where(x => !valoresPorDefecto.Contains(x.Value.ToLower()))
@@ -170,11 +170,11 @@
     private async Task LimpiarOnClick()
     {
         titulo = "";
-        generoSeleccionado = "0";
-        futurosEstrenos = false;
-        enCartelera = false;
+        categoriaSeleccionado = "0";
+        entregaProgramada = false;
+        entregaRapida = false;
         masVotadas = false;
         paginaActual = 1;
-        await CargarNuevasPeliculas();
+        await CargarNuevasProductos();
     }
 }

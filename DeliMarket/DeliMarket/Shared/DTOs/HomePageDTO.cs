@@ -7,7 +7,7 @@ namespace DeliMarket.Shared.DTOs
 {
     public class HomePageDTO
     {
-        public List<Pelicula> PeliculasEnCartelera { get; set; }
-        public List<Pelicula> ProximosEstrenos { get; set; }
+        public List<Producto> ProductosEnvioRapido { get; set; }
+        public List<Producto> ProductosEnvioProg { get; set; }
     }
 }

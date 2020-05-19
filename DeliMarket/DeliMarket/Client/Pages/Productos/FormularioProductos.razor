@@ -1,38 +1,38 @@
 ﻿@inject IRepositorio repositorio
 
-<EditForm Model="Pelicula" OnValidSubmit="OnDataAnnonationsValidated">
+<EditForm Model="Producto" OnValidSubmit="OnDataAnnonationsValidated">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label>Título:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Pelicula.Titulo" />
-            <ValidationMessage For="@(() => Pelicula.Titulo)" />
+            <InputText class="form-control" @bind-Value="@Producto.Titulo" />
+            <ValidationMessage For="@(() => Producto.Titulo)" />
         </div>
     </div>
     <div class="form-group">
-        <label>En cartelera:</label>
+        <label>Entrega Rápida:</label>
         <div>
-            <InputCheckbox @bind-Value="@Pelicula.EnCartelera" />
-            <ValidationMessage For="@(() => Pelicula.EnCartelera)" />
+            <InputCheckbox @bind-Value="@Producto.EntregaRapida" />
+            <ValidationMessage For="@(() => Producto.EntregaRapida)" />
         </div>
     </div>
     <div class="form-group">
         <label>Trailer:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Pelicula.Trailer" />
-            <ValidationMessage For="@(() => Pelicula.Trailer)" />
+            <InputText class="form-control" @bind-Value="@Producto.Trailer" />
+            <ValidationMessage For="@(() => Producto.Trailer)" />
         </div>
     </div>
     <div class="form-group">
         <label>Fecha Lanzamiento:</label>
         <div>
-            <InputDate class="form-control" @bind-Value="@Pelicula.Lanzamiento" />
-            <ValidationMessage For="@(() => Pelicula.Lanzamiento)" />
+            <InputDate class="form-control" @bind-Value="@Producto.Lanzamiento" />
+            <ValidationMessage For="@(() => Producto.Lanzamiento)" />
         </div>
     </div>
     <div class="form-group form-markdown">
-        <InputMarkdown @bind-Value="@Pelicula.Resumen"
-                       For="@(() => Pelicula.Resumen)"
+        <InputMarkdown @bind-Value="@Producto.Resumen"
+                       For="@(() => Producto.Resumen)"
                        Label="Resumen" />
     </div>
     <div class="form-group">
@@ -62,14 +62,14 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Salvar Película</button>
+    <button type="submit" class="btn btn-success">Salvar Producto</button>
 </EditForm>
 
 @code {
-    [Parameter] public Pelicula Pelicula { get; set; }
+    [Parameter] public Producto Producto { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
-    [Parameter] public List<Genero> GenerosSeleccionados { get; set; } = new List<Genero>();
-    [Parameter] public List<Genero> GenerosNoSeleccionados { get; set; } = new List<Genero>();
+    [Parameter] public List<Categoria> CategoriasSeleccionados { get; set; } = new List<Categoria>();
+    [Parameter] public List<Categoria> CategoriasNoSeleccionados { get; set; } = new List<Categoria>();
     [Parameter] public List<Persona> ActoresSeleccionados { get; set; } = new List<Persona>();
 
     private List<SelectorMultipleModel> Seleccionados { get; set; } = new List<SelectorMultipleModel>();
@@ -78,18 +78,18 @@
 
     protected override void OnInitialized()
     {
-        Seleccionados = GenerosSeleccionados.Select(x => new SelectorMultipleModel(x.Id.ToString(), x.Nombre)).ToList();
-        NoSeleccionados = GenerosNoSeleccionados.Select(x => new SelectorMultipleModel(x.Id.ToString(), x.Nombre)).ToList();
-        if (!string.IsNullOrWhiteSpace(Pelicula.Poster))
+        Seleccionados = CategoriasSeleccionados.Select(x => new SelectorMultipleModel(x.Id.ToString(), x.Nombre)).ToList();
+        NoSeleccionados = CategoriasNoSeleccionados.Select(x => new SelectorMultipleModel(x.Id.ToString(), x.Nombre)).ToList();
+        if (!string.IsNullOrWhiteSpace(Producto.Poster))
         {
-            posterTemporal = Pelicula.Poster;
-            Pelicula.Poster = null;
+            posterTemporal = Producto.Poster;
+            Producto.Poster = null;
         }
     }
 
     private void ImagenSeleccionada(string imagenBase64)
     {
-        Pelicula.Poster = imagenBase64;
+        Producto.Poster = imagenBase64;
     }
 
     private async Task<IEnumerable<Persona>> BuscarActores(string searchText)
@@ -100,13 +100,13 @@
 
     private async Task OnDataAnnonationsValidated()
     {
-        Pelicula.GenerosPelicula = Seleccionados
-            .Select(x => new GeneroPelicula { GeneroId = int.Parse(x.Llave) }).ToList();
+        Producto.CategoriasProducto = Seleccionados
+            .Select(x => new CategoriaProducto { CategoriaId = int.Parse(x.Llave) }).ToList();
 
-        Pelicula.PeliculasActor = ActoresSeleccionados
+        Producto.PeliculasActor = ActoresSeleccionados
             .Select(x => new PeliculaActor { PersonaId = x.Id, Personaje = x.Personaje }).ToList();
 
-        if (!string.IsNullOrWhiteSpace(Pelicula.Poster)) { posterTemporal = null; }
+        if (!string.IsNullOrWhiteSpace(Producto.Poster)) { posterTemporal = null; }
 
         await OnValidSubmit.InvokeAsync(null);
     }

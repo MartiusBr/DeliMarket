@@ -1,0 +1,33 @@
+﻿@inject IJSRuntime js
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+
+<div style="display: flex; flex-wrap: wrap; align-items: center;">
+    <ListadoGenerico Listado="Productos">
+        <HayRegistros Context="producto">
+            <ProductoIndividual Producto="producto" EliminarProducto="EliminarProducto" />
+        </HayRegistros>
+    </ListadoGenerico>
+</div>
+
+
+@code {
+    [Parameter] public List<Producto> Productos { get; set; }
+
+    async Task EliminarProducto(Producto producto)
+    {
+        var confirmar = await js.Confirm($"¿Desea borrar el producto {producto.Titulo}?");
+        if (confirmar)
+        {
+            var responseHttp = await repositorio.Delete($"api/productos/{producto.Id}");
+            if (responseHttp.Error)
+            {
+                await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+            }
+            else
+            {
+                Productos.Remove(producto);
+            }
+        }
+    }
+}

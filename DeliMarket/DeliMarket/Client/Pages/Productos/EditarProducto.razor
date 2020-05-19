@@ -1,34 +1,34 @@
-﻿@page "/peliculas/editar/{PeliculaId:int}"
+﻿@page "/productos/editar/{ProductoId:int}"
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensaje
 @inject NavigationManager navigationManager
 @attribute [Authorize(Roles = "admin")]
 
-<h3>Editar Pelicula</h3>
+<h3>Editar Producto</h3>
 
-@if (Pelicula == null)
+@if (Producto == null)
 {
     <text>Cargando...</text>
 }
 else
 {
-    <FormularioPeliculas Pelicula="Pelicula" OnValidSubmit="Editar"
+    <FormularioProductos Producto="Producto" OnValidSubmit="Editar"
                          ActoresSeleccionados="ActoresSeleccionados"
-                         GenerosNoSeleccionados="GenerosNoSeleccionados"
-                         GenerosSeleccionados="GenerosSeleccionados"></FormularioPeliculas>
+                         CategoriasNoSeleccionados="CategoriasNoSeleccionados"
+                         CategoriasSeleccionados="CategoriasSeleccionados"></FormularioProductos>
 }
 
 @code {
-    [Parameter] public int PeliculaId { get; set; }
-    Pelicula Pelicula;
-    private List<Genero> GenerosSeleccionados = new List<Genero>();
-    private List<Genero> GenerosNoSeleccionados = new List<Genero>();
+    [Parameter] public int ProductoId { get; set; }
+    Producto Producto;
+    private List<Categoria> CategoriasSeleccionados = new List<Categoria>();
+    private List<Categoria> CategoriasNoSeleccionados = new List<Categoria>();
     private List<Persona> ActoresSeleccionados { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
         var httpResponse = await repositorio
-            .Get<PeliculaActualizacionDTO>($"api/peliculas/actualizar/{PeliculaId}");
+            .Get<ProductoActualizacionDTO>($"api/productos/actualizar/{ProductoId}");
 
         if (httpResponse.Error)
         {
@@ -45,22 +45,22 @@ else
         {
             var model = httpResponse.Response;
             ActoresSeleccionados = model.Actores;
-            GenerosNoSeleccionados = model.GenerosNoSeleccionados;
-            GenerosSeleccionados = model.GenerosSeleccionados;
-            Pelicula = model.Pelicula;
+            CategoriasNoSeleccionados = model.CategoriasNoSeleccionados;
+            CategoriasSeleccionados = model.CategoriasSeleccionados;
+            Producto = model.Producto;
         }
     }
 
     private async Task Editar()
     {
-        var httpResponse = await repositorio.Put("api/peliculas", Pelicula);
+        var httpResponse = await repositorio.Put("api/productos", Producto);
         if (httpResponse.Error)
         {
             await mostrarMensaje.MostrarMensajeError(await httpResponse.GetBody());
         }
         else
         {
-            navigationManager.NavigateTo($"pelicula/{PeliculaId}");
+            navigationManager.NavigateTo($"producto/{ProductoId}");
         }
     }
 }

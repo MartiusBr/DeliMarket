@@ -14,7 +14,7 @@ namespace DeliMarket.Server.Helpers
             CreateMap<Persona, Persona>()
                 .ForMember(x => x.Foto, option => option.Ignore());
 
-            CreateMap<Pelicula, Pelicula>()
+            CreateMap<Producto, Producto>()
                 .ForMember(x => x.Poster, option => option.Ignore());
         }
     }

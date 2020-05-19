@@ -13,40 +13,40 @@ namespace DeliMarket.Server.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
-    public class GenerosController: ControllerBase
+    public class CategoriasController: ControllerBase
     {
         private readonly ApplicationDbContext context;
 
-        public GenerosController(ApplicationDbContext context)
+        public CategoriasController(ApplicationDbContext context)
         {
             this.context = context;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<List<Genero>>> Get()
+        public async Task<ActionResult<List<Categoria>>> Get()
         {
-            return await context.Generos.ToListAsync();
+            return await context.Categorias.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Genero>> Get(int id)
+        public async Task<ActionResult<Categoria>> Get(int id)
         {
-            return await context.Generos.FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Categorias.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(Genero genero)
+        public async Task<ActionResult<int>> Post(Categoria categoria)
         {
-            context.Add(genero);
+            context.Add(categoria);
             await context.SaveChangesAsync();
-            return genero.Id;
+            return categoria.Id;
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(Genero genero)
+        public async Task<ActionResult> Put(Categoria categoria)
         {
-            context.Attach(genero).State = EntityState.Modified;
+            context.Attach(categoria).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return NoContent();
         }
@@ -54,9 +54,9 @@ namespace DeliMarket.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.Generos.AnyAsync(x => x.Id == id);
+            var existe = await context.Categorias.AnyAsync(x => x.Id == id);
             if (!existe) { return NotFound(); }
-            context.Remove(new Genero { Id = id });
+            context.Remove(new Categoria { Id = id });
             await context.SaveChangesAsync();
             return NoContent();
         }

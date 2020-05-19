@@ -5,10 +5,10 @@ using System.Text;
 
 namespace DeliMarket.Shared.DTOs
 {
-    public class PeliculaVisualizarDTO
+    public class ProductoVisualizarDTO
     {
-        public Pelicula Pelicula { get; set; }
-        public List<Genero> Generos { get; set; }
+        public Producto Producto { get; set; }
+        public List<Categoria> Categorias { get; set; }
         public List<Persona> Actores { get; set; }
         public int VotoUsuario { get; set; }
         public double PromedioVotos { get; set; }

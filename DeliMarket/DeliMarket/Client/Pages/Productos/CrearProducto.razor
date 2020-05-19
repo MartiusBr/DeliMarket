@@ -1,0 +1,47 @@
+﻿@page "/productos/crear"
+@inject NavigationManager navigationManager
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+@attribute [Authorize(Roles = "admin")]
+
+<h3>Crear Producto</h3>
+
+@if (MostrarFormulario)
+{
+    <FormularioProductos Producto="Producto" OnValidSubmit="Crear"
+                         CategoriasNoSeleccionados="CategoriasNoSeleccionados"></FormularioProductos>
+}
+else
+{
+    <text>Cargando...</text>
+}
+
+@code {
+    private bool MostrarFormulario { get; set; } = false;
+    private Producto Producto = new Producto();
+    private List<Categoria> CategoriasNoSeleccionados = new List<Categoria>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHttp = await repositorio.Get<List<Categoria>>("api/categorias");
+        CategoriasNoSeleccionados = responseHttp.Response;
+        MostrarFormulario = true;
+    }
+
+    async Task Crear()
+    {
+        var httpResponse = await repositorio.Post<Producto, int>("api/productos", Producto);
+
+        if (httpResponse.Error)
+        {
+            var mensajeError = await httpResponse.GetBody();
+            await mostrarMensajes.MostrarMensajeError(mensajeError);
+        }
+        else
+        {
+            var ProductoId = httpResponse.Response;
+            navigationManager.NavigateTo($"/producto/{ProductoId}/{Producto.Titulo.Replace(" ", "-")}");
+        }
+    }
+
+}

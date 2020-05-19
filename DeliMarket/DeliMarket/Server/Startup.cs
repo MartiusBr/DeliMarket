@@ -33,11 +33,11 @@ namespace DeliMarket.Server
             services.AddDbContext<ApplicationDbContext>(options => 
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>() //Configuracion de Identity
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)  //Configuracion Autenticacion
                     .AddJwtBearer(options =>
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
@@ -50,9 +50,9 @@ namespace DeliMarket.Server
                      ClockSkew = TimeSpan.Zero
                  });
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup));    //Configuracion AutoMapper
 
-            services.AddScoped<IAlmacenadorDeArchivos, AlmacenadorArchivosLocal>();
+            services.AddScoped<IAlmacenadorDeArchivos, AlmacenadorArchivosLocal>(); //Cuando pido el servicio IAlmacenadorDeArchivos retorno una instancia de Almacenador de archivos Local
             //services.AddScoped<IAlmacenadorDeArchivos, AlmacenadorArchivosAzStorage>();
             services.AddHttpContextAccessor();//Para poder configurar el servicio de IHttpContextAccesor
 
@@ -80,8 +80,8 @@ namespace DeliMarket.Server
             app.UseBlazorFrameworkFiles();
 
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthentication(); //Agregando Autenticación en el pipeline
+            app.UseAuthorization();  //Agregando Autorización " "
 
             app.UseEndpoints(endpoints =>
             {

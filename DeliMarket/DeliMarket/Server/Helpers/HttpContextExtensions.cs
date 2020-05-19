@@ -12,12 +12,12 @@ namespace DeliMarket.Server.Helpers
         public async static Task InsertarParametrosPaginacionEnRespuesta<T>(this HttpContext context,
             IQueryable<T> queryable, int cantidadRegistrosAMostrar)
         {
-            if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            if (context == null) { throw new ArgumentNullException(nameof(context)); } 
 
-            double conteo = await queryable.CountAsync();
-            double totalPaginas = Math.Ceiling(conteo / cantidadRegistrosAMostrar);
-            context.Response.Headers.Add("conteo", conteo.ToString());
-            context.Response.Headers.Add("totalPaginas", totalPaginas.ToString());
+            double conteo = await queryable.CountAsync();       //cantidad de registros
+            double totalPaginas = Math.Ceiling(conteo / cantidadRegistrosAMostrar);  //Total de páginas
+            context.Response.Headers.Add("conteo", conteo.ToString()); //Se agrega conteo en la cabecera de la respuesta
+            context.Response.Headers.Add("totalPaginas", totalPaginas.ToString()); //Se agrega totalDePaginas en la cabecera de la respuesta
         }
     }
 }

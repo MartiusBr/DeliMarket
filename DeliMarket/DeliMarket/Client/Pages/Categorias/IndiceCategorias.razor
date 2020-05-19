@@ -1,4 +1,4 @@
-﻿@page "/generos"
+﻿@page "/categorias"
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
@@ -7,10 +7,10 @@
 <h3>Indice Géneros</h3>
 
 <div class="form-group">
-    <a class="btn btn-info" href="generos/crear">Agregar Género</a>
+    <a class="btn btn-info" href="categorias/crear">Agregar Categoria</a>
 </div>
 
-<ListadoGenerico Listado="Generos">
+<ListadoGenerico Listado="Categorias">
     <HayRegistrosCompleto>
         <table class="table table-striped">
             <thead>
@@ -20,12 +20,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Generos)
+                @foreach (var item in Categorias)
                 {
                     <tr>
                         <td>
-                            <a href="/generos/editar/@item.Id" class="btn btn-success">Editar</a>
-                            <button @onclick="@(() => BorrarGenero(item))" class="btn btn-danger">Borrar</button>
+                            <a href="/categorias/editar/@item.Id" class="btn btn-success">Editar</a>
+                            <button @onclick="@(() => BorrarCategoria(item))" class="btn btn-danger">Borrar</button>
                         </td>
                         <td>@item.Nombre</td>
                     </tr>
@@ -36,7 +36,7 @@
 </ListadoGenerico>
 
 @code {
-    public List<Genero> Generos { get; set; }
+    public List<Categoria> Categorias { get; set; }
     protected async override Task OnInitializedAsync()
     {
         await Cargar();
@@ -44,13 +44,13 @@
 
     private async Task Cargar()
     {
-        var responseHttp = await repositorio.Get<List<Genero>>("api/generos");
-        Generos = responseHttp.Response;
+        var responseHttp = await repositorio.Get<List<Categoria>>("api/categorias");
+        Categorias = responseHttp.Response;
     }
 
-    private async Task BorrarGenero(Genero genero)
+    private async Task BorrarCategoria(Categoria categoria)
     {
-        var responseHttp = await repositorio.Delete($"api/generos/{genero.Id}");
+        var responseHttp = await repositorio.Delete($"api/categorias/{categoria.Id}");
         if (responseHttp.Error)
         {
            await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());

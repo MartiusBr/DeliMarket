@@ -1,10 +1,10 @@
-﻿<EditForm Model="Genero" OnValidSubmit="OnValidSubmit">
+﻿<EditForm Model="Categoria" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label>Nombre:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Genero.Nombre" />
-            <ValidationMessage For="@(() => Genero.Nombre)" />
+            <InputText class="form-control" @bind-Value="@Categoria.Nombre" />
+            <ValidationMessage For="@(() => Categoria.Nombre)" />
         </div>
     </div>
 
@@ -12,6 +12,6 @@
 </EditForm>
 
 @code {
-    [Parameter] public Genero Genero { get; set; }
+    [Parameter] public Categoria Categoria { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
 }
