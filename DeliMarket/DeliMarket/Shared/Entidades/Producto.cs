@@ -13,7 +13,6 @@ namespace DeliMarket.Shared.Entidades
         public string Resumen { get; set; }
         public bool EntregaRapida { get; set; }
         public bool EntregaProgramada { get; set; }
-        public string Trailer { get; set; }
         [Required]
         public DateTime? Lanzamiento { get; set; }
         public string Poster { get; set; }
