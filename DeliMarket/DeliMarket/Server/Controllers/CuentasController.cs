@@ -33,28 +33,30 @@ namespace DeliMarket.Server.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("Crear")]
-        public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
+        [HttpPost("Crear")] //Crear un usuario (Cliente por defecto)
+        public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model) //Crea un usuario y retorna un Token
         {
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
+            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
+            var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario  
+            var rolCliente = new List<string>(); //Creo una Lista vacia
+            rolCliente.Add("cliente"); //Le asigno el rol de cliente por defecto
+            if (result.Succeeded)   //Si el resultado de crearlo es satisfactorio
             {
-                return BuildToken(model, new List<string>());
+                return BuildToken(model, rolCliente); //Le asigno un Token con la lista de Rol que tiene(Cliente por defecto)
             }
             else
             {
-                return BadRequest("Username or password invalid");
+                return BadRequest("Username or password invalid"); //Si no se creo exitosamente al usuario retorno BadRequest
             }
         }
 
-        [HttpGet("RenovarToken")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<UserToken>> Renovar()
+        [HttpGet("RenovarToken")] //Action para Renovar el Token
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] //Para Usar este endpoint el Usuario debe esta Autenticado
+        public async Task<ActionResult<UserToken>> Renovar()  //Retorno un User Token
         {
             var userInfo = new UserInfo()
             {
-                Email = HttpContext.User.Identity.Name
+                Email = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value
             };
 
             var usuario = await _userManager.FindByEmailAsync(userInfo.Email);
@@ -63,19 +65,21 @@ namespace DeliMarket.Server.Controllers
             return BuildToken(userInfo, roles);
         }
 
-        [HttpPost("Login")]
-        public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
+        [HttpPost("Login")] //Accion para Login
+        public async Task<ActionResult<UserToken>> Login([FromBody] UserLogin userLogin) 
         {
-            var result = await _signInManager.PasswordSignInAsync(userInfo.Email, 
-                userInfo.Password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(userLogin.Email,
+                userLogin.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
 
-                var usuario = await _userManager.FindByEmailAsync(userInfo.Email);
-                var roles = await _userManager.GetRolesAsync(usuario);
+                var usuario = await _userManager.FindByEmailAsync(userLogin.Email); //Obtengo el cliente por su Email
+                var roles = await _userManager.GetRolesAsync(usuario); //Obtengo sus roles
 
-                return BuildToken(userInfo, roles);
+                UserInfo userInfo = new UserInfo { Email = userLogin.Email, Nombre = usuario.UserName};
+
+                return BuildToken(userInfo, roles); //Construyo el token pasando como parametros el usuario(correo,nombre) y sus roles
             }
             else
             {
@@ -83,34 +87,34 @@ namespace DeliMarket.Server.Controllers
             }
         }
 
-        private UserToken BuildToken(UserInfo userInfo, IList<string> roles)
+        private UserToken BuildToken(UserInfo userInfo, IList<string> roles) //Metodo para Construir un Token teniendo como parámetro al usuario y la Lista de Roles que posee
         {
-            var claims = new List<Claim>()
+            var claims = new List<Claim>() //Creo una Lista de Claims (Informacion del usuario)
             {
-                new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
-                new Claim(ClaimTypes.Name, userInfo.Email),
-                new Claim("miValor", "Lo que yo quiera"),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email), //
+                new Claim(ClaimTypes.Name, userInfo.Nombre), //Su Nombre
+                new Claim("mivalor", "Lo que yo quiera"), //Cualquier llave - Valor
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) //Id Unico del Token
             };
 
-            foreach (var rol in roles)
+            foreach (var rol in roles)  //Para cada rol que tenga el usuario
             {
-                claims.Add(new Claim(ClaimTypes.Role, rol));
+                claims.Add(new Claim(ClaimTypes.Role, rol)); //Asigno el Rol en la informacion de usuario(Claims)
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"])); //Codigo para Crear el Token
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddMinutes(30);
+            var expiration = DateTime.UtcNow.AddMinutes(30); //Agrego una fecha de Expiración en este caso 30 minutos
 
             JwtSecurityToken token = new JwtSecurityToken(
                issuer: null,
                audience: null,
-               claims: claims,
-               expires: expiration,
+               claims: claims, //Agrego la lista de Claims al token
+               expires: expiration, //Agrego la fecha de expiracion al Token
                signingCredentials: creds);
 
-            return new UserToken()
+            return new UserToken() //Retorno el Token y su fecha de expiracion
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration

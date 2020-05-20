@@ -1,12 +1,31 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <span>Hello, @context.User.Identity.Name!</span>
-        <a href="Logout" class="nav-link btn btn-link">Log out</a>
+        <span>Hola, @context.User.Identity.Name!</span>
+        <a href="Logout" class="nav-link btn btn-link">
+            Log out &nbsp;
+            <span class="oi oi-account-logout" aria-hidden="true"></span>
+        </a>
+
     </Authorized>
     <NotAuthorized>
-        <a href="Registro" class="nav-link btn btn-link">Registro Cliente</a>
-        <a href="RegistroRepartidor" class="nav-link btn btn-link">Registro Repartidor</a>
-        <a href="RegistroMercado" class="nav-link btn btn-link">Registro Mercado</a>
-        <a href="Login" class="nav-link btn btn-link">Login</a>
+        <a href="Registro" class="nav-link btn btn-link">
+            Registro Cliente
+            <span class="oi oi-person" aria-hidden="true"></span>
+        </a>
+        <a href="RegistroRepartidor" class="nav-link btn btn-link">
+            Registro Repartidor
+            <span class="fa fa-motorcycle" aria-hidden="true"></span>
+        </a>
+        <a href="RegistroMercado" class="nav-link btn btn-link">
+            Registro Mercado
+            <span class="oi oi-spreadsheet" aria-hidden="true"></span>
+        </a>
+        <a href="Login" class="nav-link btn btn-link">
+            Login
+            <span class="oi oi-account-login" aria-hidden="true"></span>
+        </a>
     </NotAuthorized>
 </AuthorizeView>
+
+@*@context.User.Claims.First(c => c.Type == "mivalor").Value*@
+@*@context.User.Claims.First(c => c.Type == System.Security.Claims.ClaimTypes.Name).Value*@
