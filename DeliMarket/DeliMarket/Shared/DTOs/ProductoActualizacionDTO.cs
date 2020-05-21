@@ -8,7 +8,7 @@ namespace DeliMarket.Shared.DTOs
     public class ProductoActualizacionDTO
     {
         public Producto Producto { get; set; }
-        public List<Persona> Actores { get; set; }
+        public List<Mercado> Mercados { get; set; }
         public List<Categoria> CategoriasSeleccionados { get; set; }
         public List<Categoria> CategoriasNoSeleccionados { get; set; }
     }

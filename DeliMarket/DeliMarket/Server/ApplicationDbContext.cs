@@ -21,7 +21,7 @@ namespace DeliMarket.Server
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CategoriaProducto>().HasKey(x => new { x.CategoriaId, x.ProductoId });
-            modelBuilder.Entity<PeliculaActor>().HasKey(x => new { x.ProductoId, x.PersonaId });
+            modelBuilder.Entity<ProductoMercado>().HasKey(x => new { x.ProductoId, x.MercadoId });
 
             var roleAdmin = new IdentityRole() 
             { Id = "89086180-b978-4f90-9dbd-a7040bc93f41", Name = "admin", NormalizedName = "admin" };
@@ -34,8 +34,8 @@ namespace DeliMarket.Server
         public DbSet<CategoriaProducto> CategoriasProductos { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
-        public DbSet<Persona> Personas { get; set; }
-        public DbSet<PeliculaActor> PeliculasActores { get; set; }
+        public DbSet<Mercado> Mercados { get; set; }
+        public DbSet<ProductoMercado> ProductosMercados { get; set; }
         public DbSet<VotoProducto> VotosProductos { get; set; }
 
         //Personalizando Tabla Usuarios(Agregando campos)

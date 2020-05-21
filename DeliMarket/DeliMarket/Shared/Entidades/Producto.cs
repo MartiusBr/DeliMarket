@@ -17,7 +17,7 @@ namespace DeliMarket.Shared.Entidades
         public DateTime? Lanzamiento { get; set; }
         public string Poster { get; set; }
         public List<CategoriaProducto> CategoriasProducto { get; set; } = new List<CategoriaProducto>();
-        public List<PeliculaActor> PeliculasActor { get; set; }
+        public List<ProductoMercado> ProductosMercado { get; set; }
         public string TituloCortado
         {
             get

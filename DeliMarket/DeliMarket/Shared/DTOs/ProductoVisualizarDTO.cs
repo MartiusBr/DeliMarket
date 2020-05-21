@@ -9,7 +9,7 @@ namespace DeliMarket.Shared.DTOs
     {
         public Producto Producto { get; set; }
         public List<Categoria> Categorias { get; set; }
-        public List<Persona> Actores { get; set; }
+        public List<Mercado> Mercados { get; set; }
         public int VotoUsuario { get; set; }
         public double PromedioVotos { get; set; }
     }

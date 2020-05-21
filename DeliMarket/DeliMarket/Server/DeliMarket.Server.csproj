@@ -21,6 +21,10 @@
     <Compile Include="Migrations\20200519171323_AddNewFieldInProduct.Designer.cs" />
     <Compile Include="Migrations\20200520020913_CambiosTablaProducto.cs" />
     <Compile Include="Migrations\20200520020913_CambiosTablaProducto.Designer.cs" />
+    <Compile Include="Migrations\20200521172841_chaguesTUser.cs" />
+    <Compile Include="Migrations\20200521172841_chaguesTUser.Designer.cs" />
+    <Compile Include="Migrations\20200521191409_UpdateTPersonas.cs" />
+    <Compile Include="Migrations\20200521191409_UpdateTPersonas.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

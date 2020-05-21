@@ -37,15 +37,15 @@ else
         </div>
     </div>
     <div style="margin-top: 10px;">
-        <h3>Actores</h3>
+        <h3>Mercados</h3>
         <div style="display: flex; flex-direction: column">
-            @foreach (var actor in model.Actores)
+            @foreach (var mercado in model.Mercados)
             {
                 <div style="margin-bottom: 2px;">
-                    <img style="width: 50px;" src="@actor.Foto" />
-                    <span style="display:inline-block;width: 200px;"><a href="/persona/@actor.Id/@actor.Nombre.Replace(" ", "-")">@actor.Nombre</a></span>
+                    <img style="width: 50px;" src="@mercado.Foto" />
+                    <span style="display:inline-block;width: 200px;"><a href="/mercado/@mercado.Id/@mercado.Nombre.Replace(" ", "-")">@mercado.Nombre</a></span>
                     <span style="display:inline-block; width: 45px;">...</span>
-                    <span>@actor.Personaje</span>
+                    <span>@mercado.Duenio</span>
                 </div>
             }
         </div>

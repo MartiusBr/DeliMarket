@@ -9,12 +9,14 @@ namespace DeliMarket.Shared.DTOs
     {
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage ="Por favor ingresa una dirección de correo valido")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Porfavor ingresa tu {0}"), MaxLength(30)]
+        [Phone(ErrorMessage = "Por favor ingresa un numero de celular válido")]
+        public string NumeroCel { get; set; }
+        [Required(ErrorMessage = "Por favor ingresa tu {0}"), MaxLength(30)]
         public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "Porfavor ingresa una {0}"), MaxLength(30)]
+        [Required(ErrorMessage = "Por favor ingresa una contraseña"), MaxLength(30)]
         public string Password { get; set; }
     }
 }

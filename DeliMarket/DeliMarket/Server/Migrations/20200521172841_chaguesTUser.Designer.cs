@@ -4,14 +4,16 @@ using DeliMarket.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliMarket.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200521172841_chaguesTUser")]
+    partial class chaguesTUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,17 +52,38 @@ namespace DeliMarket.Server.Migrations
                     b.ToTable("CategoriasProductos");
                 });
 
-            modelBuilder.Entity("DeliMarket.Shared.Entidades.Mercado", b =>
+            modelBuilder.Entity("DeliMarket.Shared.Entidades.PeliculaActor", b =>
+                {
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Personaje")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductoId", "PersonaId");
+
+                    b.HasIndex("PersonaId");
+
+                    b.ToTable("PeliculasActores");
+                });
+
+            modelBuilder.Entity("DeliMarket.Shared.Entidades.Persona", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("Biografia")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Fecha")
+                    b.Property<DateTime?>("FechaNacimiento")
                         .IsRequired()
                         .HasColumnType("datetime2");
 
@@ -73,7 +96,7 @@ namespace DeliMarket.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mercados");
+                    b.ToTable("Personas");
                 });
 
             modelBuilder.Entity("DeliMarket.Shared.Entidades.Producto", b =>
@@ -106,27 +129,6 @@ namespace DeliMarket.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Productos");
-                });
-
-            modelBuilder.Entity("DeliMarket.Shared.Entidades.ProductoMercado", b =>
-                {
-                    b.Property<int>("ProductoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MercadoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Duenio")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Orden")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductoId", "MercadoId");
-
-                    b.HasIndex("MercadoId");
-
-                    b.ToTable("ProductosMercados");
                 });
 
             modelBuilder.Entity("DeliMarket.Shared.Entidades.VotoProducto", b =>
@@ -185,7 +187,7 @@ namespace DeliMarket.Server.Migrations
                         new
                         {
                             Id = "89086180-b978-4f90-9dbd-a7040bc93f41",
-                            ConcurrencyStamp = "4e935453-39bf-41ff-abff-83536af85692",
+                            ConcurrencyStamp = "0465e0b6-15a1-44cf-95ac-80dcfb850fc3",
                             Name = "admin",
                             NormalizedName = "admin"
                         });
@@ -375,16 +377,16 @@ namespace DeliMarket.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DeliMarket.Shared.Entidades.ProductoMercado", b =>
+            modelBuilder.Entity("DeliMarket.Shared.Entidades.PeliculaActor", b =>
                 {
-                    b.HasOne("DeliMarket.Shared.Entidades.Mercado", "Mercado")
-                        .WithMany("ProductosMercado")
-                        .HasForeignKey("MercadoId")
+                    b.HasOne("DeliMarket.Shared.Entidades.Persona", "Persona")
+                        .WithMany("PeliculasActor")
+                        .HasForeignKey("PersonaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DeliMarket.Shared.Entidades.Producto", "Producto")
-                        .WithMany("ProductosMercado")
+                        .WithMany("PeliculasActor")
                         .HasForeignKey("ProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -36,7 +36,7 @@ namespace DeliMarket.Server.Controllers
         [HttpPost("Crear")] //Crear un usuario (Cliente por defecto)
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model) //Crea un usuario y retorna un Token
         {
-            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
+            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
             var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario  
             var rolCliente = new List<string>(); //Creo una Lista vacia
             rolCliente.Add("cliente"); //Le asigno el rol de cliente por defecto

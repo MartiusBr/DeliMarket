@@ -21,6 +21,14 @@
     </div>
 
     <div class="form-group">
+        <label for="numerocel">Numero de celular:</label>
+        <div>
+            <InputText name="numerocel" Class="form-control" @bind-Value="@userInfo.NumeroCel" />
+            <ValidationMessage For="@(() => userInfo.NumeroCel)" />
+        </div>
+    </div>
+
+    <div class="form-group">
         <label for="email">Email:</label>
         <div>
             <InputText name="email" Class="form-control" @bind-Value="@userInfo.Email" />

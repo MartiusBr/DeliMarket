@@ -1,0 +1,55 @@
+﻿<EditForm Model="Mercado" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label>Nombre:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Mercado.Nombre" />
+            <ValidationMessage For="@(() => Mercado.Nombre)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Fecha @algo:</label>
+        <div>
+            <InputDate class="form-control" @bind-Value="@Mercado.Fecha" />
+            <ValidationMessage For="@(() => Mercado.Fecha)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada" ImagenTemporal="@imagenTemporal" />
+    </div>
+    <div class="form-group form-markdown">
+        <InputMarkdown @bind-Value="@Mercado.Descripcion"
+                       For="@(() => Mercado.Descripcion)"
+                       Label="Descripcion" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Guardar Cambios</button>
+</EditForm>
+
+
+@code {
+    public string algo = "";
+    [Parameter] public Mercado Mercado { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    private string imagenTemporal;
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("on initialized");
+        Console.WriteLine(Mercado.Foto);
+        Console.WriteLine(Mercado.Nombre);
+
+        if (!string.IsNullOrWhiteSpace(Mercado.Foto))
+        {
+            imagenTemporal = Mercado.Foto;
+            Console.WriteLine(imagenTemporal);
+            Mercado.Foto = null;
+        }
+    }
+
+    private void ImagenSeleccionada(string imagenBase64)
+    {
+        Mercado.Foto = imagenBase64;
+    }
+}

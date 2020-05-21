@@ -39,17 +39,17 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Actores:</label>
+            <label>Mercados:</label>
             <div>
-                <SelectorMultipleTypeahead Context="persona"
-                                           SearchMethod="BuscarActores"
-                                           ElementosSeleccionados="ActoresSeleccionados">
+                <SelectorMultipleTypeahead Context="mercado"
+                                           SearchMethod="BuscarMercados"
+                                           ElementosSeleccionados="MercadosSeleccionados">
                     <MyListTemplate>
-                        @persona.Nombre / <input type="text" placeholder="Personaje" @bind="persona.Personaje" />
+                        @mercado.Nombre / <input type="text" placeholder="Dueño" @bind="mercado.Duenio" />
                     </MyListTemplate>
                     <MyResultTemplate>
-                        <img style="width: 50px" src="@persona.Foto" />
-                        @persona.Nombre
+                        <img style="width: 50px" src="@mercado.Foto" />
+                        @mercado.Nombre
                     </MyResultTemplate>
                 </SelectorMultipleTypeahead>
             </div>
@@ -70,7 +70,7 @@
     [Parameter] public EventCallback OnValidSubmit { get; set; }
     [Parameter] public List<Categoria> CategoriasSeleccionados { get; set; } = new List<Categoria>();
     [Parameter] public List<Categoria> CategoriasNoSeleccionados { get; set; } = new List<Categoria>();
-    [Parameter] public List<Persona> ActoresSeleccionados { get; set; } = new List<Persona>();
+    [Parameter] public List<Mercado> MercadosSeleccionados { get; set; } = new List<Mercado>();
 
     private List<SelectorMultipleModel> Seleccionados { get; set; } = new List<SelectorMultipleModel>();
     private List<SelectorMultipleModel> NoSeleccionados { get; set; } = new List<SelectorMultipleModel>();
@@ -92,9 +92,9 @@
         Producto.Poster = imagenBase64;
     }
 
-    private async Task<IEnumerable<Persona>> BuscarActores(string searchText)
+    private async Task<IEnumerable<Mercado>> BuscarMercados(string searchText)
     {
-        var responseHttp = await repositorio.Get<List<Persona>>($"api/personas/buscar/{searchText}");
+        var responseHttp = await repositorio.Get<List<Mercado>>($"api/mercados/buscar/{searchText}");
         return responseHttp.Response;
     }
 
@@ -103,8 +103,8 @@
         Producto.CategoriasProducto = Seleccionados
             .Select(x => new CategoriaProducto { CategoriaId = int.Parse(x.Llave) }).ToList();
 
-        Producto.PeliculasActor = ActoresSeleccionados
-            .Select(x => new PeliculaActor { PersonaId = x.Id, Personaje = x.Personaje }).ToList();
+        Producto.ProductosMercado = MercadosSeleccionados
+            .Select(x => new ProductoMercado { MercadoId = x.Id, Duenio = x.Duenio }).ToList();
 
         if (!string.IsNullOrWhiteSpace(Producto.Poster)) { posterTemporal = null; }
 

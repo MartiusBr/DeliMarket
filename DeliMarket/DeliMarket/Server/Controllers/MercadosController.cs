@@ -16,13 +16,13 @@ namespace DeliMarket.Server.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
-    public class PersonasController : ControllerBase
+    public class MercadosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly IAlmacenadorDeArchivos almacenadorDeArchivos;
         private readonly IMapper mapper;
 
-        public PersonasController(ApplicationDbContext context, 
+        public MercadosController(ApplicationDbContext context, 
             IAlmacenadorDeArchivos almacenadorDeArchivos,
             IMapper mapper)
         {
@@ -32,60 +32,60 @@ namespace DeliMarket.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Persona>>> Get([FromQuery] Paginacion paginacion)
+        public async Task<ActionResult<List<Mercado>>> Get([FromQuery] Paginacion paginacion)
         {
-            var queryable = context.Personas.AsQueryable();
+            var queryable = context.Mercados.AsQueryable();
             await HttpContext.InsertarParametrosPaginacionEnRespuesta(queryable, paginacion.CantidadRegistros);
             return await queryable.Paginar(paginacion).ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Persona>> Get(int id)
+        public async Task<ActionResult<Mercado>> Get(int id)
         {
-            var persona = await context.Personas.FirstOrDefaultAsync(x => x.Id == id);
+            var mercado = await context.Mercados.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (persona == null) { return NotFound(); }
+            if (mercado == null) { return NotFound(); }
 
-            return persona;
+            return mercado;
         }
 
         [HttpGet("buscar/{textoBusqueda}")]
-        public async Task<ActionResult<List<Persona>>> Get(string textoBusqueda)
+        public async Task<ActionResult<List<Mercado>>> Get(string textoBusqueda)
         {
-            if (string.IsNullOrWhiteSpace(textoBusqueda)) { return new List<Persona>(); }
+            if (string.IsNullOrWhiteSpace(textoBusqueda)) { return new List<Mercado>(); }
             textoBusqueda = textoBusqueda.ToLower();
-            return await context.Personas
+            return await context.Mercados
                 .Where(x => x.Nombre.ToLower().Contains(textoBusqueda)).ToListAsync();
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(Persona persona)
+        public async Task<ActionResult<int>> Post(Mercado mercado)
         {
-            if (!string.IsNullOrWhiteSpace(persona.Foto))
+            if (!string.IsNullOrWhiteSpace(mercado.Foto))
             {
-                var fotoPersona = Convert.FromBase64String(persona.Foto);
-                persona.Foto = await almacenadorDeArchivos.GuardarArchivo(fotoPersona, "jpg", "personas");
+                var fotoMercado = Convert.FromBase64String(mercado.Foto);
+                mercado.Foto = await almacenadorDeArchivos.GuardarArchivo(fotoMercado, "jpg", "mercados");
             }
 
-            context.Add(persona);
+            context.Add(mercado);
             await context.SaveChangesAsync();
-            return persona.Id;
+            return mercado.Id;
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(Persona persona)
+        public async Task<ActionResult> Put(Mercado mercado)
         {
-            var personaDB = await context.Personas.FirstOrDefaultAsync(x => x.Id == persona.Id);
+            var mercadoDB = await context.Mercados.FirstOrDefaultAsync(x => x.Id == mercado.Id);
 
-            if (personaDB == null) { return NotFound(); }
+            if (mercadoDB == null) { return NotFound(); }
 
-            personaDB = mapper.Map(persona, personaDB);
+            mercadoDB = mapper.Map(mercado, mercadoDB);
 
-            if (!string.IsNullOrWhiteSpace(persona.Foto))
+            if (!string.IsNullOrWhiteSpace(mercado.Foto))
             {
-                var fotoImagen = Convert.FromBase64String(persona.Foto);
-                personaDB.Foto = await almacenadorDeArchivos.EditarArchivo(fotoImagen,
-                    "jpg", "personas", personaDB.Foto);
+                var fotoImagen = Convert.FromBase64String(mercado.Foto);
+                mercadoDB.Foto = await almacenadorDeArchivos.EditarArchivo(fotoImagen,
+                    "jpg", "mercados", mercadoDB.Foto);
             }
 
             await context.SaveChangesAsync();
@@ -95,9 +95,9 @@ namespace DeliMarket.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.Personas.AnyAsync(x => x.Id == id);
+            var existe = await context.Mercados.AnyAsync(x => x.Id == id);
             if (!existe) { return NotFound(); }
-            context.Remove(new Persona { Id = id });
+            context.Remove(new Mercado { Id = id });
             await context.SaveChangesAsync();
             return NoContent();
         }

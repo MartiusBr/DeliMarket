@@ -13,7 +13,7 @@
 else
 {
     <FormularioProductos Producto="Producto" OnValidSubmit="Editar"
-                         ActoresSeleccionados="ActoresSeleccionados"
+                         MercadosSeleccionados="MercadosSeleccionados"
                          CategoriasNoSeleccionados="CategoriasNoSeleccionados"
                          CategoriasSeleccionados="CategoriasSeleccionados"></FormularioProductos>
 }
@@ -23,7 +23,7 @@ else
     Producto Producto;
     private List<Categoria> CategoriasSeleccionados = new List<Categoria>();
     private List<Categoria> CategoriasNoSeleccionados = new List<Categoria>();
-    private List<Persona> ActoresSeleccionados { get; set; }
+    private List<Mercado> MercadosSeleccionados { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -44,7 +44,7 @@ else
         else
         {
             var model = httpResponse.Response;
-            ActoresSeleccionados = model.Actores;
+            MercadosSeleccionados = model.Mercados;
             CategoriasNoSeleccionados = model.CategoriasNoSeleccionados;
             CategoriasSeleccionados = model.CategoriasSeleccionados;
             Producto = model.Producto;

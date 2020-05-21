@@ -6,22 +6,22 @@ using System.Text;
 
 namespace DeliMarket.Shared.Entidades
 {
-    public class Persona
+    public class Mercado
     {
         public int Id { get; set; }
         [Required]
         public string Nombre { get; set; }
-        public string Biografia { get; set; }
+        public string Descripcion { get; set; }
         public string Foto { get; set; }
         [Required]
-        public DateTime? FechaNacimiento { get; set; }
-        public List<PeliculaActor> PeliculasActor { get; set; }
+        public DateTime? Fecha { get; set; }
+        public List<ProductoMercado> ProductosMercado { get; set; }
         [NotMapped]
-        public string Personaje { get; set; }
+        public string Duenio { get; set; }
 
         public override bool Equals(object obj)
         {
-            if (obj is Persona p2)
+            if (obj is Mercado p2)
             {
                 return Id == p2.Id;
             }

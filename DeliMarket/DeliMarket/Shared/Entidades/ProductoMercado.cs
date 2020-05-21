@@ -4,13 +4,13 @@ using System.Text;
 
 namespace DeliMarket.Shared.Entidades
 {
-    public class PeliculaActor
+    public class ProductoMercado
     {
-        public int PersonaId { get; set; }
+        public int MercadoId { get; set; }
         public int ProductoId { get; set; }
-        public Persona Persona { get; set; }
+        public Mercado Mercado { get; set; }
         public Producto Producto { get; set; }
-        public string Personaje { get; set; }
+        public string Duenio { get; set; }
         public int Orden { get; set; }
     }
 }

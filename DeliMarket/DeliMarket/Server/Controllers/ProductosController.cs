@@ -69,7 +69,7 @@ namespace DeliMarket.Server.Controllers
         {
             var producto = await context.Productos.Where(x => x.Id == id)  //Busco el producto cuyo id sea igual al proporcionado en el parámetro
                 .Include(x => x.CategoriasProducto).ThenInclude(x => x.Categoria)  //Incluimos la lista de Categorias que tiene el producto y tomamos las Categorias
-                .Include(x => x.PeliculasActor).ThenInclude(x => x.Persona) //Incluimos las lista de Ac que tiene el producto y tomamos las personas
+                .Include(x => x.ProductosMercado).ThenInclude(x => x.Mercado) //Incluimos las lista de Ac que tiene el producto y tomamos los mercados
                 .FirstOrDefaultAsync(); //Seleccionamos el primer registro que se filtro 
 
             if (producto == null) { return NotFound(); } //Si no encuentra el producto retornamos No Encontrado
@@ -99,22 +99,22 @@ namespace DeliMarket.Server.Controllers
                 }
             }
 
-            producto.PeliculasActor = producto.PeliculasActor.OrderBy(x => x.Orden).ToList();  //ordenamos los AC por orden 
+            producto.ProductosMercado = producto.ProductosMercado.OrderBy(x => x.Orden).ToList();  //ordenamos los AC por orden 
 
             var model = new ProductoVisualizarDTO(); //inicializamos el DTO que retornaremos(modelo)
             model.Producto = producto; //Asignamos el producto al modelo
             model.Categorias = producto.CategoriasProducto.Select(x => x.Categoria).ToList(); //Filtramos en la tabla de categorias productos (del Producto) y tomamos la Categorias que tiene el producto
-            model.Actores = producto.PeliculasActor.Select(x => //Hacemos un Select a la Lista de PeliculaAC del Producto y 
-            new Persona                         //tomamos los campos que necesitamos y las asignamos a Persona
+            model.Mercados = producto.ProductosMercado.Select(x => //Hacemos un Select a la Lista de ProductoMercado del Producto y 
+            new Mercado                         //tomamos los campos que necesitamos y las asignamos a Mercado
             {
-                Nombre = x.Persona.Nombre,
-                Foto = x.Persona.Foto,
-                Personaje = x.Personaje,
-                Id = x.PersonaId
+                Nombre = x.Mercado.Nombre,
+                Foto = x.Mercado.Foto,
+                Duenio = x.Duenio,
+                Id = x.MercadoId
             }).ToList(); //La convertimos en Lista
 
             model.PromedioVotos = promedioVotos; //Asignamos el Promedio de Votos del Producto
-            model.VotoUsuario = votoUsuario;    //Asignamos el voto del Usuario (de la Pelicula)
+            model.VotoUsuario = votoUsuario;    //Asignamos el voto del Usuario (del Producto)
             return model; //retornamos el modelo
         }
 
@@ -189,7 +189,7 @@ namespace DeliMarket.Server.Controllers
             model.Producto = productoVisualizarDTO.Producto;
             model.CategoriasNoSeleccionados = categoriasNoSeleccionados;
             model.CategoriasSeleccionados = productoVisualizarDTO.Categorias; //Lista de las categorias seleccionadas
-            model.Actores = productoVisualizarDTO.Actores;
+            model.Mercados = productoVisualizarDTO.Mercados;
             return model;
         }
 
@@ -202,11 +202,11 @@ namespace DeliMarket.Server.Controllers
                 producto.Poster = await almacenadorDeArchivos.GuardarArchivo(fotoProducto, "jpg", "productos");//Y lo guadro en wwwroot del proyecto del servidor
             }
 
-            if (producto.PeliculasActor != null) //Si hay PA
+            if (producto.ProductosMercado != null) //Si hay PA
             {
-                for (int i = 0; i < producto.PeliculasActor.Count; i++) //Para cada A en el P
+                for (int i = 0; i < producto.ProductosMercado.Count; i++) //Para cada A en el P
                 {
-                    producto.PeliculasActor[i].Orden = i + 1; //Los ordeno desde 1,2,3...
+                    producto.ProductosMercado[i].Orden = i + 1; //Los ordeno desde 1,2,3...
                 }
             }
 
@@ -231,18 +231,18 @@ namespace DeliMarket.Server.Controllers
                     "jpg", "productos", productoDB.Poster);//Guardo la nueva imagen y retorno el enlace donde se encuentra(Poster)
             }
 
-            await context.Database.ExecuteSqlInterpolatedAsync($"delete from CategoriasProductos WHERE ProductoId = {producto.Id}; delete from PeliculasActores where ProductoId = {producto.Id}"); //Elimino de la tabla CategoriasProductos y de PAct para poder guardar
+            await context.Database.ExecuteSqlInterpolatedAsync($"delete from CategoriasProductos WHERE ProductoId = {producto.Id}; delete from ProductosMercadoes where ProductoId = {producto.Id}"); //Elimino de la tabla CategoriasProductos y de PAct para poder guardar
 
             /////////// Primero ordenamos los ACT en el producto////////////////
-            if (producto.PeliculasActor != null) //si el producto posee Act
+            if (producto.ProductosMercado != null) //si el producto posee Act
             {
-                for (int i = 0; i < producto.PeliculasActor.Count; i++) //Para cada Act en el Prod
+                for (int i = 0; i < producto.ProductosMercado.Count; i++) //Para cada Act en el Prod
                 {
-                    producto.PeliculasActor[i].Orden = i + 1; // Los ordeno desde 1,2,3..
+                    producto.ProductosMercado[i].Orden = i + 1; // Los ordeno desde 1,2,3..
                 }
             }
 
-            productoDB.PeliculasActor = producto.PeliculasActor; //Asignamos los Act ordenados
+            productoDB.ProductosMercado = producto.ProductosMercado; //Asignamos los Act ordenados
             productoDB.CategoriasProducto = producto.CategoriasProducto; //Asignamos las categorias al producto
 
             await context.SaveChangesAsync(); //Guardamos cambios

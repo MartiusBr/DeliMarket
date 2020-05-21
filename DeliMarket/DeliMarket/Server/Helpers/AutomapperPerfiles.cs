@@ -11,7 +11,7 @@ namespace DeliMarket.Server.Helpers
     {
         public AutomapperPerfiles()
         {
-            CreateMap<Persona, Persona>()
+            CreateMap<Mercado, Mercado>()
                 .ForMember(x => x.Foto, option => option.Ignore());
 
             CreateMap<Producto, Producto>()
