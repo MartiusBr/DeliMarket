@@ -19,6 +19,8 @@
     <Compile Include="Migrations\20200519034746_FixTableCatProd.Designer.cs" />
     <Compile Include="Migrations\20200519171323_AddNewFieldInProduct.cs" />
     <Compile Include="Migrations\20200519171323_AddNewFieldInProduct.Designer.cs" />
+    <Compile Include="Migrations\20200520020913_CambiosTablaProducto.cs" />
+    <Compile Include="Migrations\20200520020913_CambiosTablaProducto.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 
