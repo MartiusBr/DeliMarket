@@ -37,13 +37,14 @@ namespace DeliMarket.Server
         public DbSet<Mercado> Mercados { get; set; }
         public DbSet<ProductoMercado> ProductosMercados { get; set; }
         public DbSet<VotoProducto> VotosProductos { get; set; }
+        public DbSet<Repartidor> Repartidores { get; set; }
 
         //Personalizando Tabla Usuarios(Agregando campos)
         //public class Usuario : IdentityUser
         //{
         //  [Required (ErrorMessage = "El campo {0} es requerido")]
         //  public string DNI { get; set; }    
-          
+
         //}
     }
 }

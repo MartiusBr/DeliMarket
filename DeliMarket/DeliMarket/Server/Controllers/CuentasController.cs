@@ -1,4 +1,5 @@
 ﻿using DeliMarket.Shared.DTOs;
+using DeliMarket.Shared.Entidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,22 +20,25 @@ namespace DeliMarket.Server.Controllers
     [Route("api/[controller]")]
     public class CuentasController : ControllerBase
     {
+        private readonly ApplicationDbContext context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
 
         public CuentasController(
+            ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration)
         {
+            this.context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
         }
 
-        [HttpPost("Crear")] //Crear un usuario (Cliente por defecto)
-        public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model) //Crea un usuario y retorna un Token
+        [HttpPost("CrearCliente")] //Crear un usuario (Cliente por defecto)
+        public async Task<ActionResult<UserToken>> CrearClient([FromBody] UserInfo model) //Crea un usuario y retorna un Token
         {
             var user = new IdentityUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
             var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario  
@@ -48,6 +52,23 @@ namespace DeliMarket.Server.Controllers
             {
                 return BadRequest("Username or password invalid"); //Si no se creo exitosamente al usuario retorno BadRequest
             }
+        }
+
+        [HttpPost("CrearRepartidor")] //Crear un repartidor (Cliente por defecto)
+        public async Task<ActionResult<UserToken>> CrearRepartidor([FromBody] RepartidorInfo model) //Crea un repartidor y retorna un Token
+        {
+            var repartidor = new Repartidor
+            {
+                Nombre = model.Nombre,
+                DNI = model.DNI,
+                Email = model.Email,
+                NumeroCel = model.NumeroCel,
+                PlacaVehiculo = model.PlacaVehiculo,
+                Password = model.Password
+            };
+            context.Add(repartidor);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpGet("RenovarToken")] //Action para Renovar el Token

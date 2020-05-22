@@ -231,7 +231,7 @@ namespace DeliMarket.Server.Controllers
                     "jpg", "productos", productoDB.Poster);//Guardo la nueva imagen y retorno el enlace donde se encuentra(Poster)
             }
 
-            await context.Database.ExecuteSqlInterpolatedAsync($"delete from CategoriasProductos WHERE ProductoId = {producto.Id}; delete from ProductosMercadoes where ProductoId = {producto.Id}"); //Elimino de la tabla CategoriasProductos y de PAct para poder guardar
+            await context.Database.ExecuteSqlInterpolatedAsync($"delete from CategoriasProductos WHERE ProductoId = {producto.Id}; delete from ProductosMercados where ProductoId = {producto.Id}"); //Elimino de la tabla CategoriasProductos y de PAct para poder guardar
 
             /////////// Primero ordenamos los ACT en el producto////////////////
             if (producto.ProductosMercado != null) //si el producto posee Act

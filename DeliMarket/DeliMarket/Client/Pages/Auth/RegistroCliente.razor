@@ -1,4 +1,4 @@
-﻿@page "/Registro"
+﻿@page "/Registro/Cliente"
 
 @inject IRepositorio repositorio
 @inject NavigationManager navigationManager
@@ -53,7 +53,7 @@
 
     private async Task CrearUsuario()
     {
-        var httpResponse = await repositorio.Post<UserInfo, UserToken>("api/cuentas/crear", userInfo);
+        var httpResponse = await repositorio.Post<UserInfo, UserToken>("api/cuentas/CrearCliente", userInfo);
 
         if (httpResponse.Error)
         {

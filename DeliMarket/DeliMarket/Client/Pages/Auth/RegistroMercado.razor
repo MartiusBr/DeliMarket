@@ -1,4 +1,4 @@
-﻿@page "/RegistroMercado"
+﻿@page "/Registro/Mercado"
 
 @inject IRepositorio repositorio
 @inject NavigationManager navigationManager
@@ -7,24 +7,24 @@
 
 @using DeliMarket.Client.Auth
 
-<h3>Registro</h3>
+<h3>Registro Mercado</h3>
 
 <EditForm Model="@mercadoInfo" OnValidSubmit="CrearMercado">
     <DataAnnotationsValidator />
 
     <div class="form-group">
-        <label>Nombre:</label>
+        <label>RUC:</label>
         <div>
-            <InputText Class="form-control" @bind-Value="@mercadoInfo.Nombre" />
-            <ValidationMessage For="@(() => mercadoInfo.Nombre)" />
+            <InputText Class="form-control" @bind-Value="@mercadoInfo.RUC" />
+            <ValidationMessage For="@(() => mercadoInfo.RUC)" />
         </div>
     </div>
 
     <div class="form-group">
-        <label>DNI:</label>
+        <label>Nombre Mercado:</label>
         <div>
-            <InputText Class="form-control" @bind-Value="@mercadoInfo.DNI" />
-            <ValidationMessage For="@(() => mercadoInfo.DNI)" />
+            <InputText Class="form-control" @bind-Value="@mercadoInfo.Nombre" />
+            <ValidationMessage For="@(() => mercadoInfo.Nombre)" />
         </div>
     </div>
 
@@ -45,10 +45,18 @@
     </div>
 
     <div class="form-group">
-        <label>Placa del Vehículo:</label>
+        <label>Número de sanidad:</label>
         <div>
-            <InputText Class="form-control" @bind-Value="@mercadoInfo.PlacaVehiculo" />
-            <ValidationMessage For="@(() => mercadoInfo.PlacaVehiculo)" />
+            <InputText Class="form-control" @bind-Value="@mercadoInfo.NroSanidad" />
+            <ValidationMessage For="@(() => mercadoInfo.NroSanidad)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Nombre del Propietario:</label>
+        <div>
+            <InputText Class="form-control" @bind-Value="@mercadoInfo.Propietario" />
+            <ValidationMessage For="@(() => mercadoInfo.Propietario)" />
         </div>
     </div>
 
@@ -67,9 +75,16 @@
 @code {
     private MercadoInfo mercadoInfo = new MercadoInfo();
 
+    //private async Task CrearMercado()
+    //{
+
+    //    navigationManager.NavigateTo("EstadoSolicitud");
+
+    //}
+
     private async Task CrearMercado()
     {
-        var httpResponse = await repositorio.Post<MercadoInfo, UserToken>("api/cuentas/crear", mercadoInfo);
+        var httpResponse = await repositorio.Post<MercadoInfo, UserToken>("api/cuentas/crearMercado", mercadoInfo);
 
         if (httpResponse.Error)
         {

@@ -25,6 +25,8 @@
     <Compile Include="Migrations\20200521172841_chaguesTUser.Designer.cs" />
     <Compile Include="Migrations\20200521191409_UpdateTPersonas.cs" />
     <Compile Include="Migrations\20200521191409_UpdateTPersonas.Designer.cs" />
+    <Compile Include="Migrations\20200521231705_AddTRepartidores.cs" />
+    <Compile Include="Migrations\20200521231705_AddTRepartidores.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

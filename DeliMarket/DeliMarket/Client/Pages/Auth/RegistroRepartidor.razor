@@ -1,4 +1,4 @@
-﻿@page "/RegistroRepartidor"
+﻿@page "/Registro/Repartidor"
 
 @inject IRepositorio repositorio
 @inject NavigationManager navigationManager
@@ -7,7 +7,7 @@
 
 @using DeliMarket.Client.Auth
 
-<h3>Registro</h3>
+<h3>Registro Repartidor</h3>
 
 <EditForm Model="@repartidorInfo" OnValidSubmit="CrearRepartidor">
     <DataAnnotationsValidator />
@@ -67,9 +67,16 @@
 @code {
     private RepartidorInfo repartidorInfo = new RepartidorInfo();
 
+    //private async Task CrearRepartidor()
+    //{
+
+    //    navigationManager.NavigateTo("EstadoSolicitud");
+
+    //}
+
     private async Task CrearRepartidor()
     {
-        var httpResponse = await repositorio.Post<RepartidorInfo, UserToken>("api/cuentas/crear", repartidorInfo);
+        var httpResponse = await repositorio.Post("api/cuentas/CrearRepartidor", repartidorInfo);
 
         if (httpResponse.Error)
         {
@@ -77,7 +84,6 @@
         }
         else
         {
-            //await loginService.Login(httpResponse.Response);
             navigationManager.NavigateTo("EstadoSolicitud");
         }
     }

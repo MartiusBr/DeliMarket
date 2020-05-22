@@ -8,29 +8,37 @@
 <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
             PaginasTotales="paginasTotales"></Paginacion>
 
-<ListadoGenerico Listado="Mercados">
+<ListadoGenerico Listado="Repartidores">
     <HayRegistrosCompleto>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th></th>
-                    <th>Nombre Mercado</th>
+                    <th>Nombre Repartidor</th>
                     <th>DNI</th>
-                    <th>Correo</th>
+                    <th>Email</th>
                     <th>Numero Celular</th>
                     <th>Placa Vehículo</th>
+                    <th>Afiliación</th>
+                    <th>Tipo</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Mercados)
+                @foreach (var item in Repartidores)
                 {
-                    <tr>
-                        <td>
-                            <a href="mercados/editar/@item.Id" class="btn btn-success">Aceptar</a>
-                            <button @onclick="@(() => BorrarMercado(item))" class="btn btn-danger">Rechazar</button>
-                        </td>
-                        <td>@item.Nombre</td>
-                    </tr>
+                <tr>
+                    <td>
+                        <a href="#" class="btn btn-success">Aceptar</a>
+                        <a href="#" class="btn btn-danger">Rechazar</a>
+                    </td>
+                    <td>@item.Nombre</td>
+                    <td>@item.DNI</td>
+                    <td>@item.Email</td>
+                    <td>@item.NumeroCel</td>
+                    <td>@item.PlacaVehiculo</td>
+                    <td>@item.Afiliacion</td>
+                    <td>@item.Tipo</td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -38,7 +46,7 @@
 </ListadoGenerico>
 
 @code {
-    public List<Mercado> Mercados { get; set; }
+    public List<Repartidor> Repartidores { get; set; }
     private int paginaActual = 1;
     private int paginasTotales;
 
@@ -55,26 +63,13 @@
 
     private async Task Cargar(int pagina = 1)
     {
-        var responseHttp = await repositorio.Get<List<Mercado>>($"api/mercados?pagina={pagina}");
+        var responseHttp = await repositorio.Get<List<Repartidor>>($"api/repartidores?pagina={pagina}");
         if (!responseHttp.Error)
         {
-            Mercados = responseHttp.Response;
+            Repartidores = responseHttp.Response;
             var conteo = responseHttp.HttpResponseMessage.Headers.GetValues("conteo").FirstOrDefault();
             paginasTotales = int.Parse(responseHttp.HttpResponseMessage.Headers.GetValues("totalPaginas").FirstOrDefault());
         }
     }
 
-    private async Task BorrarMercado(Mercado mercado)
-    {
-        var responseHttp = await repositorio.Delete($"api/mercados/{mercado.Id}");
-        if (responseHttp.Error)
-        {
-            await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
-        }
-        else
-        {
-            await Cargar();
-        }
-
-    }
 }
