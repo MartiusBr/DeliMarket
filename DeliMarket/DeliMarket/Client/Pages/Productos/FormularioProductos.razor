@@ -46,7 +46,7 @@
                                            SearchMethod="BuscarMercados"
                                            ElementosSeleccionados="MercadosSeleccionados">
                     <MyListTemplate>
-                        @mercado.Nombre / <input type="text" placeholder="Dueño" @bind="mercado.Duenio" />
+                        @mercado.Nombre / <input type="text" placeholder="Dueño" @bind="mercado.Propietario" />
                     </MyListTemplate>
                     <MyResultTemplate>
                         <img style="width: 50px" src="@mercado.Foto" />
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-success">Salvar Producto</button>
+        <button type="submit" class="btn btn-success">Guardar Producto</button>
     </EditForm>
 
 @code {
@@ -106,7 +106,7 @@
             .Select(x => new CategoriaProducto { CategoriaId = int.Parse(x.Llave) }).ToList();
 
         Producto.ProductosMercado = MercadosSeleccionados
-            .Select(x => new ProductoMercado { MercadoId = x.Id, Duenio = x.Duenio }).ToList();
+            .Select(x => new ProductoMercado { MercadoId = x.Id, Propietario = x.Propietario }).ToList();
 
         if (!string.IsNullOrWhiteSpace(Producto.Poster)) { posterTemporal = null; }
 

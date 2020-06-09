@@ -67,24 +67,18 @@
 @code {
     private RepartidorInfo repartidorInfo = new RepartidorInfo();
 
-    //private async Task CrearRepartidor()
-    //{
-
-    //    navigationManager.NavigateTo("EstadoSolicitud");
-
-    //}
-
     private async Task CrearRepartidor()
     {
-        var httpResponse = await repositorio.Post("api/cuentas/CrearRepartidor", repartidorInfo);
+        var httpResponse = await repositorio.Post<RepartidorInfo, UserToken>("api/cuentas/crearRepartidor", repartidorInfo);
 
         if (httpResponse.Error)
-        {
+        {            
             await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
         }
         else
         {
-            navigationManager.NavigateTo("EstadoSolicitud");
+            await loginService.Login(httpResponse.Response);
+            navigationManager.NavigateTo("");
         }
     }
 }

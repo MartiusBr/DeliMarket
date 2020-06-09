@@ -50,25 +50,81 @@ namespace DeliMarket.Server.Controllers
             }
             else
             {
-                return BadRequest("Username or password invalid"); //Si no se creo exitosamente al usuario retorno BadRequest
+                var errores = result.Errors;
+                return BadRequest(errores); //Si no se creo exitosamente al usuario retorno BadRequest
             }
         }
 
-        [HttpPost("CrearRepartidor")] //Crear un repartidor (Cliente por defecto)
+        [HttpPost("CrearRepartidor")] //Crear un repartidor 
         public async Task<ActionResult<UserToken>> CrearRepartidor([FromBody] RepartidorInfo model) //Crea un repartidor y retorna un Token
         {
-            var repartidor = new Repartidor
+            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            var rolRepartidor = new List<string>();
+            rolRepartidor.Add("noauth"); //Por defecto al registrarse el repartidor se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
+            if (result.Succeeded)
             {
-                Nombre = model.Nombre,
-                DNI = model.DNI,
-                Email = model.Email,
-                NumeroCel = model.NumeroCel,
-                PlacaVehiculo = model.PlacaVehiculo,
-                Password = model.Password
-            };
-            context.Add(repartidor);
-            await context.SaveChangesAsync();
-            return NoContent();
+                var usuario = await _userManager.GetUserAsync(HttpContext.User);
+                var repartidor = new Repartidor
+                {
+                    Nombre = model.Nombre,
+                    User = usuario, //Se le asigna el usuario
+                    DNI = model.DNI,
+                    Email = model.Email,
+                    NumeroCel = model.NumeroCel,
+                    PlacaVehiculo = model.PlacaVehiculo,
+                    Autorizado = false //Por defecto al registrarse el repartidor este tiene que ser validador por el 
+                };
+                var userInfo = new UserInfo { Email = model.Email, Nombre = model.Nombre, NumeroCel = model.NumeroCel };
+                context.Add(repartidor);
+                await context.SaveChangesAsync();
+                return BuildToken(userInfo, rolRepartidor);
+            }
+            else
+            {
+                var errores = result.Errors.ToList();
+
+                return BadRequest(errores);
+                //return BadRequest("Username or password invalid"); 
+            }
+
+        }
+
+        [HttpPost("CrearMercado")] //Crear un mercado 
+        public async Task<ActionResult<UserToken>> CrearMercado([FromBody] MercadoInfo model) //Crea un repartidor y retorna un Token
+        {
+            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            var rolMercado = new List<string>();
+            rolMercado.Add("noauth"); //Por defecto al registrarse el mercado se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
+            if (result.Succeeded)
+            {
+                var usuario = await _userManager.GetUserAsync(HttpContext.User);
+
+                var mercado = new Mercado
+                {
+                    Email = model.Email,
+                    User = usuario,
+                    Nombre = model.Nombre,
+                    RUC = model.RUC,
+                    NumeroCel = model.NumeroCel,
+                    NroSanidad = model.NroSanidad,
+                    Fecha = DateTime.Now,
+                    Propietario = model.Propietario,
+                    Autorizado = false //Por defecto al registrarse el repartidor este tiene que ser validador por el 
+                };
+                var userInfo = new UserInfo { Email = model.Email, Nombre = model.Nombre, NumeroCel = model.NumeroCel };
+                context.Add(mercado);
+                await context.SaveChangesAsync();
+                return BuildToken(userInfo, rolMercado);
+            }
+            else
+            {
+                var errores = result.Errors.ToList();
+                return BadRequest(errores);
+                //return BadRequest("Username or password invalid"); //Si no se creo exitosamente al usuario retorno BadRequest
+            }
+
         }
 
         [HttpGet("RenovarToken")] //Action para Renovar el Token
@@ -89,7 +145,8 @@ namespace DeliMarket.Server.Controllers
         [HttpPost("Login")] //Accion para Login
         public async Task<ActionResult<UserToken>> Login([FromBody] UserLogin userLogin) 
         {
-            var result = await _signInManager.PasswordSignInAsync(userLogin.Email,
+            var user = await _userManager.FindByEmailAsync(userLogin.Email);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName,
                 userLogin.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
@@ -106,6 +163,11 @@ namespace DeliMarket.Server.Controllers
             {
                 return BadRequest("Invalid login attempt");
             }
+        }
+
+        private string GetUserId()
+        {
+            return HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         private UserToken BuildToken(UserInfo userInfo, IList<string> roles) //Metodo para Construir un Token teniendo como parámetro al usuario y la Lista de Roles que posee

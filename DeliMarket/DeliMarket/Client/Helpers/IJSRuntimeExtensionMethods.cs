@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DeliMarket.Client.Helpers
@@ -15,10 +16,10 @@ namespace DeliMarket.Client.Helpers
         }
 
         public static ValueTask<object> SetInLocalStorage(this IJSRuntime js, string key, string content)
-   => js.InvokeAsync<object>(
-       "localStorage.setItem",
-       key, content
-       );
+           => js.InvokeAsync<object>(
+               "localStorage.setItem",
+               key, content
+               );
 
         public static ValueTask<string> GetFromLocalStorage(this IJSRuntime js, string key)
             => js.InvokeAsync<string>(
@@ -30,5 +31,17 @@ namespace DeliMarket.Client.Helpers
             => js.InvokeAsync<object>(
                 "localStorage.removeItem",
                 key);
+
+        public static async ValueTask InitMap(this IJSRuntime js)
+        {
+            await js.InvokeVoidAsync("initMap");
+        }
+
+        //public static async ValueTask<Object> GetLatLong(this IJSRuntime js)
+        //{
+        //    return await js.InvokeAsync<object>("GetLatLong");
+        //}
+
+
     }
 }

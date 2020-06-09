@@ -27,6 +27,16 @@
     <Compile Include="Migrations\20200521191409_UpdateTPersonas.Designer.cs" />
     <Compile Include="Migrations\20200521231705_AddTRepartidores.cs" />
     <Compile Include="Migrations\20200521231705_AddTRepartidores.Designer.cs" />
+    <Compile Include="Migrations\20200602164839_NuevosCamposMercadoRepartidor.cs" />
+    <Compile Include="Migrations\20200602164839_NuevosCamposMercadoRepartidor.Designer.cs" />
+    <Compile Include="Migrations\20200607193938_AddFldRepMerLog.cs" />
+    <Compile Include="Migrations\20200607193938_AddFldRepMerLog.Designer.cs" />
+    <Compile Include="Migrations\20200607220021_AddminRole.cs" />
+    <Compile Include="Migrations\20200607220021_AddminRole.Designer.cs" />
+    <Compile Include="Migrations\20200608142828_FK-Usser-Repartidor.cs" />
+    <Compile Include="Migrations\20200608142828_FK-Usser-Repartidor.Designer.cs" />
+    <Compile Include="Migrations\20200608160426_Add-FK-Users-Mercado.cs" />
+    <Compile Include="Migrations\20200608160426_Add-FK-Users-Mercado.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

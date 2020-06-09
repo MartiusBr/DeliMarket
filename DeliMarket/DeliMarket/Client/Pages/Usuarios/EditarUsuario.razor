@@ -18,54 +18,55 @@
     <button  class="btn btn-info mb-2 mr-sm-2" @onclick="AsignarRol">Asignar Rol</button>
     <button class="btn btn-danger mb-2 mr-sm-2" @onclick="RemoverRol">Remover Rol</button>
 </div>
-    @code {
-        [Parameter] public string UserId { get; set; }
-        private List<RolDTO> roles = new List<RolDTO>();
-        private string rolSeleccionado = "0";
 
-        protected override async Task OnInitializedAsync()
+@code {
+    [Parameter] public string UserId { get; set; }
+    private List<RolDTO> roles = new List<RolDTO>();
+    private string rolSeleccionado = "0";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpResponse = await repositorio.Get<List<RolDTO>>("api/usuarios/roles");
+
+        if (httpResponse.Error)
         {
-            var httpResponse = await repositorio.Get<List<RolDTO>>("api/usuarios/roles");
-
-            if (httpResponse.Error)
-            {
-                await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
-            }
-            else
-            {
-                roles = httpResponse.Response;
-            }
+            await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
         }
-
-        private async Task AsignarRol()
+        else
         {
-            await EditarRol("api/usuarios/asignarRol");
-        }
-
-        private async Task RemoverRol()
-        {
-            await EditarRol("api/usuarios/removerRol");
-        }
-
-        private async Task EditarRol(string url)
-        {
-            if (rolSeleccionado == "0")
-            {
-                await mostrarMensajes.MostrarMensajeError("Debe seleccionar un rol");
-                return;
-            }
-
-            var rolDTO = new EditarRolDTO() { RoleId = rolSeleccionado, UserId = UserId };
-
-            var httpResponse = await repositorio.Post<EditarRolDTO>(url, rolDTO);
-
-            if (httpResponse.Error)
-            {
-                await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
-            }
-            else
-            {
-                await mostrarMensajes.MostrarMensajeExitoso("Operación realizada");
-            }
+            roles = httpResponse.Response;
         }
     }
+
+    private async Task AsignarRol()
+    {
+        await EditarRol("api/usuarios/asignarRol");
+    }
+
+    private async Task RemoverRol()
+    {
+        await EditarRol("api/usuarios/removerRol");
+    }
+
+    private async Task EditarRol(string url)
+    {
+        if (rolSeleccionado == "0")
+        {
+            await mostrarMensajes.MostrarMensajeError("Debe seleccionar un rol");
+            return;
+        }
+
+        var rolDTO = new EditarRolDTO() { RoleId = rolSeleccionado, UserId = UserId };
+
+        var httpResponse = await repositorio.Post<EditarRolDTO>(url, rolDTO);
+
+        if (httpResponse.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
+        }
+        else
+        {
+            await mostrarMensajes.MostrarMensajeExitoso("Operación realizada");
+        }
+    }
+}

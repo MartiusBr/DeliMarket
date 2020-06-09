@@ -16,6 +16,11 @@ app {
     align-items: center;
 }
 
+#map {
+    height: 400px;
+    width: 100%;
+}
+
 .main {
     flex: 1;
 }

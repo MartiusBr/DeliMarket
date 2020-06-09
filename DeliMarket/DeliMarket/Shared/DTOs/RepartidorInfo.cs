@@ -20,7 +20,7 @@ namespace DeliMarket.Shared.DTOs
         public string NumeroCel { get; set; }
         [Required(ErrorMessage = "Por favor ingrese la placa del vehículo")]
         public string PlacaVehiculo { get; set; }
-        [Required(ErrorMessage = "Por favor ingrese una contraseña")]
+        [Required(ErrorMessage = "Por favor ingrese una contraseña"), MaxLength(30)]
         public string Password { get; set; }
     }
 }

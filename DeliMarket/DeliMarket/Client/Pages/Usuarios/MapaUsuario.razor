@@ -1,0 +1,106 @@
+﻿@page "/Usuario/Mapa"
+
+@inject IRepositorio repositorio
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+@inject IMostrarMensajes mostrarMensajes
+@inject IJSRuntime JSRuntime
+
+@using DeliMarket.Client.Auth
+
+<h3>Ingresa tu Ubicación</h3>
+
+@*<EditForm Model="@latlong" OnValidSubmit="IngresarUbicacion">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label>Dirección:</label>
+        <div>
+            <InputText id="address" name="address" placeholder="Address" Class="form-control" @bind-Value="@latlong.AddressName" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Latitud:</label>
+        <div>
+            <InputText id="latitude" name="latitude" placeholder="Latitud" Class="form-control" @bind-Value="@latlong.Latitude" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Longitud:</label>
+        <div>
+            <InputText id="longitude" name="longitude" placeholder="Longitude" Class="form-control" @bind-Value="@latlong.Longitude" />
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <button type="submit" class="btn btn-primary">Aceptar</button>
+
+</EditForm>*@
+
+    <input style="width:20em" type="text" id="address" name="address" placeholder="Address">
+    <br>
+    <br>
+    <input type="text" id="latitude" name="latitude" placeholder="Latitude">
+    <br>
+    <br>
+    <input type="text" id="longitude" name="longitude" placeholder="Longitude">
+    <br>
+    <h4>Si no encuentras tu ubicación Seleccionala en el mapa</h4>
+    <br>
+    <div id="map"></div>
+    <br>
+    <br>
+
+
+<button @onclick="IngresarUbicacion">JavaScript Method</button>
+
+
+
+@code {
+
+
+    private LatLong latlong = new LatLong();
+
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InitMap();
+        }
+
+    }
+
+    private async Task IngresarUbicacion()
+    {
+        var dirnomlatlong = await JSRuntime.InvokeAsync<Object>("GetLatLong");
+
+        var jsonDirNomLatLong = System.Text.Json.JsonSerializer.Serialize(dirnomlatlong);
+
+        Console.WriteLine(jsonDirNomLatLong);
+
+        latlong = System.Text.Json.JsonSerializer.Deserialize<LatLong>(jsonDirNomLatLong);
+        //Console.WriteLine($"Nombre Dirección: {lal.AddressName}, Lat: {lal.Latitude} , Long: {lal.Longitude}");
+
+        var httpResponse = await repositorio.Put<LatLong>("api/Usuarios/", latlong);
+
+
+        //Console.WriteLine(latlong.AddressName + "," + latlong.Latitude+ "," + latlong.Longitude);
+        //Console.WriteLine(latlong);
+        //Console.WriteLine(latlong.AddressName + " Lat: " + latlong.Latitude + " Lon: " + latlong.Longitude );
+        //Console.WriteLine($"Latidud: {latlong.Latitude}, Longitud: {latlong.Longitude}");
+        //var httpResponse = await repositorio.Post<LatLong>("api/Usuarios/", latlong);
+
+        //if (httpResponse.Error)
+        //{
+        //    await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
+        //}
+        //else
+        //{
+        //    navigationManager.NavigateTo("");
+        //}
+    }
+}

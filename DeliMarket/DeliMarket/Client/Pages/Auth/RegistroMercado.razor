@@ -75,13 +75,6 @@
 @code {
     private MercadoInfo mercadoInfo = new MercadoInfo();
 
-    //private async Task CrearMercado()
-    //{
-
-    //    navigationManager.NavigateTo("EstadoSolicitud");
-
-    //}
-
     private async Task CrearMercado()
     {
         var httpResponse = await repositorio.Post<MercadoInfo, UserToken>("api/cuentas/crearMercado", mercadoInfo);
@@ -92,8 +85,8 @@
         }
         else
         {
-            //await loginService.Login(httpResponse.Response);
-            navigationManager.NavigateTo("EstadoSolicitud");
+            await loginService.Login(httpResponse.Response);
+            navigationManager.NavigateTo("");
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,8 @@ namespace DeliMarket.Server
             modelBuilder.Entity<CategoriaProducto>().HasKey(x => new { x.CategoriaId, x.ProductoId });
             modelBuilder.Entity<ProductoMercado>().HasKey(x => new { x.ProductoId, x.MercadoId });
 
-            var roleAdmin = new IdentityRole() 
+
+            var roleAdmin = new IdentityRole()
             { Id = "89086180-b978-4f90-9dbd-a7040bc93f41", Name = "admin", NormalizedName = "admin" };
 
             modelBuilder.Entity<IdentityRole>().HasData(roleAdmin);
@@ -42,9 +44,10 @@ namespace DeliMarket.Server
         //Personalizando Tabla Usuarios(Agregando campos)
         //public class Usuario : IdentityUser
         //{
-        //  [Required (ErrorMessage = "El campo {0} es requerido")]
-        //  public string DNI { get; set; }    
+        //    public string DNI { get; set; }
 
         //}
+
+
     }
 }
