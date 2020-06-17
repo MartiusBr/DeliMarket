@@ -37,6 +37,10 @@
     <Compile Include="Migrations\20200608142828_FK-Usser-Repartidor.Designer.cs" />
     <Compile Include="Migrations\20200608160426_Add-FK-Users-Mercado.cs" />
     <Compile Include="Migrations\20200608160426_Add-FK-Users-Mercado.Designer.cs" />
+    <Compile Include="Migrations\20200609194335_AddDNIAddressLatLonAppUser.cs" />
+    <Compile Include="Migrations\20200609194335_AddDNIAddressLatLonAppUser.Designer.cs" />
+    <Compile Include="Migrations\20200610000349_AddMerRepRoles.cs" />
+    <Compile Include="Migrations\20200610000349_AddMerRepRoles.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

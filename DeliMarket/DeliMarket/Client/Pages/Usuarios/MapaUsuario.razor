@@ -55,7 +55,7 @@
     <br>
 
 
-<button @onclick="IngresarUbicacion">JavaScript Method</button>
+<button @onclick="IngresarUbicacion">Agregar Ubicación</button>
 
 
 
@@ -85,7 +85,7 @@
         latlong = System.Text.Json.JsonSerializer.Deserialize<LatLong>(jsonDirNomLatLong);
         //Console.WriteLine($"Nombre Dirección: {lal.AddressName}, Lat: {lal.Latitude} , Long: {lal.Longitude}");
 
-        var httpResponse = await repositorio.Put<LatLong>("api/Usuarios/", latlong);
+        var httpResponse = await repositorio.Put<LatLong>("api/Usuarios/AgregarUbicacion", latlong);
 
 
         //Console.WriteLine(latlong.AddressName + "," + latlong.Latitude+ "," + latlong.Longitude);
@@ -94,13 +94,14 @@
         //Console.WriteLine($"Latidud: {latlong.Latitude}, Longitud: {latlong.Longitude}");
         //var httpResponse = await repositorio.Post<LatLong>("api/Usuarios/", latlong);
 
-        //if (httpResponse.Error)
-        //{
-        //    await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
-        //}
-        //else
-        //{
-        //    navigationManager.NavigateTo("");
-        //}
+        if (httpResponse.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
+        }
+        else
+        {
+            await mostrarMensajes.MostrarMensajeExitoso("Se agregó exitosamente su ubicación");
+            
+        }
     }
 }

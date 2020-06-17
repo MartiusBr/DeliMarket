@@ -1,5 +1,6 @@
 ﻿using DeliMarket.Server.Helpers;
 using DeliMarket.Shared.DTOs;
+using DeliMarket.Shared.Entidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+
 
 namespace DeliMarket.Server.Controllers
 {
@@ -18,11 +21,11 @@ namespace DeliMarket.Server.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
         public UsuariosController(ApplicationDbContext context,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             this.context = context;
@@ -67,6 +70,30 @@ namespace DeliMarket.Server.Controllers
             var usuario = await userManager.FindByIdAsync(editarRolDTO.UserId);
             await userManager.RemoveFromRoleAsync(usuario, editarRolDTO.RoleId);
             return NoContent();
+        }
+
+        [HttpPut("AgregarUbicacion")]
+        public async Task<ActionResult> ActualizarUbicacionUsuario(LatLong ubicacionInfo)
+        {
+            //var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var UserClaims = HttpContext.User;
+
+            var user = await userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
+            user.AddressName = ubicacionInfo.AddressName;
+            user.Latitude = ubicacionInfo.Latitude;
+            user.Longitude = ubicacionInfo.Longitude;
+
+            var result = await userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+
         }
     }
 }

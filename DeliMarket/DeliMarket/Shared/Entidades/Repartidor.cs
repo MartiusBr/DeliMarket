@@ -9,7 +9,7 @@ namespace DeliMarket.Shared.Entidades
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
         public string Nombre { get; set; }
         public string DNI { get; set; }
         public string Email { get; set; }

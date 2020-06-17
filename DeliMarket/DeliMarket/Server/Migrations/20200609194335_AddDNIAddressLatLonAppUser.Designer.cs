@@ -4,14 +4,16 @@ using DeliMarket.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliMarket.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200609194335_AddDNIAddressLatLonAppUser")]
+    partial class AddDNIAddressLatLonAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,23 +328,9 @@ namespace DeliMarket.Server.Migrations
                         new
                         {
                             Id = "89086180-b978-4f90-9dbd-a7040bc93f41",
-                            ConcurrencyStamp = "fad3d1c4-5b9d-4496-92c2-2ab24c2d697a",
+                            ConcurrencyStamp = "1a3255d2-9d40-4fec-821a-e8c533634e1e",
                             Name = "admin",
                             NormalizedName = "admin"
-                        },
-                        new
-                        {
-                            Id = "eb39e7fb-0828-41db-8794-60c9db40171d",
-                            ConcurrencyStamp = "87287dc4-fb9d-4502-b9b3-1db717a16c0e",
-                            Name = "repartidor",
-                            NormalizedName = "repartidor"
-                        },
-                        new
-                        {
-                            Id = "fa66c0c6-f867-4623-942c-5ae2debbb902",
-                            ConcurrencyStamp = "c27875ce-fb3d-4be5-bac4-d9e0b81968a2",
-                            Name = "mercado",
-                            NormalizedName = "mercado"
                         });
                 });
 

@@ -2,17 +2,24 @@
 @page "/index"
 
 @inject IRepositorio  repositorio
+@inject NavigationManager navigationManager
 
-<h1>Productos</h1>
+<h1>¿Que tipo de orden deseas?</h1>
 <div>
     <h3>Entrega Rápida</h3>
-    <ListadoProductos Productos="EntregaRapida" />
+    <button @onclick="GoToEntregaRapida">Aquí</button>
+    @*<ListadoProductos Productos="EntregaRapida" />*@
 </div>
 
 <div>
     <h3>Entrega Programada</h3>
-    <ListadoProductos Productos="EntregaProgramada" />
+    <button @onclick="GoToEntregaProgramada">Aquí</button>
+    @*<ListadoProductos Productos="EntregaProgramada" />*@
 </div>
+
+@*<AuthorizeView Roles="mercado">
+    Su mercado Esta Autorizado!
+</AuthorizeView>*@
 
 @code {
     private List<Producto> EntregaProgramada;
@@ -31,5 +38,15 @@
             EntregaProgramada = httpResponse.Response.ProductosEnvioProg;
             EntregaRapida = httpResponse.Response.ProductosEnvioRapido;
         }
+    }
+
+    public void GoToEntregaRapida()
+    {
+        navigationManager.NavigateTo("EntregaRapida");
+    }
+
+    public void GoToEntregaProgramada()
+    {
+        navigationManager.NavigateTo("EntregaProgramada");
     }
 }

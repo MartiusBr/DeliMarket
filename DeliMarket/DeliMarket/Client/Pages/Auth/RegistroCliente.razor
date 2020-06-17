@@ -29,6 +29,14 @@
     </div>
 
     <div class="form-group">
+        <label for="dni">DNI:</label>
+        <div>
+            <InputText name="dni" Class="form-control" @bind-Value="@userInfo.Dni" />
+            <ValidationMessage For="@(() => userInfo.Dni)" />
+        </div>
+    </div>
+
+    <div class="form-group">
         <label for="email">Email:</label>
         <div>
             <InputText name="email" Class="form-control" @bind-Value="@userInfo.Email" />
@@ -62,7 +70,7 @@
         else
         {
             await loginService.Login(httpResponse.Response);
-            navigationManager.NavigateTo("");
+            navigationManager.NavigateTo("Usuario/Mapa");
         }
     }
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using DeliMarket.Server.Helpers;
+using DeliMarket.Shared.Entidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +34,7 @@ namespace DeliMarket.Server
             services.AddDbContext<ApplicationDbContext>(options => 
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>() //Configuracion de Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>() //Configuracion de Identity
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

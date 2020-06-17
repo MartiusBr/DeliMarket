@@ -1,0 +1,28 @@
+﻿@page "/EntregaRapida"
+
+@inject IRepositorio  repositorio
+
+<h3>Entrega Rápida</h3>
+<div>
+    <ListadoProductos Productos="entregaRapida" />
+</div>
+
+@code {
+
+    private List<Producto> entregaRapida;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var httpResponse = await repositorio.Get<HomePageDTO>("api/productos");
+
+        if (httpResponse.Error)
+        {
+            Console.WriteLine(httpResponse.HttpResponseMessage.StatusCode);
+        }
+        else
+        {
+            entregaRapida = httpResponse.Response.ProductosEnvioRapido;
+        }
+    }
+
+}

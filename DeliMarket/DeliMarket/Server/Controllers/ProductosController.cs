@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static DeliMarket.Server.ApplicationDbContext;
 
 namespace DeliMarket.Server.Controllers
 {
@@ -22,12 +23,12 @@ namespace DeliMarket.Server.Controllers
         private readonly ApplicationDbContext context; //Declaramos el context (Para acceder a la base de datos)
         private readonly IAlmacenadorDeArchivos almacenadorDeArchivos; //Declaramos el Servicio de Almacenador de Archivos
         private readonly IMapper mapper; //Declaramos mapper para poder Actualizar Un producto
-        private readonly UserManager<IdentityUser> userManager; //Declaramos el User Manager de tipo IdentityUser(tabla ASPNETUsers)
+        private readonly UserManager<ApplicationUser> userManager; //Declaramos el User Manager de tipo ApplicationUser(tabla ASPNETUsers)
 
         public ProductosController(ApplicationDbContext context,    //Inicializamos los Servicios para poder usarlos en el controlador
             IAlmacenadorDeArchivos almacenadorDeArchivos,
             IMapper mapper,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             this.context = context;     
             this.almacenadorDeArchivos = almacenadorDeArchivos;

@@ -4,6 +4,7 @@ using DeliMarket.Shared.DTOs;
 using DeliMarket.Shared.Entidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,15 +21,21 @@ namespace DeliMarket.Server.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IAlmacenadorDeArchivos almacenadorDeArchivos;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IMapper mapper;
 
         public MercadosController(ApplicationDbContext context, 
             IAlmacenadorDeArchivos almacenadorDeArchivos,
-            IMapper mapper)
+            IMapper mapper,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             this.context = context;
             this.almacenadorDeArchivos = almacenadorDeArchivos;
             this.mapper = mapper;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         [HttpGet]
@@ -70,6 +77,25 @@ namespace DeliMarket.Server.Controllers
             context.Add(mercado);
             await context.SaveChangesAsync();
             return mercado.Id;
+        }
+
+        [HttpPut("validar")]
+        public async Task<ActionResult> ValidarMercado(Mercado mercado)
+        {
+            var mercadoDB = await context.Mercados.FirstOrDefaultAsync(x => x.Id == mercado.Id);
+            
+            if (mercadoDB == null) { return NotFound(); }
+
+            mercadoDB = mapper.Map(mercado, mercadoDB);
+
+            mercadoDB.Autorizado = true;
+
+            var usuario = await userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
+
+            await userManager.AddToRoleAsync(usuario, "mercado");
+
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpPut]

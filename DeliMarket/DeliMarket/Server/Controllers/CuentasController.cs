@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DeliMarket.Server.Controllers
 {
     [ApiController]
@@ -21,14 +22,14 @@ namespace DeliMarket.Server.Controllers
     public class CuentasController : ControllerBase
     {
         private readonly ApplicationDbContext context;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
 
         public CuentasController(
             ApplicationDbContext context,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration)
         {
             this.context = context;
@@ -40,7 +41,7 @@ namespace DeliMarket.Server.Controllers
         [HttpPost("CrearCliente")] //Crear un usuario (Cliente por defecto)
         public async Task<ActionResult<UserToken>> CrearClient([FromBody] UserInfo model) //Crea un usuario y retorna un Token
         {
-            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
+            var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email,DNI = model.Dni ,PhoneNumber = model.NumeroCel }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
             var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario  
             var rolCliente = new List<string>(); //Creo una Lista vacia
             rolCliente.Add("cliente"); //Le asigno el rol de cliente por defecto
@@ -58,7 +59,7 @@ namespace DeliMarket.Server.Controllers
         [HttpPost("CrearRepartidor")] //Crear un repartidor 
         public async Task<ActionResult<UserToken>> CrearRepartidor([FromBody] RepartidorInfo model) //Crea un repartidor y retorna un Token
         {
-            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
+            var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
             var result = await _userManager.CreateAsync(user, model.Password);
             var rolRepartidor = new List<string>();
             rolRepartidor.Add("noauth"); //Por defecto al registrarse el repartidor se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
@@ -93,7 +94,7 @@ namespace DeliMarket.Server.Controllers
         [HttpPost("CrearMercado")] //Crear un mercado 
         public async Task<ActionResult<UserToken>> CrearMercado([FromBody] MercadoInfo model) //Crea un repartidor y retorna un Token
         {
-            var user = new IdentityUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
+            var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
             var result = await _userManager.CreateAsync(user, model.Password);
             var rolMercado = new List<string>();
             rolMercado.Add("noauth"); //Por defecto al registrarse el mercado se le asigna un rol anonimo hasta que se le asigne el rol de repartidor

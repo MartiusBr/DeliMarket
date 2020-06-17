@@ -11,7 +11,7 @@ namespace DeliMarket.Shared.Entidades
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
         public string RUC { get; set; }
         [Required]
         public string Nombre { get; set; }

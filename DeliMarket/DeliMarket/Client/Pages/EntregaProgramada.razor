@@ -1,0 +1,29 @@
+﻿@page "/EntregaProgramada"
+
+@inject IRepositorio  repositorio
+
+<h3>Entrega Programada</h3>
+<div>
+    <ListadoProductos Productos="entregaProgramada" />
+</div>
+
+@code {
+
+    private List<Producto> entregaProgramada;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var httpResponse = await repositorio.Get<HomePageDTO>("api/productos");
+
+        if (httpResponse.Error)
+        {
+            Console.WriteLine(httpResponse.HttpResponseMessage.StatusCode);
+        }
+        else
+        {
+            entregaProgramada = httpResponse.Response.ProductosEnvioProg;
+        }
+    }
+
+}
+

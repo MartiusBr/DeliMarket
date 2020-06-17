@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static DeliMarket.Server.ApplicationDbContext;
 
 namespace DeliMarket.Server.Controllers
 {
@@ -16,10 +17,10 @@ namespace DeliMarket.Server.Controllers
     public class VotosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public VotosController(ApplicationDbContext context,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.userManager = userManager;

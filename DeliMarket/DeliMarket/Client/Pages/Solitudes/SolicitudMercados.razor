@@ -8,7 +8,7 @@
 <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
             PaginasTotales="paginasTotales"></Paginacion>
 
-<ListadoGenerico Listado="Mercados">
+<ListadoGenerico Listado="MercadosSolicitud">
     <HayRegistrosCompleto>
         <table class="table table-striped">
             <thead>
@@ -20,18 +20,25 @@
                     <th>Nombre Propietario</th>
                     <th>Registro Sanitario</th>
                     <th>Numero Celular</th>
+                    <th>Autorizado</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Mercados)
+                @foreach (var item in MercadosSolicitud)
                 {
-                    <tr>
-                        <td>
-                            <a href="mercados/editar/@item.Id" class="btn btn-success">Aceptar</a>
-                            <button @onclick="@(() => BorrarMercado(item))" class="btn btn-danger">Rechazar</button>
-                        </td>
-                        <td>@item.Nombre</td>
-                    </tr>
+                <tr>
+                    <td>
+                        <button @onclick="@(() => ValidarMercado(item))" class="btn btn-success">Validar</button>
+                        <button @onclick="@(() => BorrarMercado(item))" class="btn btn-danger">Rechazar</button>
+                    </td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Email</td>
+                    <td>@item.RUC</td>
+                    <td>@item.Propietario</td>
+                    <td>@item.NroSanidad</td>
+                    <td>@item.NumeroCel</td>
+                    <td>@item.Autorizado</td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -39,6 +46,8 @@
 </ListadoGenerico>
 
 @code {
+
+    public List<Mercado> MercadosSolicitud { get; set; }
     public List<Mercado> Mercados { get; set; }
     private int paginaActual = 1;
     private int paginasTotales;
@@ -60,9 +69,25 @@
         if (!responseHttp.Error)
         {
             Mercados = responseHttp.Response;
+            MercadosSolicitud = Mercados.Where(x => !x.Autorizado).ToList();
             var conteo = responseHttp.HttpResponseMessage.Headers.GetValues("conteo").FirstOrDefault();
             paginasTotales = int.Parse(responseHttp.HttpResponseMessage.Headers.GetValues("totalPaginas").FirstOrDefault());
         }
+    }
+
+    private async Task ValidarMercado(Mercado mercado)
+    {
+        var responseHttp = await repositorio.Put("api/mercados/validar", mercado);
+        if (responseHttp.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+        }
+        else
+        {
+            await mostrarMensajes.MostrarMensajeExitoso("Mercado Validado Satisfactoriamente");
+            await Cargar();
+        }
+
     }
 
     private async Task BorrarMercado(Mercado mercado)
@@ -74,6 +99,7 @@
         }
         else
         {
+            await mostrarMensajes.MostrarMensajeExitoso("Mercado rechazado y eliminado");
             await Cargar();
         }
 
