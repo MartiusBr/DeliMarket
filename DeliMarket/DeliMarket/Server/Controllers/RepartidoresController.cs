@@ -16,6 +16,8 @@ namespace DeliMarket.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Route("Dashboard/api/[controller]")]
+
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
 
     public class RepartidoresController : ControllerBase

@@ -10,6 +10,8 @@ namespace DeliMarket.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Route("Dashboard/api/[controller]")]
+
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

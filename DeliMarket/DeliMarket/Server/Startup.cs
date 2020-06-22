@@ -69,26 +69,58 @@ namespace DeliMarket.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseResponseCompression();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
-            app.UseStaticFiles();
-            app.UseBlazorFrameworkFiles();
+            app.UseHttpsRedirection();
+
+            app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/Dashboard"), first =>
+            {
+                first.UseBlazorFrameworkFiles("/Dashboard");
+                first.UseStaticFiles();
+
+                first.UseRouting();
+                first.UseAuthentication();
+                first.UseAuthorization();
+
+                first.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                    //endpoints.MapFallbackToFile("/Dashboard/{*path:nonfile}", "Dashboard/index.html");
+                    endpoints.MapFallbackToFile("Dashboard/index.html");
+                });
+            });
 
             app.UseRouting();
-            app.UseAuthentication(); //Agregando Autenticación en el pipeline
-            app.UseAuthorization();  //Agregando Autorización " "
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
-                endpoints.MapFallbackToFile("index.html");
+                endpoints.MapControllers();
+                //endpoints.MapDefaultControllerRoute
             });
+
+
+            //app.UseStaticFiles();
+            //app.UseBlazorFrameworkFiles();
+
+            //app.UseRouting();
+            //app.UseAuthentication(); //Agregando Autenticación en el pipeline
+            //app.UseAuthorization();  //Agregando Autorización " "
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapDefaultControllerRoute();
+            //    endpoints.MapFallbackToFile("index.html");
+            //});
         }
     }
 }

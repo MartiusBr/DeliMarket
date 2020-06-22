@@ -19,6 +19,8 @@ namespace DeliMarket.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Route("Dashboard/api/[controller]")]
+
     public class CuentasController : ControllerBase
     {
         private readonly ApplicationDbContext context;
