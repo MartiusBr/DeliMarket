@@ -60,6 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DeliMarket.Tienda\DeliMarket.Tienda.csproj" />
     <ProjectReference Include="..\Client\DeliMarket.Client.csproj" />
     <ProjectReference Include="..\Shared\DeliMarket.Shared.csproj" />
   </ItemGroup>

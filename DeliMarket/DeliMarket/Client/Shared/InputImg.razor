@@ -4,8 +4,12 @@
 
 <div>
     <label>@Label</label>
-    <div>
-        <input type="file" @ref="inputElement" @onchange="ImageFileSelected" accept=".jpg,.jpeg,.png" />
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="validatedCustomFile"
+               @ref="inputElement"
+               @onchange="ImageFileSelected"
+               accept=".jpg,.jpeg,.png" />
+        <label class="custom-file-label" for="validatedCustomFile">Subir imagen ...</label>
     </div>
 </div>
 <div>
@@ -17,19 +21,10 @@
             </div>
         </div>
     }
-    @if (ImagenTemporal != null)
-    {
-        <div>
-            <div style="margin:10px;">
-                <img src="@ImagenTemporal" style="width: 400px;" />
-            </div>
-        </div>
-    }
 </div>
 
 @code {
     [Parameter] public string Label { get; set; } = "Imagen";
-    [Parameter] public string ImagenTemporal { get; set; }
     [Parameter] public EventCallback<string> ImagenSeleccionada { get; set; }
     private string imagenBase64;
     ElementReference inputElement;
@@ -44,7 +39,6 @@
                 memoryStream.Read(bytesImagen, 0, (int)memoryStream.Length);
                 imagenBase64 = Convert.ToBase64String(bytesImagen);
                 await ImagenSeleccionada.InvokeAsync(imagenBase64);
-                ImagenTemporal = null;
                 StateHasChanged();
             }
         }

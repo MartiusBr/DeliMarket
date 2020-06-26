@@ -100,6 +100,23 @@ namespace DeliMarket.Server
                 });
             });
 
+            app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/Tienda"), sec =>
+            {
+                sec.UseBlazorFrameworkFiles("/Tienda");
+                sec.UseStaticFiles();
+
+                sec.UseRouting();
+                sec.UseAuthentication();
+                sec.UseAuthorization();
+
+                sec.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                    //endpoints.MapFallbackToFile("/Dashboard/{*path:nonfile}", "Dashboard/index.html");
+                    endpoints.MapFallbackToFile("Tienda/index.html");
+                });
+            });
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
