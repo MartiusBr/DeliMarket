@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliMarket.Server", "DeliMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliMarket.Shared", "DeliMarket\DeliMarket\Shared\DeliMarket.Shared.csproj", "{DB8885F9-73EE-4F98-B8AB-0577DD7B1C0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliMarket.Tienda", "DeliMarket.Tienda\DeliMarket.Tienda.csproj", "{ACB82FFF-88DB-4B11-938B-B5A0DA897FCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DB8885F9-73EE-4F98-B8AB-0577DD7B1C0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB8885F9-73EE-4F98-B8AB-0577DD7B1C0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB8885F9-73EE-4F98-B8AB-0577DD7B1C0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACB82FFF-88DB-4B11-938B-B5A0DA897FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACB82FFF-88DB-4B11-938B-B5A0DA897FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACB82FFF-88DB-4B11-938B-B5A0DA897FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACB82FFF-88DB-4B11-938B-B5A0DA897FCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,67 @@
+﻿@*@page "/login"*@
+
+@inject IRepositorio repositorio
+@inject NavigationManager navigationManager
+@inject ILoginService loginService
+@inject IMostrarMensajes mostrarMensajes
+
+@using DeliMarket.Client.Auth
+
+<div class="ms-auth-container">
+    <div class="ms-auth-col">
+        <div class="ms-auth-bg"></div>
+    </div>
+    <div class="ms-auth-col">
+        <div class="ms-auth-form">
+            <EditForm Model="@userLogin" class="needs-validation" OnValidSubmit="LoginUsuario">
+                <DataAnnotationsValidator />
+                <h1>Login to Account</h1>
+                <p>Please enter your email and password to continue</p>
+                <div class="mb-3">
+                    <label>Email Address</label>
+                    <div class="input-group">
+                        <InputText type="email" class="form-control" placeholder="correo" @bind-Value="@userLogin.Email" />
+                        <ValidationMessage For="@(() => userLogin.Email)" />
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label>Password</label>
+                    <div class="input-group">
+                        <InputPassword class="form-control" placeholder="Password" @bind-Value="@userLogin.Password" />
+                        <ValidationMessage For="@(() => userLogin.Password)" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-4 d-block w-100" >Login</button>
+                <div class="form-group">
+                    <label class="d-block mt-3">
+                        <a href="#" class="btn-link" data-toggle="modal" data-target="#modal-12">Olvidaste tu contraseña?</a>
+                    </label>
+                </div>
+                <p class="mb-0 mt-3 text-center">
+                    ¿No tienes una cuenta?
+                    <a class="btn-link" href="default-register.html">Crear Cuenta</a>
+                </p>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private UserLogin userLogin = new UserLogin();
+
+    private async Task LoginUsuario()
+    {
+        var httpResponse = await repositorio.Post<UserLogin, UserToken>("api/cuentas/login", userLogin);
+
+        if (httpResponse.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError(await httpResponse.GetBody());
+        }
+        else
+        {
+            await loginService.Login(httpResponse.Response);
+            navigationManager.NavigateTo("");
+        }
+    }
+}

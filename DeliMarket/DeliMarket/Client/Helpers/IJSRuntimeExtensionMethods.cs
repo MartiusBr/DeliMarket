@@ -37,6 +37,11 @@ namespace DeliMarket.Client.Helpers
             await js.InvokeVoidAsync("initMap");
         }
 
+        public static async ValueTask InitCosticWidgets(this IJSRuntime js)
+        {
+            await js.InvokeVoidAsync("initCostic");
+        }
+
         //public static async ValueTask<Object> GetLatLong(this IJSRuntime js)
         //{
         //    return await js.InvokeAsync<object>("GetLatLong");

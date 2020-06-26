@@ -1,24 +1,113 @@
 ﻿@inherits LayoutComponentBase
 @inject DeliMarket.Client.Auth.RenovadorToken renovadorToken
+@inject IJSRuntime JSRuntime
 
-<div class="sidebar">
+
+<div class="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div>
+
+<aside id="ms-side-nav" class="side-nav fixed ms-aside-scrollable ms-aside-left">
     <NavMenu />
-</div>
+</aside>
 
-<div class="main">
-    <div class="top-row px-4">
-        <EnlacesLogin />
-        @*<a href="http://blazor.net" target="_blank" class="ml-md-auto">Sobre Blazor</a>*@
-    </div>
+<main class="body-content">
+    <!-- Navigation Bar -->
+    <nav class="navbar ms-navbar">
+        <div class="ms-aside-toggler ms-toggler pl-0" data-target="#ms-side-nav" data-toggle="slideLeft">
+            <span class="ms-toggler-bar bg-primary"></span>
+            <span class="ms-toggler-bar bg-primary"></span>
+            <span class="ms-toggler-bar bg-primary"></span>
+        </div>
+        <div class="logo-sn logo-sm ms-d-block-sm">
+            <a class="pl-0 ml-0 text-center navbar-brand mr-0" href="../../index.html">
+                <img src="https://via.placeholder.com/84x41" alt="logo">
+            </a>
+        </div>
+        <ul class="ms-nav-list ms-inline mb-0" id="ms-nav-options">
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+            <li class="ms-nav-item ms-search-form pb-0 py-0">
+                <form class="ms-form" method="post">
+                    <div class="ms-form-group my-0 mb-0 has-icon fs-14">
+                        <input type="search" class="ms-form-input" name="search" placeholder="Search here..." value=""> <i class="flaticon-search text-disabled"></i>
+                    </div>
+                </form>
+            </li>
+            <EnlacesLogin />
+        </ul>
+        <div class="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler" data-toggle="slideDown" data-target="#ms-nav-options">
+            <span class="ms-toggler-bar bg-primary"></span>
+            <span class="ms-toggler-bar bg-primary"></span>
+            <span class="ms-toggler-bar bg-primary"></span>
+        </div>
+    </nav>
+
+    <AuthorizeView>
+        <Authorized>
+            <div class="ms-content-wrapper">
+                @Body
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="ms-content-wrapper ms-auth">
+                <Login/>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
+</main>
 
 @code{
+
+    //[CascadingParameter]
+    //private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    //bool isAuthenticated = false;
+
+    //string isAuth;
+
     protected override void OnInitialized()
     {
         renovadorToken.Iniciar();
     }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InitCosticWidgets();
+        }
+    }
+
+    //protected async override Task OnInitializedAsync()
+    //{
+    //    renovadorToken.Iniciar();
+    //    //await CheckAuth();
+    //    var authState = await authenticationStateTask;
+    //    var user = authState.User;
+    //    Console.WriteLine("Autenticado? -> " + user.Identity.IsAuthenticated);
+    //    if (user.Identity.IsAuthenticated)
+    //    {
+    //        isAuth = null;
+    //    }
+    //    else
+    //    {
+    //        isAuth = "ms-auth";
+    //    }
+
+    //}
+
+    //private async Task CheckAuth()
+    //{
+    //    var authState = await authenticationStateTask;
+    //    var user = authState.User;
+
+    //    if (user.Identity.IsAuthenticated)
+    //    {
+    //        isAuth = null;
+    //    }
+    //    else
+    //    {
+    //        isAuth = "ms-auth";
+    //    }
+    //}
+
 }

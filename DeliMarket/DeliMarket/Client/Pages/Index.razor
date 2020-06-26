@@ -3,6 +3,16 @@
 
 @inject IRepositorio  repositorio
 @inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="db-header-title">Bievenido, @userName</h1>
+    </div>
+</div>
+
 
 <h1>¿Que tipo de orden deseas?</h1>
 <div>
@@ -17,27 +27,20 @@
     @*<ListadoProductos Productos="EntregaProgramada" />*@
 </div>
 
+
+
 @*<AuthorizeView Roles="mercado">
-    Su mercado Esta Autorizado!
-</AuthorizeView>*@
+        Su mercado Esta Autorizado!
+    </AuthorizeView>*@
 
 @code {
-    private List<Producto> EntregaProgramada;
-    private List<Producto> EntregaRapida;
 
-    protected async override Task OnInitializedAsync()
+    string userName;
+
+    protected async override Task  OnInitializedAsync()
     {
-        var httpResponse = await repositorio.Get<HomePageDTO>("api/productos");
-
-        if (httpResponse.Error)
-        {
-            Console.WriteLine(httpResponse.HttpResponseMessage.StatusCode);
-        }
-        else
-        {
-            EntregaProgramada = httpResponse.Response.ProductosEnvioProg;
-            EntregaRapida = httpResponse.Response.ProductosEnvioRapido;
-        }
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userName = authState.User.Identity.Name;
     }
 
     public void GoToEntregaRapida()

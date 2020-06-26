@@ -1,76 +1,166 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">DeliMarket</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+﻿
+<!-- Logo -->
+<div class="logo-sn ms-d-block-lg">
+    <a class="pl-0 ml-0 text-center" href=""> <img src="img/logo.png" alt="logo"> </a>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        @*<li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
+<!-- Navigation -->
+<ul class="accordion ms-main-aside fs-14" id="side-nav-accordion">
+    <!-- Dashboard -->
+    @*<li class="menu-item">
+            <a href="#" class="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard">
+                <span><i class="material-icons fs-16">dashboard</i>Dashboard </span>
+            </a>
+            <ul id="dashboard" class="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
+                <li> <a href="index.html">Crypto Currency</a> </li>
+                <li> <a href="pages/dashboard/web-analytics.html"> Web Analytics </a> </li>
+                <li> <a href="pages/dashboard/social-media.html">Social Media</a> </li>
+                <li> <a href="pages/dashboard/project-management.html">Project Management</a> </li>
+                <li> <a href="pages/dashboard/client-management.html">Client Management</a> </li>
+            </ul>
         </li>*@
-        @*<li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>*@
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="productos/buscar">
-                <span class="oi oi-magnifying-glass" aria-hidden="true"></span> Filtro Productos
-            </NavLink>
-        </li>
-        <AuthorizeView Roles="admin">
-            <Authorized>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="categorias">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Categorias
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="mercados">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Mercados
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="productos/crear">
-                        <span class="oi oi-plus" aria-hidden="true"></span> Crear Producto
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="usuarios">
-                        <span class="oi oi-people" aria-hidden="true"></span> Usuarios
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="SolicitudRepartidores">
-                        <span class="oi oi-clipboard" aria-hidden="true"></span> Solitudes Repartidores
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="SolicitudMercados">
-                        <span class="oi oi-clipboard" aria-hidden="true"></span> Solitudes Mercados
-                    </NavLink>
-                </li>
-            </Authorized>
-        </AuthorizeView>
-    </ul>
-</div>
+
+    <AuthorizeView>
+        <NotAuthorized>
+            <p class="mx-3"> No estas autorizado! </p>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="cliente">
+        <Authorized>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Productos</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Odenes</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Boletas</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Consumo</span>
+                </a>
+            </li>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="mercado">
+        <Authorized>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Productos</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Estadísticas</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Ofertas</span>
+                </a>
+            </li>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="repartidor">
+        <Authorized>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Ordenes</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span><i class="material-icons fs-16">widgets</i>Estadísticas</span>
+                </a>
+            </li>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="admin">
+        <Authorized>
+            <li class="menu-item">
+                <a href="productos/buscar">
+                    <span><i class="material-icons fs-16">widgets</i>Filtro Productos</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="has-chevron" data-toggle="collapse" data-target="#producto" aria-expanded="false" aria-controls="producto">
+                    <span><i class="fas fa-user-friends fs-16"></i>Productos </span>
+                </a>
+                <ul id="producto" class="collapse" aria-labelledby="producto" data-parent="#side-nav-accordion">
+                    <li>
+                        <a href="#">Listar Productos</a>
+                    </li>
+                    <li>
+                        <a href="productos/crear">Crear Producto</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="has-chevron" data-toggle="collapse" data-target="#categoria" aria-expanded="false" aria-controls="categoria">
+                    <span><i class="fas fa-user-friends fs-16"></i>Productos </span>
+                </a>
+                <ul id="categoria" class="collapse" aria-labelledby="categoria" data-parent="#side-nav-accordion">
+                    <li>
+                        <a href="categorias">Listar Categorías</a>
+                    </li>
+                    <li>
+                        <a href="categorias/crear">Crear Categorías</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="has-chevron" data-toggle="collapse" data-target="#mercado" aria-expanded="false" aria-controls="mercado">
+                    <span><i class="fas fa-user-friends fs-16"></i>Mercados </span>
+                </a>
+                <ul id="mercado" class="collapse" aria-labelledby="mercado" data-parent="#side-nav-accordion">
+                    <li>
+                        <a href="mercados">Listar Mercados Autorizados</a>
+                    </li>
+                    <li>
+                        <a href="mercados/crear">Crear Mercado</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="has-chevron" data-toggle="collapse" data-target="#cliente" aria-expanded="false" aria-controls="cliente">
+                    <span><i class="fas fa-user-friends fs-16"></i>Clientes </span>
+                </a>
+                <ul id="cliente" class="collapse" aria-labelledby="cliente" data-parent="#side-nav-accordion">
+                    <li>
+                        <a href="usuarios">Listar Usuarios</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="has-chevron" data-toggle="collapse" data-target="#solicitud" aria-expanded="false" aria-controls="solicitud">
+                    <span><i class="fas fa-user-friends fs-16"></i>Solicitudes </span>
+                </a>
+                <ul id="solicitud" class="collapse" aria-labelledby="solicitud" data-parent="#side-nav-accordion">
+                    <li>
+                        <a href="SolicitudRepartidores">Repartidores</a>
+                    </li>
+                    <li>
+                        <a href="SolicitudMercados">Mercados</a>
+                    </li>
+                </ul>
+            </li>
+        </Authorized>
+    </AuthorizeView>
+
+</ul>
 
 @code {
-    bool collapseNavMenu = true;
 
-    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
 }

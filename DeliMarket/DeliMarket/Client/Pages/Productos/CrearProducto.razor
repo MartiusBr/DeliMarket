@@ -40,7 +40,7 @@ else
         else
         {
             var ProductoId = httpResponse.Response;
-            navigationManager.NavigateTo($"/producto/{ProductoId}/{Producto.Titulo.Replace(" ", "-")}");
+            navigationManager.NavigateTo($"producto/{ProductoId}/{Producto.Titulo.Replace(" ", "-")}");
         }
     }
 
