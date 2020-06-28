@@ -524,10 +524,10 @@ a{
   color: #ff0018;
   font-size: 14px;
 }
-a:hover, a:active, a:focus {
-  color: #bc2634;
-  text-decoration: none;
-}
+    a:hover, a:active, a:focus {
+        color: #171717;
+        text-decoration: none;
+    }
 code{
   padding: 5px;
   font-weight: 300;

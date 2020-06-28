@@ -3,39 +3,53 @@
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-<h3>Indice Mercados Autorizados</h3>
 
-<div class="form-group">
-    <a class="btn btn-info" href="mercados/crear">Crear Mercado</a>
-</div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6>Indice de Mercados autorizados</h6>
+                    <div class="form-group mt-3">
+                        <a class="btn btn-success" href="mercados/crear">Agregar Mercado</a>
+                    </div>
+                </div>
+                <div class="ms-panel-body">
 
-<Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
-            PaginasTotales="paginasTotales"></Paginacion>
+                    <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
+                                PaginasTotales="paginasTotales"></Paginacion>
 
-<ListadoGenerico Listado="Mercados">
-    <HayRegistrosCompleto>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Mercados)
-                {
-                    <tr>
-                        <td>
-                            <a href="mercados/editar/@item.Id" class="btn btn-success">Editar</a>
-                            <button @onclick="@(() => BorrarMercado(item))" class="btn btn-danger">Borrar</button>
-                        </td>
-                        <td>@item.Nombre</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </HayRegistrosCompleto>
-</ListadoGenerico>
+                    <div class="table-responsive">
+                        <ListadoGenerico Listado="Mercados">
+                            <HayRegistrosCompleto>
+                                <table class="table table-hover thead-primary">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID Mercado</th>
+                                            <th scope="col">Nombre Mercado</th>
+                                            <th scope="col">Editar / Borrar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Mercados)
+                                        {
+                                            <tr>
+                                                <th scope="row">@item.Id</th>
+                                                <td>@item.Nombre</td>
+                                                <td>
+                                                    <a href='mercados/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                    <a @onclick="@(() => BorrarMercado(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </HayRegistrosCompleto>
+                        </ListadoGenerico>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @code {
     public List<Mercado> Mercados { get; set; }

@@ -2,13 +2,15 @@
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
 
-<div style="display: flex; flex-wrap: wrap; align-items: center;">
+
+<div class="row mt-2">
     <ListadoGenerico Listado="Productos">
         <HayRegistros Context="producto">
             <ProductoIndividual Producto="producto" EliminarProducto="EliminarProducto" />
         </HayRegistros>
     </ListadoGenerico>
 </div>
+
 
 
 @code {

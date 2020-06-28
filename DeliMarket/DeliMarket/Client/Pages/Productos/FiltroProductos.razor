@@ -137,7 +137,7 @@
     private async Task CargarNuevasProductos()
     {
         var queryStrings = GenerarQueryStrings();
-        navigationManager.NavigateTo("/productos/buscar?" + queryStrings);
+        navigationManager.NavigateTo("productos/buscar?" + queryStrings);
         await RealizarBusqueda(queryStrings);
     }
 

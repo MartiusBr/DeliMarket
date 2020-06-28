@@ -1,20 +1,33 @@
-﻿<div style="margin-right: 2%; margin-bottom: 10px; text-align: center;">
-    <a href="@urlProducto">
-        <img src="@Producto.Poster" alt="Poster" style="width: 100px;" />
-    </a>
-    <p style="max-width: 225px; height: 44px; font-size: 15px; font-weight: bold;"><a href="@urlProducto">@Producto.TituloCortado</a></p>
-    <div>
-        <AuthorizeView Roles="admin">
-            <Authorized>
-                <a class="btn btn-info" href="productos/editar/@Producto.Id">Editar</a>
-                <button type="button" class="btn btn-danger"
-                        @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
-                    Borrar
-                </button>
-            </Authorized>
-        </AuthorizeView>
+﻿<div class="col-lg-4 col-md-6 col-sm-6">
+    <div class="ms-card">
+        <div class="ms-card-img">
+            <a href="@urlProducto">
+                <img src="@Producto.Poster" alt="card_img" style="height: 200px;">
+            </a>
+        </div>
+        <div class="ms-card-body ">
+            <div class="wrapper-new2 ">
+                <h6>@Producto.TituloCortado</h6>
+                @*<span class="white">$15</span>*@
+            </div>
+            <div class="wrapper-new1">
+                <span>Total Ordenes :<strong class="color-red"> 150</strong> </span>
+                <span>Ingresos :<strong class="color-red"> $1000</strong></span>
+            </div>
+            <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
+            <AuthorizeView Roles="admin">
+                <Authorized>
+                    <a class="btn btn-info" href="productos/editar/@Producto.Id">Editar</a>
+                    <button type="button" class="btn btn-danger"
+                            @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
+                        Borrar
+                    </button>
+                </Authorized>
+            </AuthorizeView>
+        </div>
     </div>
 </div>
+
 
 @code {
     [Parameter] public Producto Producto { get; set; }

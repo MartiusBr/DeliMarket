@@ -4,36 +4,50 @@
 @attribute [Authorize(Roles = "admin")]
 
 
-<h3>Indice Categorias</h3>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6>Indice Categorias</h6>
+                    <div class="form-group mt-3">
+                        <a class="btn btn-success" href="categorias/crear">Agregar Categoria</a>
+                    </div>
+                </div>
+                <div class="ms-panel-body">
 
-<div class="form-group">
-    <a class="btn btn-info" href="categorias/crear">Agregar Categoria</a>
-</div>
+                    <div class="table-responsive">
+                        <ListadoGenerico Listado="Categorias">
+                            <HayRegistrosCompleto>
+                                <table class="table table-hover thead-primary">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID Categoría</th>
+                                            <th scope="col">Nombre Categoría</th>
+                                            <th scope="col"> Editar / Borrar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Categorias)
+                                        {
+                                            <tr>
+                                                <th scope="row">@item.Id</th>
+                                                <td>@item.Nombre</td>
+                                                <td>
+                                                    <a href='categorias/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                    <a @onclick="@(() => BorrarCategoria(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </HayRegistrosCompleto>
+                        </ListadoGenerico>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<ListadoGenerico Listado="Categorias">
-    <HayRegistrosCompleto>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Categorias)
-                {
-                    <tr>
-                        <td>
-                            <a href="/categorias/editar/@item.Id" class="btn btn-success">Editar</a>
-                            <button @onclick="@(() => BorrarCategoria(item))" class="btn btn-danger">Borrar</button>
-                        </td>
-                        <td>@item.Nombre</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </HayRegistrosCompleto>
-</ListadoGenerico>
 
 @code {
     public List<Categoria> Categorias { get; set; }

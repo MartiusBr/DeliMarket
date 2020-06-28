@@ -10,60 +10,137 @@
 }
 else
 {
-    <h2>@model.Producto.Titulo (@model.Producto.Lanzamiento.Value.ToString("yyyy"))</h2>
-    for (int i = 0; i < model.Categorias.Count; i++)
-    {
-        if (i < model.Categorias.Count - 1)
-        {
-            @enlaceCategoria(model.Categorias[i])<text>, </text>
-        }
-        else
-        {
-            @enlaceCategoria(model.Categorias[i])
-        }
-    }
-    <text> | </text> <span>@model.Producto.Lanzamiento.Value.ToString("dd MMM yyyy")</span>
-    <text> | Promedio: </text> @model.PromedioVotos.ToString("0.#") <text>/5 | Tu voto: </text>
-    <Rating MaximoPuntaje="5" PuntajeSeleccionado="model.VotoUsuario" OnVote="OnVote" />
-    <div style="display: flex;">
-        <span style="display: inline-block; margin-right: 5px;">
-        <img src="@model.Producto.Poster" style="width: 125px; height: 215px" />
-        </span>
-    </div>
-    <div style="margin-top: 10px;">
-        <h3>Resumen</h3>
-        <div>
-            <MostrarMarkdown ContenidoMarkdown="@model.Producto.Resumen"></MostrarMarkdown>
-        </div>
-    </div>
-    <div style="margin-top: 10px;">
-        <h3>Mercados</h3>
-        <div style="display: flex; flex-direction: column">
-            @foreach (var mercado in model.Mercados)
-            {
-                <div style="margin-bottom: 2px;">
-                    <img style="width: 50px;" src="@mercado.Foto" />
-                    <span style="display:inline-block;width: 200px;"><a href="/mercado/@mercado.Id/@mercado.Nombre.Replace(" ", "-")">@mercado.Nombre</a></span>
-                    <span style="display:inline-block; width: 45px;">...</span>
-                    <span>@mercado.Propietario</span>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6>Detalles del producto</h6>
                 </div>
-            }
+                <div class="ms-panel-body">
+                    <img class="d-block w-100" src="@model.Producto.Poster" alt="poster del producto">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3 class="text-white">@model.Producto.Titulo</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" col-md-6">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-body">
+                    <h2 class="section-title bold">Info del Producto</h2>
+                    <table class="table ms-profile-information">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Categoría del Prod.</th>
+                                <td>
+                                    <span class="badge badge-pill badge-primary">
+                                        @for (int i = 0; i < model.Categorias.Count; i++)
+                                        {
+                                            if (i < model.Categorias.Count - 1)
+                                            {
+                                                @enlaceCategoria(model.Categorias[i])<text>, </text>
+                                            }
+                                            else
+                                            {
+                                                @enlaceCategoria(model.Categorias[i])
+                                            }
+                                        }
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Fecha de Creación</th>
+                                <td>
+                                    <span class="badge badge-pill badge-primary">
+                                        @model.Producto.Lanzamiento.Value.ToString("dd MMM yyyy")
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Promedio Votos</th>
+                                <td>
+                                    <span class="badge badge-pill badge-primary">
+                                        @model.PromedioVotos.ToString("0.#") / 5
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Tu voto</th>
+                                <td>
+                                    <Rating MaximoPuntaje="5" PuntajeSeleccionado="model.VotoUsuario" OnVote="OnVote" />
+                                </td>
+                            </tr>
+                            @*<tr>
+                                <th scope="row">Disponibilidad</th>
+                                <td><span class="badge badge-pill badge-primary">In stock</span></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Delivery Charges</th>
+                                <td>Free</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">SKU Identification</th>
+                                <td>23445</td>
+                            </tr>*@
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <AuthorizeView Roles="admin">
+                        <Authorized>
+                            <a class="btn btn-info" href="productos/editar/@model.Producto.Id">Editar</a>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
+            </div>
+        </div>
+
+        <div class=" col-md-6">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-body">
+                    <h4 class="section-title bold">Detalles del producto </h4>
+                    <p class="description">
+                        @model.Producto.Resumen
+                    </p>
+                </div>
+                <AuthorizeView Roles="admin">
+                    <Authorized>
+                        <div class="ms-quick-stats">
+                            <div class="ms-stats-grid">
+                                <i class="fa fa-bullhorn"></i>
+                                <p class="ms-text-dark">1,033</p>
+                                <span>Ordenes Hoy</span>
+                            </div>
+                            <div class="ms-stats-grid">
+                                <i class="fa fa-heart"></i>
+                                <p class="ms-text-dark">3,039</p>
+                                <span>Favoritos</span>
+                            </div>
+                        </div>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
         </div>
     </div>
+
 }
 
 @code {
     [Parameter] public int ProductoId { get; set; }
     [Parameter] public string NombreProducto { get; set; }
     private ProductoVisualizarDTO model;
-    private RenderFragment<Categoria> enlaceCategoria = (categoria) =>@<a href="productos/buscar?categoriaid=@categoria.Id">@categoria.Nombre</a>;
+    private RenderFragment<Categoria> enlaceCategoria = (categoria) =>@<a style="color:#FFF;" href="productos/buscar?categoriaid=@categoria.Id">@categoria.Nombre</a>;
 
     private async Task OnVote(int votoSeleccionado)
     {
         model.VotoUsuario = votoSeleccionado;
         var votoProducto = new VotoProducto() { Voto = votoSeleccionado, ProductoId = ProductoId };
         var responseHttp = await repositorio.Post("api/votos", votoProducto);
-         if (responseHttp.Error)
+        if (responseHttp.Error)
         {
             await mostrarMensajes.MostrarMensajeError("Su voto no ha sido recibido");
         }

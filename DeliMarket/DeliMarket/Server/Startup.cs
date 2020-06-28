@@ -81,6 +81,7 @@ namespace DeliMarket.Server
                 app.UseHsts();
             }
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.MapWhen(ctx => ctx.Request.Path.StartsWithSegments("/Dashboard"), first =>
