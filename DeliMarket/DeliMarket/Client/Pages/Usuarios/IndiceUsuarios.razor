@@ -2,10 +2,54 @@
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
 
-<h3>Indice Usuarios</h3>
 
-<Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
-            PaginasTotales="paginasTotales"></Paginacion>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="ms-panel">
+            <div class="ms-panel-header">
+                <h6>Indice de Mercados autorizados</h6>
+                <div class="form-group mt-3">
+                    <a class="btn btn-success" href="mercados/crear">Agregar Mercado</a>
+                </div>
+            </div>
+            <div class="ms-panel-body">
+
+                <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
+                            PaginasTotales="paginasTotales"></Paginacion>
+
+                <div class="table-responsive">
+                    <ListadoGenerico Listado="Usuarios">
+                        <HayRegistrosCompleto>
+                            <table class="table table-hover thead-primary">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Correo</th>
+                                        <th scope="col">Rol</th>
+                                        <th scope="col">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Usuarios)
+                                    {
+                                        <tr>
+                                            <th scope="row">@item.</th>
+                                            <td>@item.Nombre</td>
+                                            <td>
+                                                <a href='mercados/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                <a @onclick="@(() => BorrarMercado(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </HayRegistrosCompleto>
+                    </ListadoGenerico>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <ListadoGenerico Listado="Usuarios">
     <HayRegistrosCompleto>
@@ -28,8 +72,8 @@
                             @usuario.Email
                         </td>
                         @*<td>
-                        @usuario.UserId
-                        </td>*@
+                            @usuario.UserId
+                            </td>*@
                     </tr>
                 }
             </tbody>

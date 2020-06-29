@@ -1,32 +1,65 @@
-﻿<EditForm Model="Mercado" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />
+﻿
+    <div class="row">
+        <div class="col-xl-6 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>Agregar Mecados Form: </h6>
+                </div>
+                <div class="ms-panel-body">
+                    <EditForm Model="Mercado" OnValidSubmit="OnValidSubmit">
+                        <DataAnnotationsValidator />
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label>Nombre del producto</label>
+                                <div class="input-group">
+                                    <InputText class="form-control" placeholder="Nombre del mercado" @bind-Value="@Mercado.Nombre" />
+                                    <ValidationMessage For="@(() => Mercado.Nombre)" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Fecha:</label>
+                                <div>
+                                    <InputDate class="form-control" @bind-Value="@Mercado.Fecha" />
+                                    <ValidationMessage For="@(() => Mercado.Fecha)" />
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label>Descripción</label>
+                                <div class="input-group">
+                                    <InputTextArea rows="5" class="form-control" placeholder="Message" @bind-Value="@Mercado.Descripcion" />
+                                    <ValidationMessage For="@(() => Mercado.Descripcion)" />
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada" />
+                            </div>
+                        </div>
+                        <button class="btn btn-primary d-block" type="submit">Guardar y continuar</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label>Nombre:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Mercado.Nombre" />
-            <ValidationMessage For="@(() => Mercado.Nombre)" />
+        <div class="col-xl-6 col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ms-panel">
+                        <div class="ms-panel-header">
+                            <h6>Imagen Mercado </h6>
+                        </div>
+                        <div class="ms-panel-body">
+                            @if (imagenTemporal != null)
+                            {
+                                <img class="d-block w-100" src="@imagenTemporal" alt="First slide"> }
+                            else
+                            {
+                                <img class="d-block w-100" src="https://via.placeholder.com/565x375" alt="First slide">}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label>Fecha @algo:</label>
-        <div>
-            <InputDate class="form-control" @bind-Value="@Mercado.Fecha" />
-            <ValidationMessage For="@(() => Mercado.Fecha)" />
-        </div>
-    </div>
-    <div class="form-group">
-        <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada" ImagenTemporal="@imagenTemporal" />
-    </div>
-    <div class="form-group form-markdown">
-        <InputMarkdown @bind-Value="@Mercado.Descripcion"
-                       For="@(() => Mercado.Descripcion)"
-                       Label="Descripcion" />
-    </div>
-
-    <button class="btn btn-success" type="submit">Guardar Cambios</button>
-</EditForm>
-
 
 @code {
     public string algo = "";
@@ -36,14 +69,9 @@
 
     protected override void OnInitialized()
     {
-        Console.WriteLine("on initialized");
-        Console.WriteLine(Mercado.Foto);
-        Console.WriteLine(Mercado.Nombre);
-
         if (!string.IsNullOrWhiteSpace(Mercado.Foto))
         {
             imagenTemporal = Mercado.Foto;
-            Console.WriteLine(imagenTemporal);
             Mercado.Foto = null;
         }
     }

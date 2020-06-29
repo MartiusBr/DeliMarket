@@ -1,52 +1,54 @@
 ﻿@page "/categorias"
+
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
+@inject IJSRuntime js
 @attribute [Authorize(Roles = "admin")]
 
 
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="ms-panel">
-                <div class="ms-panel-header">
-                    <h6>Indice Categorias</h6>
-                    <div class="form-group mt-3">
-                        <a class="btn btn-success" href="categorias/crear">Agregar Categoria</a>
-                    </div>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="ms-panel">
+            <div class="ms-panel-header">
+                <h6>Indice Categorias</h6>
+                <div class="form-group mt-3">
+                    <a class="btn btn-success" href="categorias/crear">Agregar Categoria</a>
                 </div>
-                <div class="ms-panel-body">
+            </div>
+            <div class="ms-panel-body">
 
-                    <div class="table-responsive">
-                        <ListadoGenerico Listado="Categorias">
-                            <HayRegistrosCompleto>
-                                <table class="table table-hover thead-primary">
-                                    <thead>
+                <div class="table-responsive">
+                    <ListadoGenerico Listado="Categorias">
+                        <HayRegistrosCompleto>
+                            <table class="table table-hover thead-primary">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID Categoría</th>
+                                        <th scope="col">Nombre Categoría</th>
+                                        <th scope="col"> Editar / Borrar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Categorias)
+                                    {
                                         <tr>
-                                            <th scope="col">ID Categoría</th>
-                                            <th scope="col">Nombre Categoría</th>
-                                            <th scope="col"> Editar / Borrar</th>
+                                            <th scope="row">@item.Id</th>
+                                            <td>@item.Nombre</td>
+                                            <td>
+                                                <a href='categorias/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                <a @onclick="@(() => BorrarCategoria(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Categorias)
-                                        {
-                                            <tr>
-                                                <th scope="row">@item.Id</th>
-                                                <td>@item.Nombre</td>
-                                                <td>
-                                                    <a href='categorias/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
-                                                    <a @onclick="@(() => BorrarCategoria(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </HayRegistrosCompleto>
-                        </ListadoGenerico>
-                    </div>
+                                    }
+                                </tbody>
+                            </table>
+                        </HayRegistrosCompleto>
+                    </ListadoGenerico>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
 @code {
@@ -64,14 +66,19 @@
 
     private async Task BorrarCategoria(Categoria categoria)
     {
-        var responseHttp = await repositorio.Delete($"api/categorias/{categoria.Id}");
-        if (responseHttp.Error)
+        var confirmar = await js.Confirm($"¿Desea borrar la categoría {categoria.Nombre}?");
+        if (confirmar)
         {
-           await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
-        }
-        else
-        {
-            await Cargar();
+            var responseHttp = await repositorio.Delete($"api/categorias/{categoria.Id}");
+            if (responseHttp.Error)
+            {
+                await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+            }
+            else
+            {
+                //Categorias.Remove(categoria);
+                await Cargar();
+            }
         }
 
     }

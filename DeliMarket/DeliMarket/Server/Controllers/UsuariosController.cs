@@ -40,8 +40,9 @@ namespace DeliMarket.Server.Controllers
         {
             var queryable = context.Users.AsQueryable();
             await HttpContext.InsertarParametrosPaginacionEnRespuesta(queryable, paginacion.CantidadRegistros);
+
             return await queryable.Paginar(paginacion)
-                .Select(x => new UsuarioDTO { Email = x.Email, UserId = x.Id }).ToListAsync();
+                .Select(async x => new UsuarioDTO { Email = x.Email, UserId = x.Id , Nombre = x.UserName, Roles = (await userManager.GetRolesAsync(x)).ToList()}).ToListAsync();
         }
 
         [HttpGet("roles")]

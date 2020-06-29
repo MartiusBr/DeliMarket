@@ -1,4 +1,6 @@
 ﻿@page "/mercados"
+
+@inject IJSRuntime js
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
@@ -80,15 +82,19 @@
 
     private async Task BorrarMercado(Mercado mercado)
     {
-        var responseHttp = await repositorio.Delete($"api/mercados/{mercado.Id}");
-        if (responseHttp.Error)
+        var confirmar = await js.Confirm($"¿Desea borrar el mercado {mercado.Nombre}?");
+        if (confirmar)
         {
-            await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+            var responseHttp = await repositorio.Delete($"api/mercados/{mercado.Id}");
+            if (responseHttp.Error)
+            {
+                await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+            }
+            else
+            {
+                //Categorias.Remove(categoria);
+                await Cargar();
+            }
         }
-        else
-        {
-            await Cargar();
-        }
-
     }
 }
