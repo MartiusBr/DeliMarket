@@ -4,8 +4,6 @@
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-<h3>Crear Mercado</h3>
-
 <FormularioMercados OnValidSubmit="Crear" Mercado="Mercado" />
 
 @code {

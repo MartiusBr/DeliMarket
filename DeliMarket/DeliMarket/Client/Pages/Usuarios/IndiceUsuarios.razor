@@ -7,10 +7,7 @@
     <div class="col-xl-12">
         <div class="ms-panel">
             <div class="ms-panel-header">
-                <h6>Indice de Mercados autorizados</h6>
-                <div class="form-group mt-3">
-                    <a class="btn btn-success" href="mercados/crear">Agregar Mercado</a>
-                </div>
+                <h6>INDICE DE USUARIOS</h6>
             </div>
             <div class="ms-panel-body">
 
@@ -32,14 +29,19 @@
                                 <tbody>
                                     @foreach (var item in Usuarios)
                                     {
-                                        <tr>
-                                            <th scope="row">@item.</th>
-                                            <td>@item.Nombre</td>
-                                            <td>
-                                                <a href='mercados/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
-                                                <a @onclick="@(() => BorrarMercado(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <th scope="row">@item.Nombre</th>
+                                        <td>@item.Email</td>
+                                        <td>@foreach (var rol in item.Roles) 
+                                        { 
+                                            @rol
+                                        }
+                                        </td>
+                                        <td>
+                                            <a href='usuarios/editar/@item.UserId' style="cursor:pointer"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                            @*<a @onclick="@(() => BorrarMercado(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>*@
+                                        </td>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -51,35 +53,6 @@
     </div>
 </div>
 
-<ListadoGenerico Listado="Usuarios">
-    <HayRegistrosCompleto>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Usuario</th>
-                    @*<th>Id</th>*@
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var usuario in Usuarios)
-                {
-                    <tr>
-                        <td>
-                            <a href="/usuarios/editar/@usuario.UserId" class="btn btn-success">Editar</a>
-                        </td>
-                        <td>
-                            @usuario.Email
-                        </td>
-                        @*<td>
-                            @usuario.UserId
-                            </td>*@
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </HayRegistrosCompleto>
-</ListadoGenerico>
 
 @code {
     List<UsuarioDTO> Usuarios;

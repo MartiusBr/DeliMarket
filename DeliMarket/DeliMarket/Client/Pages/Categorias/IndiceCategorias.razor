@@ -35,8 +35,8 @@
                                             <th scope="row">@item.Id</th>
                                             <td>@item.Nombre</td>
                                             <td>
-                                                <a href='categorias/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
-                                                <a @onclick="@(() => BorrarCategoria(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                                <a href='categorias/editar/@item.Id' style="cursor:pointer"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                <a @onclick="@(() => BorrarCategoria(item))" style="cursor:pointer"><i class='far fa-trash-alt ms-text-danger'></i></a>
                                             </td>
                                         </tr>
                                     }

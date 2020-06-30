@@ -92,7 +92,8 @@ namespace DeliMarket.Server.Controllers
 
             mercadoDB.Autorizado = true;
 
-            var usuario = await userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
+            //var usuario = await userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
+            var usuario = await userManager.FindByEmailAsync(mercado.Email);
 
             await userManager.AddToRoleAsync(usuario, "mercado");
 

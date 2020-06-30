@@ -1,0 +1,40 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+
+
+    <main>
+        <nav class="navbar justify-content-end">
+
+            <ul class="ms-nav-list ms-inline mb-0" id="ms-nav-options">
+                <li class="ms-nav-item">
+                    <a href="login" class="btn btn-primary mt-0">Login</a>
+                </li>
+                <li class="ms-nav-item">
+                    <a href="registro" class="btn btn-gradient-danger mt-0">Registro</a>
+                </li>
+                <li class="ms-nav-item">
+                    <a href="/Tienda" class="btn btn-secondary mt-0">Tienda</a>
+                </li>
+            </ul>
+            <div class="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler" data-toggle="slideDown" data-target="#ms-nav-options">
+                <span class="ms-toggler-bar bg-primary"></span>
+                <span class="ms-toggler-bar bg-primary"></span>
+                <span class="ms-toggler-bar bg-primary"></span>
+            </div>
+        </nav>
+        <div class="ms-content-wrapper ms-auth">
+            @Body
+        </div>
+    </main>
+
+@code{
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InitCosticWidgets();
+        }
+    }
+
+}

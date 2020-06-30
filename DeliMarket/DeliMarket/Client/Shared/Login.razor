@@ -1,4 +1,5 @@
-﻿@*@page "/login"*@
+﻿@page "/login"
+@layout NoAuthLayout
 
 @inject IRepositorio repositorio
 @inject NavigationManager navigationManager
@@ -39,7 +40,7 @@
                 </div>
                 <p class="mb-0 mt-3 text-center">
                     ¿No tienes una cuenta?
-                    <a class="btn-link" href="default-register.html">Crear Cuenta</a>
+                    <a class="btn-link" href="registro">Crear Cuenta</a>
                 </p>
             </EditForm>
         </div>

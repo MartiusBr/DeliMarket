@@ -5,7 +5,6 @@
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-
     <div class="row">
         <div class="col-xl-12">
             <div class="ms-panel">
@@ -21,7 +20,7 @@
                                 PaginasTotales="paginasTotales"></Paginacion>
 
                     <div class="table-responsive">
-                        <ListadoGenerico Listado="Mercados">
+                        <ListadoGenerico Listado="MercadosAuth">
                             <HayRegistrosCompleto>
                                 <table class="table table-hover thead-primary">
                                     <thead>
@@ -32,14 +31,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Mercados)
+                                        @foreach (var item in MercadosAuth)
                                         {
                                             <tr>
                                                 <th scope="row">@item.Id</th>
                                                 <td>@item.Nombre</td>
                                                 <td>
-                                                    <a href='mercados/editar/@item.Id'><i class='fas fa-pencil-alt text-secondary'></i></a>
-                                                    <a @onclick="@(() => BorrarMercado(item))"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                                    <a href='mercados/editar/@item.Id' style="cursor:pointer"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                    <a @onclick="@(() => BorrarMercado(item))" style="cursor:pointer"><i class='far fa-trash-alt ms-text-danger'></i></a>
                                                 </td>
                                             </tr>
                                         }
@@ -54,7 +53,7 @@
     </div>
 
 @code {
-    public List<Mercado> Mercados { get; set; }
+    public List<Mercado> MercadosAuth { get; set; }
     private int paginaActual = 1;
     private int paginasTotales;
 
@@ -74,7 +73,8 @@
         var responseHttp = await repositorio.Get<List<Mercado>>($"api/mercados?pagina={pagina}");
         if (!responseHttp.Error)
         {
-            Mercados = responseHttp.Response;
+            var TodoMercados = responseHttp.Response;
+            MercadosAuth = TodoMercados.Where(x => x.Autorizado).ToList();
             var conteo = responseHttp.HttpResponseMessage.Headers.GetValues("conteo").FirstOrDefault();
             paginasTotales = int.Parse(responseHttp.HttpResponseMessage.Headers.GetValues("totalPaginas").FirstOrDefault());
         }

@@ -6,26 +6,34 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
+<AuthorizeView>
+    <Authorized>
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="db-header-title">Bievenido, @userName</h1>
+            </div>
+        </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <h1 class="db-header-title">Bievenido, @userName</h1>
-    </div>
-</div>
+
+        <h1>¿Que tipo de orden deseas?</h1>
+        <div>
+            <h3>Entrega Rápida</h3>
+            <button @onclick="GoToEntregaRapida">Aquí</button>
+            @*<ListadoProductos Productos="EntregaRapida" />*@
+        </div>
+
+        <div>
+            <h3>Entrega Programada</h3>
+            <button @onclick="GoToEntregaProgramada">Aquí</button>
+            @*<ListadoProductos Productos="EntregaProgramada" />*@
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <Login/>
+    </NotAuthorized>
+</AuthorizeView>
 
 
-<h1>¿Que tipo de orden deseas?</h1>
-<div>
-    <h3>Entrega Rápida</h3>
-    <button @onclick="GoToEntregaRapida">Aquí</button>
-    @*<ListadoProductos Productos="EntregaRapida" />*@
-</div>
-
-<div>
-    <h3>Entrega Programada</h3>
-    <button @onclick="GoToEntregaProgramada">Aquí</button>
-    @*<ListadoProductos Productos="EntregaProgramada" />*@
-</div>
 
 
 

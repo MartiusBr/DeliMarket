@@ -9,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 
@@ -40,9 +42,24 @@ namespace DeliMarket.Server.Controllers
         {
             var queryable = context.Users.AsQueryable();
             await HttpContext.InsertarParametrosPaginacionEnRespuesta(queryable, paginacion.CantidadRegistros);
+            List<UsuarioDTO> usuarios = new List<UsuarioDTO>();
 
-            return await queryable.Paginar(paginacion)
-                .Select(async x => new UsuarioDTO { Email = x.Email, UserId = x.Id , Nombre = x.UserName, Roles = (await userManager.GetRolesAsync(x)).ToList()}).ToListAsync();
+            var usersDB = await queryable.Paginar(paginacion).ToListAsync();
+
+            foreach(var us in usersDB)
+            {
+                var roles = await userManager.GetRolesAsync(us);
+                UsuarioDTO usuarioDTO = new UsuarioDTO { 
+                    Email = us.Email,
+                    Nombre = us.NormalizedUserName,
+                    UserId = us.Id,
+                    Roles = roles.ToList()
+                };
+                usuarios.Add(usuarioDTO);
+            }
+
+            return usuarios;
+
         }
 
         [HttpGet("roles")]

@@ -21,6 +21,8 @@ namespace DeliMarket.Server
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<CategoriaProducto>().HasKey(x => new { x.CategoriaId, x.ProductoId });
             modelBuilder.Entity<ProductoMercado>().HasKey(x => new { x.ProductoId, x.MercadoId });
 
@@ -35,7 +37,7 @@ namespace DeliMarket.Server
             modelBuilder.Entity<IdentityRole>().HasData(roleRepartidor);
             modelBuilder.Entity<IdentityRole>().HasData(roleMercado);
 
-            base.OnModelCreating(modelBuilder);
+            
         }
 
         public DbSet<CategoriaProducto> CategoriasProductos { get; set; }

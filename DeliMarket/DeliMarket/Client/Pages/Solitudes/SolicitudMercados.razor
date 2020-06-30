@@ -3,47 +3,59 @@
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-<h3>Indice Solicitudes Mercados</h3>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6>SOLICITUD MERCADOS</h6>
+                </div>
+                <div class="ms-panel-body">
 
-<Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
-            PaginasTotales="paginasTotales"></Paginacion>
+                    <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
+                                PaginasTotales="paginasTotales"></Paginacion>
 
-<ListadoGenerico Listado="MercadosSolicitud">
-    <HayRegistrosCompleto>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre Mercado</th>
-                    <th>Correo</th>
-                    <th>RUC</th>
-                    <th>Nombre Propietario</th>
-                    <th>Registro Sanitario</th>
-                    <th>Numero Celular</th>
-                    <th>Autorizado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in MercadosSolicitud)
-                {
-                <tr>
-                    <td>
-                        <button @onclick="@(() => ValidarMercado(item))" class="btn btn-success">Validar</button>
-                        <button @onclick="@(() => BorrarMercado(item))" class="btn btn-danger">Rechazar</button>
-                    </td>
-                    <td>@item.Nombre</td>
-                    <td>@item.Email</td>
-                    <td>@item.RUC</td>
-                    <td>@item.Propietario</td>
-                    <td>@item.NroSanidad</td>
-                    <td>@item.NumeroCel</td>
-                    <td>@item.Autorizado</td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </HayRegistrosCompleto>
-</ListadoGenerico>
+                    <div class="table-responsive">
+                        <ListadoGenerico Listado="MercadosSolicitud">
+                            <HayRegistrosCompleto>
+                                <table class="table table-hover thead-primary">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nombre Mercado</th>
+                                            <th scope="col">Correo</th>
+                                            <th scope="col">RUC</th>
+                                            <th scope="col">Nombre Propietario</th>
+                                            <th scope="col">Registro Sanitario</th>
+                                            <th scope="col">Número Celular</th>
+                                            <th scope="col">Autorizado</th>
+                                            <th scope="col">Validar/Rechazar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in MercadosSolicitud)
+                                        {
+                                        <tr>
+                                            <th scope="row">@item.Nombre</th>
+                                            <td>@item.Email</td>
+                                            <td>@item.RUC</td>
+                                            <td>@item.Propietario</td>
+                                            <td>@item.NroSanidad</td>
+                                            <td>@item.NumeroCel</td>
+                                            <td>@item.Autorizado</td>
+                                            <td>
+                                                <a @onclick="@(() => ValidarMercado(item))" style="cursor:pointer"><i class='fas fa-check text-secondary'></i></a>
+                                                <a @onclick="@(() => BorrarMercado(item))" style="cursor:pointer"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </HayRegistrosCompleto>
+                        </ListadoGenerico>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @code {
 

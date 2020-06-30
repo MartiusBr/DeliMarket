@@ -1,4 +1,5 @@
 ﻿@page "/Registro/Cliente"
+@layout NoAuthLayout
 
 @inject IRepositorio repositorio
 @inject NavigationManager navigationManager
@@ -7,54 +8,60 @@
 
 @using DeliMarket.Client.Auth
 
-<h3>Registro</h3>
 
-<EditForm Model="@userInfo" OnValidSubmit="CrearUsuario">
-    <DataAnnotationsValidator />
+<div class="ms-auth-container">
+    <div class="ms-auth-col">
+        <div class="ms-auth-bg"></div>
+    </div>
+    <div class="ms-auth-col">
+        <div class="ms-auth-form">
+            <EditForm Model="@userInfo" class="needs-validation" OnValidSubmit="CrearUsuario">
+                <DataAnnotationsValidator />
+                <h1>Registro Cliente</h1>
+                <p>Porfavor ingresa los siguientes datos para continuar</p>
+                <div class="mb-3">
+                    <label for="nombre">Nombre</label>
+                    <div class="input-group">
+                        <InputText name="nombre" Class="form-control" @bind-Value="@userInfo.Nombre" />
+                        <ValidationMessage For="@(() => userInfo.Nombre)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="numerocel">Numero de Celular</label>
+                    <div class="input-group">
+                        <InputText name="numerocel" Class="form-control" @bind-Value="@userInfo.NumeroCel" />
+                        <ValidationMessage For="@(() => userInfo.NumeroCel)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="dni">DNI</label>
+                    <div class="input-group">
+                        <InputText name="dni" Class="form-control" @bind-Value="@userInfo.Dni" />
+                        <ValidationMessage For="@(() => userInfo.Dni)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email">Correo</label>
+                    <div class="input-group">
+                        <InputText name="email" Class="form-control" @bind-Value="@userInfo.Email" />
+                        <ValidationMessage For="@(() => userInfo.Email)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="paswd">Contraseña</label>
+                    <div class="input-group">
+                        <InputPassword name="paswd" Class="form-control" @bind-Value="@userInfo.Password" />
+                        <ValidationMessage For="@(() => userInfo.Password)" />
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <div>
-            <InputText name="nombre" Class="form-control" @bind-Value="@userInfo.Nombre" />
-            <ValidationMessage For="@(() => userInfo.Nombre)" />
+                <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
+
+            </EditForm>
         </div>
     </div>
+</div>
 
-    <div class="form-group">
-        <label for="numerocel">Numero de celular:</label>
-        <div>
-            <InputText name="numerocel" Class="form-control" @bind-Value="@userInfo.NumeroCel" />
-            <ValidationMessage For="@(() => userInfo.NumeroCel)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="dni">DNI:</label>
-        <div>
-            <InputText name="dni" Class="form-control" @bind-Value="@userInfo.Dni" />
-            <ValidationMessage For="@(() => userInfo.Dni)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="email">Email:</label>
-        <div>
-            <InputText name="email" Class="form-control" @bind-Value="@userInfo.Email" />
-            <ValidationMessage For="@(() => userInfo.Email)" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="paswd">Password:</label>
-        <div>
-            <InputPassword name="paswd" Class="form-control" @bind-Value="@userInfo.Password" />
-            <ValidationMessage For="@(() => userInfo.Password)" />
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Registrar</button>
-
-</EditForm>
 
 @code {
     private UserInfo userInfo = new UserInfo();

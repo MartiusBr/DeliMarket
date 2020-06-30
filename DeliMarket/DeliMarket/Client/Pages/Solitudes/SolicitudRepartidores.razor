@@ -3,49 +3,63 @@
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-<h3>Indice Solicitudes Repartidores</h3>
 
-<Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
-            PaginasTotales="paginasTotales"></Paginacion>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="ms-panel">
+            <div class="ms-panel-header">
+                <h6>SOLICITUD REPARTIDORES</h6>
+            </div>
+            <div class="ms-panel-body">
 
-<ListadoGenerico Listado="Repartidores">
-    <HayRegistrosCompleto>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre Repartidor</th>
-                    <th>DNI</th>
-                    <th>Email</th>
-                    <th>Numero Celular</th>
-                    <th>Placa Vehículo</th>
-                    <th>Afiliación</th>
-                    <th>Tipo</th>
-                    <th>Autorizado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Repartidores)
-                {
-                <tr>
-                    <td>
-                        <a href="#" class="btn btn-success">Aceptar</a>
-                        <a href="#" class="btn btn-danger">Rechazar</a>
-                    </td>
-                    <td>@item.Nombre</td>
-                    <td>@item.DNI</td>
-                    <td>@item.Email</td>
-                    <td>@item.NumeroCel</td>
-                    <td>@item.PlacaVehiculo</td>
-                    <td>@item.Afiliacion</td>
-                    <td>@item.Tipo</td>
-                    <td>@item.Autorizado</td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </HayRegistrosCompleto>
-</ListadoGenerico>
+                <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
+                            PaginasTotales="paginasTotales"></Paginacion>
+
+                <div class="table-responsive">
+                    <ListadoGenerico Listado="Repartidores">
+                        <HayRegistrosCompleto>
+                            <table class="table table-hover thead-primary">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre Repartidor</th>
+                                        <th scope="col">DNI</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Número Celular</th>
+                                        <th scope="col">Placa Vehículo</th>
+                                        <th scope="col">Afiliación</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Autorizado</th>
+                                        <th scope="col">Validar/Rechazar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Repartidores)
+                                    {
+                                    <tr>
+                                        <th scope="row">@item.Nombre</th>
+                                        <td>@item.DNI</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.NumeroCel</td>
+                                        <td>@item.PlacaVehiculo</td>
+                                        <td>@item.Afiliacion</td>
+                                        <td>@item.Tipo</td>
+                                        <td>@item.Autorizado</td>
+                                        <td>
+                                            <a @onclick="@(() => ValidarRepartidor(item))" style="cursor:pointer"><i class='fas fa-check text-secondary'></i></a>
+                                            <a @onclick="@(() => BorrarRepartidor(item))" style="cursor:pointer"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </HayRegistrosCompleto>
+                    </ListadoGenerico>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @code {
     public List<Repartidor> Repartidores { get; set; }
@@ -72,6 +86,36 @@
             var conteo = responseHttp.HttpResponseMessage.Headers.GetValues("conteo").FirstOrDefault();
             paginasTotales = int.Parse(responseHttp.HttpResponseMessage.Headers.GetValues("totalPaginas").FirstOrDefault());
         }
+    }
+
+    private async Task ValidarRepartidor(Repartidor repartidor)
+    {
+        var responseHttp = await repositorio.Put("api/repartidor/validar", repartidor);
+        if (responseHttp.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+        }
+        else
+        {
+            await mostrarMensajes.MostrarMensajeExitoso("Repartidor Validado Satisfactoriamente");
+            await Cargar();
+        }
+
+    }
+
+    private async Task BorrarRepartidor(Repartidor repartidor)
+    {
+        var responseHttp = await repositorio.Delete($"api/repartidor/{repartidor.Id}");
+        if (responseHttp.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+        }
+        else
+        {
+            await mostrarMensajes.MostrarMensajeExitoso("Repartidor Rechazado y eliminado");
+            await Cargar();
+        }
+
     }
 
 }
