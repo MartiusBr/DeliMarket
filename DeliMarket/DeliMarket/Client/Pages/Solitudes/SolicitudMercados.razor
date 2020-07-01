@@ -60,7 +60,6 @@
 @code {
 
     public List<Mercado> MercadosSolicitud { get; set; }
-    public List<Mercado> Mercados { get; set; }
     private int paginaActual = 1;
     private int paginasTotales;
 
@@ -80,8 +79,8 @@
         var responseHttp = await repositorio.Get<List<Mercado>>($"api/mercados?pagina={pagina}");
         if (!responseHttp.Error)
         {
-            Mercados = responseHttp.Response;
-            MercadosSolicitud = Mercados.Where(x => !x.Autorizado).ToList();
+            var TodoMercados = responseHttp.Response;
+            MercadosSolicitud = TodoMercados.Where(x => !x.Autorizado).ToList();
             var conteo = responseHttp.HttpResponseMessage.Headers.GetValues("conteo").FirstOrDefault();
             paginasTotales = int.Parse(responseHttp.HttpResponseMessage.Headers.GetValues("totalPaginas").FirstOrDefault());
         }

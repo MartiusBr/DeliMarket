@@ -44,11 +44,12 @@ namespace DeliMarket.Server.Controllers
         public async Task<ActionResult<UserToken>> CrearClient([FromBody] UserInfo model) //Crea un usuario y retorna un Token
         {
             var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email,DNI = model.Dni ,PhoneNumber = model.NumeroCel }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
-            var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario  
+            var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario
             var rolCliente = new List<string>(); //Creo una Lista vacia
             rolCliente.Add("cliente"); //Le asigno el rol de cliente por defecto
             if (result.Succeeded)   //Si el resultado de crearlo es satisfactorio
             {
+                await _userManager.AddToRoleAsync(user,"cliente");
                 return BuildToken(model, rolCliente); //Le asigno un Token con la lista de Rol que tiene(Cliente por defecto)
             }
             else
@@ -96,13 +97,15 @@ namespace DeliMarket.Server.Controllers
         [HttpPost("CrearMercado")] //Crear un mercado 
         public async Task<ActionResult<UserToken>> CrearMercado([FromBody] MercadoInfo model) //Crea un repartidor y retorna un Token
         {
+            var usuarioLogged1 = HttpContext.User;
             var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
             var result = await _userManager.CreateAsync(user, model.Password);
             var rolMercado = new List<string>();
             rolMercado.Add("noauth"); //Por defecto al registrarse el mercado se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
             if (result.Succeeded)
             {
-                var usuario = await _userManager.GetUserAsync(HttpContext.User);
+                var usuarioLogged = HttpContext.User;
+                var usuario = await _userManager.GetUserAsync(usuarioLogged);
 
                 var mercado = new Mercado
                 {
@@ -191,7 +194,7 @@ namespace DeliMarket.Server.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"])); //Codigo para Crear el Token
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddMinutes(30); //Agrego una fecha de Expiración en este caso 30 minutos
+            var expiration = DateTime.UtcNow.AddHours(6); //Agrego una fecha de Expiración en este caso 30 minutos
 
             JwtSecurityToken token = new JwtSecurityToken(
                issuer: null,

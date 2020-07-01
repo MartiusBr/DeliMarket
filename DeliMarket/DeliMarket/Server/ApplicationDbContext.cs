@@ -33,11 +33,13 @@ namespace DeliMarket.Server
             { Id = "eb39e7fb-0828-41db-8794-60c9db40171d", Name = "repartidor", NormalizedName = "repartidor" };
             var roleMercado = new IdentityRole()
             { Id = "fa66c0c6-f867-4623-942c-5ae2debbb902", Name = "mercado", NormalizedName = "mercado" };
+            var roleCliente = new IdentityRole()
+            { Id = "14200405-23f2-43c9-b0ba-607fcf35e52a", Name = "cliente", NormalizedName = "cliente" };
             modelBuilder.Entity<IdentityRole>().HasData(roleAdmin);
             modelBuilder.Entity<IdentityRole>().HasData(roleRepartidor);
             modelBuilder.Entity<IdentityRole>().HasData(roleMercado);
+            modelBuilder.Entity<IdentityRole>().HasData(roleCliente);
 
-            
         }
 
         public DbSet<CategoriaProducto> CategoriasProductos { get; set; }

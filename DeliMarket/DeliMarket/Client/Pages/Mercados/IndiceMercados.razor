@@ -5,52 +5,63 @@
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="ms-panel">
-                <div class="ms-panel-header">
-                    <h6>Indice de Mercados autorizados</h6>
-                    <div class="form-group mt-3">
-                        <a class="btn btn-success" href="mercados/crear">Agregar Mercado</a>
-                    </div>
-                </div>
-                <div class="ms-panel-body">
+<div class="row">
+    <div class="col-xl-12">
+        <div class="ms-panel">
+            <div class="ms-panel-header">
+                <h6>Mercados Autorizados</h6>
+            <div class="form-group mt-3">
+                <a class="btn btn-success" href="mercados/crear">Agregar Mercado</a>
+            </div>
+            </div>
+            <div class="ms-panel-body">
 
-                    <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
-                                PaginasTotales="paginasTotales"></Paginacion>
+                <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
+                            PaginasTotales="paginasTotales"></Paginacion>
 
-                    <div class="table-responsive">
-                        <ListadoGenerico Listado="MercadosAuth">
-                            <HayRegistrosCompleto>
-                                <table class="table table-hover thead-primary">
-                                    <thead>
+                <div class="table-responsive">
+                    <ListadoGenerico Listado="MercadosAuth">
+                        <HayRegistrosCompleto>
+                            <table class="table table-hover thead-primary">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre Mercado</th>
+                                        <th scope="col">Correo</th>
+                                        <th scope="col">RUC</th>
+                                        <th scope="col">Nombre Propietario</th>
+                                        <th scope="col">Registro Sanitario</th>
+                                        <th scope="col">Número Celular</th>
+                                        <th scope="col">Autorizado</th>
+                                        <th scope="col">Editar/Borrar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in MercadosAuth)
+                                    {
                                         <tr>
-                                            <th scope="col">ID Mercado</th>
-                                            <th scope="col">Nombre Mercado</th>
-                                            <th scope="col">Editar / Borrar</th>
+                                            <th scope="row">@item.Nombre</th>
+                                            <td>@item.Email</td>
+                                            <td>@item.RUC</td>
+                                            <td>@item.Propietario</td>
+                                            <td>@item.NroSanidad</td>
+                                            <td>@item.NumeroCel</td>
+                                            <td>@item.Autorizado</td>
+                                            <td>
+                                                <a href="mercados/editar/@item.Id" style="cursor:pointer"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                <a @onclick="@(() => BorrarMercado(item))" style="cursor:pointer"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in MercadosAuth)
-                                        {
-                                            <tr>
-                                                <th scope="row">@item.Id</th>
-                                                <td>@item.Nombre</td>
-                                                <td>
-                                                    <a href='mercados/editar/@item.Id' style="cursor:pointer"><i class='fas fa-pencil-alt text-secondary'></i></a>
-                                                    <a @onclick="@(() => BorrarMercado(item))" style="cursor:pointer"><i class='far fa-trash-alt ms-text-danger'></i></a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </HayRegistrosCompleto>
-                        </ListadoGenerico>
-                    </div>
+                                    }
+                                </tbody>
+                            </table>
+                        </HayRegistrosCompleto>
+                    </ListadoGenerico>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 
 @code {
     public List<Mercado> MercadosAuth { get; set; }

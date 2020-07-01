@@ -42,6 +42,8 @@
     <Compile Include="Migrations\20200609194335_AddDNIAddressLatLonAppUser.Designer.cs" />
     <Compile Include="Migrations\20200610000349_AddMerRepRoles.cs" />
     <Compile Include="Migrations\20200610000349_AddMerRepRoles.Designer.cs" />
+    <Compile Include="Migrations\20200630185710_AddClientRole.cs" />
+    <Compile Include="Migrations\20200630185710_AddClientRole.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

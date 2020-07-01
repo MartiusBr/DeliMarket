@@ -1,44 +1,72 @@
 ﻿@page "/repartidores"
+
+@inject IJSRuntime js
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
 @attribute [Authorize(Roles = "admin")]
 
-<h3>Indice Repartidores Autorizados</h3>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="ms-panel">
+            <div class="ms-panel-header">
+                <h6>Repartidores Autorizados</h6>
+                <div class="form-group mt-3">
+                    <a class="btn btn-success" href="repartidores/crear">Agregar Repartidor</a>
+                </div>
+            </div>
+            <div class="ms-panel-body">
 
-<div class="form-group">
-    <a class="btn btn-info" href="mercados/crear">Crear Mercado</a>
+                <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
+                            PaginasTotales="paginasTotales"></Paginacion>
+
+                <div class="table-responsive">
+                    <ListadoGenerico Listado="RepartidoresAuth">
+                        <HayRegistrosCompleto>
+                            <table class="table table-hover thead-primary">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre Repartidor</th>
+                                        <th scope="col">DNI</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Número Celular</th>
+                                        <th scope="col">Placa Vehículo</th>
+                                        <th scope="col">Afiliación</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Autorizado</th>
+                                        <th scope="col">Validar/Rechazar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in RepartidoresAuth)
+                                    {
+                                        <tr>
+                                            <th scope="row">@item.Nombre</th>
+                                            <td>@item.DNI</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.NumeroCel</td>
+                                            <td>@item.PlacaVehiculo</td>
+                                            <td>@item.Afiliacion</td>
+                                            <td>@item.Tipo</td>
+                                            <td>@item.Autorizado</td>
+                                            <td>
+                                                <a href="repartidores/editar/@item.Id" style="cursor:pointer"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                                <a @onclick="@(() => BorrarRepartidor(item))" style="cursor:pointer"><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </HayRegistrosCompleto>
+                    </ListadoGenerico>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada"
-            PaginasTotales="paginasTotales"></Paginacion>
-
-<ListadoGenerico Listado="Mercados">
-    <HayRegistrosCompleto>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Mercados)
-                {
-                    <tr>
-                        <td>
-                            <a href="mercados/editar/@item.Id" class="btn btn-success">Editar</a>
-                            <button @onclick="@(() => BorrarMercado(item))" class="btn btn-danger">Borrar</button>
-                        </td>
-                        <td>@item.Nombre</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </HayRegistrosCompleto>
-</ListadoGenerico>
 
 @code {
-    public List<Mercado> Mercados { get; set; }
+    public List<Repartidor> RepartidoresAuth { get; set; }
     private int paginaActual = 1;
     private int paginasTotales;
 
@@ -55,26 +83,31 @@
 
     private async Task Cargar(int pagina = 1)
     {
-        var responseHttp = await repositorio.Get<List<Mercado>>($"api/mercados?pagina={pagina}");
+        var responseHttp = await repositorio.Get<List<Repartidor>>($"api/repartidores?pagina={pagina}");
         if (!responseHttp.Error)
         {
-            Mercados = responseHttp.Response;
+            var TodoRepartidores = responseHttp.Response;
+            RepartidoresAuth = TodoRepartidores.Where(x => x.Autorizado).ToList();
             var conteo = responseHttp.HttpResponseMessage.Headers.GetValues("conteo").FirstOrDefault();
             paginasTotales = int.Parse(responseHttp.HttpResponseMessage.Headers.GetValues("totalPaginas").FirstOrDefault());
         }
     }
 
-    private async Task BorrarMercado(Mercado mercado)
+    private async Task BorrarRepartidor(Repartidor repartidor)
     {
-        var responseHttp = await repositorio.Delete($"api/mercados/{mercado.Id}");
-        if (responseHttp.Error)
+        var confirmar = await js.Confirm($"¿Desea borrar el repartidor {repartidor.Nombre}?");
+        if (confirmar)
         {
-            await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+            var responseHttp = await repositorio.Delete($"api/repartidores/{repartidor.Id}");
+            if (responseHttp.Error)
+            {
+                await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+            }
+            else
+            {
+                //Categorias.Remove(categoria);
+                await Cargar();
+            }
         }
-        else
-        {
-            await Cargar();
-        }
-
     }
 }
