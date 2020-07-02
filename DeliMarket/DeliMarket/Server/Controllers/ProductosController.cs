@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static DeliMarket.Server.ApplicationDbContext;
 
 namespace DeliMarket.Server.Controllers
 {
@@ -32,7 +31,7 @@ namespace DeliMarket.Server.Controllers
             IMapper mapper,
             UserManager<ApplicationUser> userManager)
         {
-            this.context = context;     
+            this.context = context;
             this.almacenadorDeArchivos = almacenadorDeArchivos;
             this.mapper = mapper;
             this.userManager = userManager;
@@ -45,7 +44,7 @@ namespace DeliMarket.Server.Controllers
             var limite = 6; //Limite de productos a mostrar en productos de envío rapido y Programado
 
             var productosEnvioRapido = await context.Productos  //Fitramos los productos que tengan Entrega rápida y tomamos los 6 primeros productos
-                .Where(x => x.EntregaRapida).Take(limite) 
+                .Where(x => x.EntregaRapida).Take(limite)
                 .OrderByDescending(x => x.Lanzamiento)      //Y los ordenamos por su Lanzamiento
                 .ToListAsync();         //Lo convertimos en Lista 
 
@@ -254,14 +253,42 @@ namespace DeliMarket.Server.Controllers
 
         }
 
-        [HttpPost("seleccionar/{id}")]
+        [AllowAnonymous]
+        [HttpPost("seleccionar/{id}")] //Como mercado selecciono un producto y le agrego precio y stock
         public async Task<ActionResult> SeleccionarProductoMercado(int id, ProdMercado prodmercado)
         {
             var productoActionResult = await Get(id); //consigo el producto dando como parámetro su id(Action Result)
             if (productoActionResult.Result is NotFoundResult) { return NotFound(); } // Si no se encuentra el producto retorno NoEncontrado
+            var producto = productoActionResult.Value; //Consigo el vallor del ActionResult dando como resultado el producto
+            var mercado = await context.Mercados.FirstAsync(x => x.Email == HttpContext.User.Identity.Name);
 
-            var productoVisualizarDTO = productoActionResult.Value; //Consigo el vallor del ActionResult dando como resultado el producto
-            
+            var existeProdMer = context.ProductosMercados.Any(x => x.MercadoId == mercado.Id && x.ProductoId == id);
+            if (existeProdMer)  //Solo actualizo
+            {
+                var BDprodMer = await context.ProductosMercados.FirstAsync(x => x.MercadoId == mercado.Id);
+                context.ProductosMercados.Attach(BDprodMer);
+                BDprodMer.Precio = prodmercado.precio;
+                BDprodMer.Stock = prodmercado.stock;
+
+                await context.SaveChangesAsync();
+                return NoContent();
+            }
+            else
+            {   //Creo un nuevo prodMercado
+                var productoMercado = new ProductoMercado
+                {
+                    Mercado = mercado,
+                    MercadoId = mercado.Id,
+                    Precio = prodmercado.precio,
+                    Stock = prodmercado.stock,
+                    ProductoId = producto.Producto.Id,
+                    Producto = producto.Producto
+                };
+                context.Add(productoMercado);
+                await context.SaveChangesAsync();
+                return NoContent();
+            }
+
         }
 
         [HttpDelete("{id}")] //Eliminar un producto por su id , que viene como parámetro
