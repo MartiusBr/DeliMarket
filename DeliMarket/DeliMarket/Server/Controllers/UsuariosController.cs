@@ -107,6 +107,9 @@ namespace DeliMarket.Server.Controllers
 
             if (result.Succeeded)
             {
+                var usuario = userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
+                var mercado = await context.Mercados.FirstOrDefaultAsync(x => x.UserId == usuario.Result.Id);
+                var sfa = "verga";
                 return NoContent();
             }
             else
@@ -114,6 +117,77 @@ namespace DeliMarket.Server.Controllers
                 return BadRequest(result.Errors);
             }
 
+        }
+
+        [HttpGet("listaproductospersonalizada/{entregarapida}/{entregaprogramada}")]
+        public async Task<ActionResult<HomePageDTO>> Get(bool entregarapida, bool entregaprogramada)
+        {
+            //usuario
+            var user = await userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
+
+            //coordenadas del usuario
+            double latitudusario = user.Latitude;
+            double longitudsario = user.Longitude;
+
+            //lista de productos inicial
+            List<Producto> productosgenerales = new List<Producto>();
+
+            //valores de la lista
+            var queryablemer = context.Mercados.AsQueryable();
+            var mercadoDB = await queryablemer.ToListAsync();
+
+            var queryablepromer = context.ProductosMercados.AsQueryable();
+            var productomercadoDB = await queryablepromer.ToListAsync();
+
+
+            //metodo de seleccion
+            foreach (var mer in mercadoDB)
+            {
+                var usuario = await userManager.FindByIdAsync(mer.UserId);
+                double latitudmer = usuario.Latitude;
+                double longitudmer = usuario.Longitude;
+                //double latitudmer = mer.User.Latitude;
+                //double longitudmer = mer.User.Longitude;
+
+                double posicionx = Math.Pow(latitudmer - latitudusario, 2);
+                double posiciony = Math.Pow(longitudmer - longitudsario, 2);
+
+                double distancia = Math.Sqrt(posicionx + posiciony);
+
+                if (distancia <= 50) //FIX!!!
+                {
+                    foreach (var promer in productomercadoDB)
+                    {
+                        if (mer.Id == promer.MercadoId)
+                        {
+                            productosgenerales.Add(promer.Producto);
+                        }
+                    }
+                }
+            }
+
+            //lista especifica de productos segun la orden
+            List<Producto> productosespecificos = new List<Producto>();
+
+            //clacificacion por orden
+            foreach (var pro in productosgenerales)
+            {
+                if (entregarapida == pro.EntregaRapida)
+                {
+                    productosespecificos.Add(pro);
+                }
+                else if (entregaprogramada == pro.EntregaProgramada)
+                {
+                    productosespecificos.Add(pro);
+                }
+            }
+
+            var response = new HomePageDTO() //Inicializamos el modelo
+            {
+                ProductosEnvioRapido = productosespecificos, //Asignamos los productos de Envio Rapido al modelo
+                ProductosEnvioProg = productosespecificos     //Asignamos los productos de Envio programado al modelo
+            };
+            return response;
         }
     }
 }

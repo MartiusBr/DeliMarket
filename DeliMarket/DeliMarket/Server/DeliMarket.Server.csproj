@@ -44,6 +44,8 @@
     <Compile Include="Migrations\20200610000349_AddMerRepRoles.Designer.cs" />
     <Compile Include="Migrations\20200630185710_AddClientRole.cs" />
     <Compile Include="Migrations\20200630185710_AddClientRole.Designer.cs" />
+    <Compile Include="Migrations\20200702060715_AgregandoCamposProdMercado.cs" />
+    <Compile Include="Migrations\20200702060715_AgregandoCamposProdMercado.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

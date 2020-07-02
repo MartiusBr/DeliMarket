@@ -254,6 +254,16 @@ namespace DeliMarket.Server.Controllers
 
         }
 
+        [HttpPost("seleccionar/{id}")]
+        public async Task<ActionResult> SeleccionarProductoMercado(int id, ProdMercado prodmercado)
+        {
+            var productoActionResult = await Get(id); //consigo el producto dando como parámetro su id(Action Result)
+            if (productoActionResult.Result is NotFoundResult) { return NotFound(); } // Si no se encuentra el producto retorno NoEncontrado
+
+            var productoVisualizarDTO = productoActionResult.Value; //Consigo el vallor del ActionResult dando como resultado el producto
+            
+        }
+
         [HttpDelete("{id}")] //Eliminar un producto por su id , que viene como parámetro
         public async Task<ActionResult> Delete(int id)
         {

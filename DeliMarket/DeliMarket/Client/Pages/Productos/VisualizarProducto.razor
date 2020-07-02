@@ -71,18 +71,6 @@ else
                                     <Rating MaximoPuntaje="5" PuntajeSeleccionado="model.VotoUsuario" OnVote="OnVote" />
                                 </td>
                             </tr>
-                            @*<tr>
-                                <th scope="row">Disponibilidad</th>
-                                <td><span class="badge badge-pill badge-primary">In stock</span></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Delivery Charges</th>
-                                <td>Free</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">SKU Identification</th>
-                                <td>23445</td>
-                            </tr>*@
                             <tr>
                                 <th scope="row"></th>
                                 <td></td>
@@ -90,9 +78,33 @@ else
 
                         </tbody>
                     </table>
+                    @if (mostrarCamposEdit)
+                    {
+                    <EditForm Model="ProdMercado" OnValidSubmit="AgregarProdMercado">
+                        <DataAnnotationsValidator />
+                        <div class="form-group">
+                            <label>Precio:</label>
+                            <div>
+                                <InputNumber class="form-control" @bind-Value="@ProdMercado.precio" />
+                                <ValidationMessage For="@(() => ProdMercado.precio)" />
+                            </div>
+                            <label>Stock:</label>
+                            <div>
+                                <InputNumber class="form-control" @bind-Value="@ProdMercado.stock" />
+                                <ValidationMessage For="@(() => ProdMercado.stock)" />
+                            </div>
+                        </div>
+                        <button class="btn btn-success" type="submit">Guardar Cambios</button>
+                    </EditForm>
+                    }
                     <AuthorizeView Roles="admin">
                         <Authorized>
                             <a class="btn btn-info" href="productos/editar/@model.Producto.Id">Editar</a>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="mercado">
+                        <Authorized>
+                            <button class="btn btn-info" @onclick="MostrarEditProdMercado">@txtbtnedit</button>
                         </Authorized>
                     </AuthorizeView>
                 </div>
@@ -132,6 +144,11 @@ else
 @code {
     [Parameter] public int ProductoId { get; set; }
     [Parameter] public string NombreProducto { get; set; }
+    private bool mostrarCamposEdit = false;
+    private string txtbtnedit = "Agregar Precio y Stock";
+    public ProdMercado ProdMercado { get; set; } = new ProdMercado();
+
+
     private ProductoVisualizarDTO model;
     private RenderFragment<Categoria> enlaceCategoria = (categoria) =>@<a style="color:#FFF;" href="productos/buscar?categoriaid=@categoria.Id">@categoria.Nombre</a>;
 
@@ -168,6 +185,25 @@ else
         else
         {
             model = responseHttp.Response;
+        }
+    }
+
+    private void MostrarEditProdMercado()
+    {
+        mostrarCamposEdit = !mostrarCamposEdit;
+        //txtbtnedit = "Cancelar";
+    }
+
+    private async void AgregarProdMercado()
+    {
+        var responseHttp = await repositorio.Post($"api/productos/seleccionar/{ProductoId}", ProdMercado);
+        if (responseHttp.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError("No se puedo guardar los cambios");
+        }
+        else
+        {
+            await mostrarMensajes.MostrarMensajeExitoso("Se agregó a sus productos");
         }
     }
 }

@@ -13,7 +13,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var httpResponse = await repositorio.Get<HomePageDTO>("api/productos");
+        var httpResponse = await repositorio.Get<HomePageDTO>("api/Usuarios/listaproductospersonalizada/true/false");
 
         if (httpResponse.Error)
         {
