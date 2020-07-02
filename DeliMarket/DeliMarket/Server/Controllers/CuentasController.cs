@@ -68,7 +68,7 @@ namespace DeliMarket.Server.Controllers
             rolRepartidor.Add("noauth"); //Por defecto al registrarse el repartidor se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
             if (result.Succeeded)
             {
-                var usuario = await _userManager.GetUserAsync(HttpContext.User);
+                var usuario = await _userManager.FindByEmailAsync(model.Email);
                 var repartidor = new Repartidor
                 {
                     Nombre = model.Nombre,
@@ -104,8 +104,9 @@ namespace DeliMarket.Server.Controllers
             rolMercado.Add("noauth"); //Por defecto al registrarse el mercado se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
             if (result.Succeeded)
             {
-                var usuarioLogged = HttpContext.User;
-                var usuario = await _userManager.GetUserAsync(usuarioLogged);
+                //var usuarioLogged = HttpContext.User;
+                //var usuario = await _userManager.GetUserAsync(usuarioLogged);
+                var usuario = await _userManager.FindByEmailAsync(model.Email);
 
                 var mercado = new Mercado
                 {
