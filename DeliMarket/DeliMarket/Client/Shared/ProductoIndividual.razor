@@ -1,4 +1,5 @@
-﻿<div class="col-lg-4 col-md-6 col-sm-6">
+﻿
+<div class="col-lg-4 col-md-6 col-sm-6">
     <div class="ms-card">
         <div class="ms-card-img">
             <a href="@urlProducto">
@@ -14,19 +15,28 @@
                 <span>Total Ordenes :<strong class="color-red"> 150</strong> </span>
                 <span>Ingresos :<strong class="color-red"> $1000</strong></span>
             </div>
-            <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
+            <AuthorizeView Roles="cliente">
+                <Authorized>
+                    <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
+                    <button type="button" class="btn btn-info">
+                        Agregar a la bolsa
+                    </button>
+                </Authorized>
+            </AuthorizeView>
             <AuthorizeView Roles="admin">
                 <Authorized>
+                    <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
                     <a class="btn btn-info" href="productos/editar/@Producto.Id">Editar</a>
                     <button type="button" class="btn btn-danger"
                             @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
                         Borrar
                     </button>
+                    <a class="btn btn-info" href="productos/editar/@Producto.Id">Editar</a>
                 </Authorized>
             </AuthorizeView>
             <AuthorizeView Roles="mercado">
                 <Authorized>
-                    <a class="btn btn-info" href="productos/editar/@Producto.Id">Seleccionar y editar</a>
+                    <a href="@urlProducto" class="btn btn-light btn-block">Seleccionar y editar</a>
                 </Authorized>
             </AuthorizeView>
         </div>

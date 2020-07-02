@@ -1,0 +1,37 @@
+﻿
+<div class="col-lg-4 col-md-6 col-sm-6">
+    <div class="ms-card">
+        <div class="ms-card-img">
+            <a href="@urlProducto">
+                <img src="@Producto.Poster" alt="card_img" style="height: 200px;">
+            </a>
+        </div>
+        <div class="ms-card-body ">
+            <div class="wrapper-new2 ">
+                <h6>@Producto.TituloCortado</h6>
+                @*<span class="white">$15</span>*@
+            </div>
+            <div class="wrapper-new1">
+                <span>Total Ordenes :<strong class="color-red"> 150</strong> </span>
+                <span>Ingresos :<strong class="color-red"> $1000</strong></span>
+            </div>
+            <a href="@urlProducto" class="btn btn-light btn-block">Actualizar Producto</a>
+            <button type="button" class="btn btn-danger"
+                    @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
+                Borrar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public Producto Producto { get; set; }
+    [Parameter] public EventCallback<Producto> EliminarProducto { get; set; }
+    private string urlProducto = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        urlProducto = $"producto/{Producto?.Id}/{Producto?.Titulo?.Replace(" ", "-")}";
+    }
+}

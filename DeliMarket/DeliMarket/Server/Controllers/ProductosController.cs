@@ -18,7 +18,7 @@ namespace DeliMarket.Server.Controllers
     [Route("api/[controller]")]
     [Route("Dashboard/api/[controller]")]
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin,mercado")]
     public class ProductosController : ControllerBase
     {
         private readonly ApplicationDbContext context; //Declaramos el context (Para acceder a la base de datos)
@@ -62,6 +62,21 @@ namespace DeliMarket.Server.Controllers
             };
 
             return response; //retornamos el modelo(DTO de Inicio)
+
+        }
+
+        [HttpGet("productosMercado")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<Producto>>> GetProductosMercado() //Retornamos un DTO para el inicio(modelo)
+        {
+            var mercado = await context.Mercados.FirstOrDefaultAsync(x => x.Email == HttpContext.User.Identity.Name);
+            var idsProductosMercado = await context.ProductosMercados
+                    .Where(x => x.MercadoId == mercado.Id)
+                    .Select(x => x.ProductoId)
+                    .ToListAsync();
+            var productos = await context.Productos.Where(p => idsProductosMercado.Contains(p.Id)).ToListAsync();
+        
+            return productos; //retornamos el modelo(DTO de Inicio)
 
         }
 
@@ -300,5 +315,21 @@ namespace DeliMarket.Server.Controllers
             await context.SaveChangesAsync();               //Guardo cambios asincronamente
             return NoContent();                             //No retorno ningun contenido
         }
+
+        [HttpDelete("DeleteProductoMercado/{id}")] //Eliminar un producto de la lista de productos que ofrece el mercado
+        public async Task<ActionResult> DeleteProductoMercado(int id)
+        {
+            var mercado = await context.Mercados            //Consigo el mercado logeado
+                .FirstOrDefaultAsync(x => x.Email == HttpContext.User.Identity.Name);
+            var existe = await context.ProductosMercados
+                .AnyAsync(x => x.ProductoId == id && x.MercadoId == mercado.Id); // Verificamos si existe dicho producto
+            if (!existe) { return NotFound(); }              //Si no existe retorno NotFound()
+            var productoMercado = await context.ProductosMercados
+                .FirstOrDefaultAsync(x => x.ProductoId == id && x.MercadoId == mercado.Id);
+            context.Remove(productoMercado);       //Remuevo el producto cuyo id es el pasado en el parámetro
+            await context.SaveChangesAsync();               //Guardo cambios asincronamente
+            return NoContent();                             //No retorno ningun contenido
+        }
+
     }
 }

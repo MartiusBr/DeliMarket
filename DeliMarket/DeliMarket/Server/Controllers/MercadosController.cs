@@ -126,9 +126,20 @@ namespace DeliMarket.Server.Controllers
         {
             var existe = await context.Mercados.AnyAsync(x => x.Id == id);
             if (!existe) { return NotFound(); }
-            context.Remove(new Mercado { Id = id });
-            await context.SaveChangesAsync();
-            return NoContent();
+            var mercado = await context.Mercados.FirstAsync(x => x.Id == id);
+            //context.Remove(new Mercado { Id = id });
+            context.Remove(mercado);
+            var usuarioMercado = await userManager.FindByEmailAsync(mercado.Email);
+            var result = await userManager.DeleteAsync(usuarioMercado);
+            if (result.Succeeded)
+            {
+                await context.SaveChangesAsync();
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

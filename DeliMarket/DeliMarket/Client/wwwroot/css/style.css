@@ -803,6 +803,7 @@ pre{
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.1);
   padding: 0 30px;
+  z-index: 999;
 }
 .navbar .navbar-nav li a:hover{
   background: transparent;
@@ -920,6 +921,19 @@ body:not(.ms-aside-left-open) .ms-aside-toggler .ms-toggler-bar{
 }
 .ms-horizontal-layout .ms-panel .navbar .navbar-nav li.nav-item > a span i{
   margin-right: 5px;
+}
+
+#sidebar-wrapper {
+    z-index: 1;
+    position: fixed;
+    top: 0px;
+    right: 240px;
+    width: 240px;
+    height: 100%;
+    margin-right: -240px;
+    overflow-y: auto;
+    background: #d8d8e5;
+    padding-bottom: 90px;
 }
 
 /* Aside Navigation */
@@ -7487,4 +7501,17 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover{
   .ms-switch .ms-status-switch{
     left: 75%;
   }
+}
+
+#sidebar-wrapper {
+    z-index: 1;
+    position: fixed;
+    top:0px;
+    right: 240px;
+    width: 240px;
+    height: 100%;
+    margin-right: -240px;
+    overflow-y: auto;
+    background: #d8d8e5;
+    padding-bottom: 90px;
 }

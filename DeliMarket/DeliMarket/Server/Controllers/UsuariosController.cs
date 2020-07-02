@@ -109,7 +109,6 @@ namespace DeliMarket.Server.Controllers
             {
                 var usuario = userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
                 var mercado = await context.Mercados.FirstOrDefaultAsync(x => x.UserId == usuario.Result.Id);
-                var sfa = "verga";
                 return NoContent();
             }
             else
@@ -134,11 +133,10 @@ namespace DeliMarket.Server.Controllers
 
             //valores de la lista
             var queryablemer = context.Mercados.AsQueryable();
-            var mercadoDB = await queryablemer.ToListAsync();
+            var mercadoDB = await queryablemer.ToListAsync(); //Todos los mercados
 
             var queryablepromer = context.ProductosMercados.AsQueryable();
-            var productomercadoDB = await queryablepromer.ToListAsync();
-
+            var productomercadoDB = await queryablepromer.ToListAsync(); //Todos los productos de los mercados
 
             //metodo de seleccion
             foreach (var mer in mercadoDB)

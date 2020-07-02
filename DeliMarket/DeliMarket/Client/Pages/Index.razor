@@ -14,18 +14,32 @@
             </div>
         </div>
 
-
-        <h1>¿Que tipo de orden deseas?</h1>
-        <div>
-            <h3>Entrega Rápida</h3>
-            <button @onclick="GoToEntregaRapida">Aquí</button>
-            @*<ListadoProductos Productos="EntregaRapida" />*@
-        </div>
-
-        <div>
-            <h3>Entrega Programada</h3>
-            <button @onclick="GoToEntregaProgramada">Aquí</button>
-            @*<ListadoProductos Productos="EntregaProgramada" />*@
+        <div class="row p-4">
+            <div class="col-md-12">
+                <h2>¿Que tipo de orden deseas?</h2>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="ms-card">
+                    <div class="ms-card-img">
+                        <img src="https://via.placeholder.com/530x240" alt="Cliente-img">
+                    </div>
+                    <div class="ms-card-body">
+                        <h3>Entrega rápida</h3>
+                        <a href="EntregaRapida" class="btn btn-pill btn-gradient-danger">AQUÍ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="ms-card">
+                    <div class="ms-card-img">
+                        <img src="https://via.placeholder.com/530x240" alt="Mercado-img">
+                    </div>
+                    <div class="ms-card-body">
+                        <h3>Entrega Programada</h3>
+                        <a href="EntregaRapida" class="btn btn-pill btn-gradient-warning">AQUÍ</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </Authorized>
     <NotAuthorized>
@@ -33,13 +47,6 @@
     </NotAuthorized>
 </AuthorizeView>
 
-
-
-
-
-@*<AuthorizeView Roles="mercado">
-        Su mercado Esta Autorizado!
-    </AuthorizeView>*@
 
 @code {
 
@@ -49,15 +56,5 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userName = authState.User.Identity.Name;
-    }
-
-    public void GoToEntregaRapida()
-    {
-        navigationManager.NavigateTo("EntregaRapida");
-    }
-
-    public void GoToEntregaProgramada()
-    {
-        navigationManager.NavigateTo("EntregaProgramada");
     }
 }
