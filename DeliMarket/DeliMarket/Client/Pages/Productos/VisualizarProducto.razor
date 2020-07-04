@@ -17,8 +17,8 @@ else
                     <h6>Detalles del producto</h6>
                 </div>
                 <div class="ms-panel-body">
-                    <img class="d-block w-100" src="@model.Producto.Poster" alt="poster del producto">
-                    <div class="carousel-caption d-none d-md-block">
+                    <img class="d-block mr-auto ml-auto" src="@model.Producto.Poster" alt="poster del producto">
+                    <div class="carousel-caption d-none d-md-block mt-3">
                         <h3 class="text-white">@model.Producto.Titulo</h3>
                     </div>
                 </div>
@@ -204,6 +204,7 @@ else
         else
         {
             await mostrarMensajes.MostrarMensajeExitoso("Se agregó a sus productos");
+            navigationManager.NavigateTo("misProductos");
         }
     }
 }

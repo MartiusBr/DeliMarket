@@ -133,10 +133,11 @@ namespace DeliMarket.Server.Controllers
 
             //valores de la lista
             var queryablemer = context.Mercados.AsQueryable();
-            var mercadoDB = await queryablemer.ToListAsync(); //Todos los mercados
+            var mercadoDB = await queryablemer.ToListAsync();
 
             var queryablepromer = context.ProductosMercados.AsQueryable();
-            var productomercadoDB = await queryablepromer.ToListAsync(); //Todos los productos de los mercados
+            var productomercadoDB = await queryablepromer.ToListAsync();
+
 
             //metodo de seleccion
             foreach (var mer in mercadoDB)
@@ -147,21 +148,43 @@ namespace DeliMarket.Server.Controllers
                 //double latitudmer = mer.User.Latitude;
                 //double longitudmer = mer.User.Longitude;
 
-                double posicionx = Math.Pow(latitudmer - latitudusario, 2);
-                double posiciony = Math.Pow(longitudmer - longitudsario, 2);
 
-                double distancia = Math.Sqrt(posicionx + posiciony);
+                double constante = Math.PI / 180;
+                double radiotierra = 6371;
 
-                if (distancia <= 50) //FIX!!!
+                double angulolatitud = (latitudusario - latitudmer) * constante / 2;
+                double angulolongitud = (longitudsario - longitudmer) * constante / 2;
+                //prueba de seno cuadrado
+                //double sin2x = 0.5 - 0.5 * Math.Cos(angulolatitud*2);
+                //double sin2y = 0.5 + 0.5 * Math.Cos(angulolatitud * 2);
+                double cosu = Math.Cos(latitudusario * constante);
+                double cosm = Math.Cos(latitudmer * constante);
+
+                double sin2x = Math.Pow(angulolatitud, 2);
+                double sin2y = Math.Pow(angulolongitud, 2);
+
+                double distancia = Math.Sqrt(sin2x + cosu * cosm * sin2y);
+                distancia = Math.Asin(distancia) * 2;
+                distancia = distancia * radiotierra * 1000;
+
+                if (distancia <= 700) //FIX!!!
                 {
                     foreach (var promer in productomercadoDB)
                     {
                         if (mer.Id == promer.MercadoId)
                         {
-                            productosgenerales.Add(promer.Producto);
+                            if (promer.Stock > 0)
+                            {
+                                int idpro = promer.ProductoId;
+                                var prod = await context.Productos.FirstAsync(x => x.Id == idpro);
+                                productosgenerales.Add(prod);
+                            }
+
                         }
                     }
                 }
+
+
             }
 
             //lista especifica de productos segun la orden
@@ -170,11 +193,12 @@ namespace DeliMarket.Server.Controllers
             //clacificacion por orden
             foreach (var pro in productosgenerales)
             {
-                if (entregarapida == pro.EntregaRapida)
+
+                if (Boolean.Equals(entregarapida, pro.EntregaRapida))
                 {
                     productosespecificos.Add(pro);
                 }
-                else if (entregaprogramada == pro.EntregaProgramada)
+                else if (Boolean.Equals(entregaprogramada, pro.EntregaProgramada))
                 {
                     productosespecificos.Add(pro);
                 }

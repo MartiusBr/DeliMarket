@@ -1,7 +1,7 @@
 ﻿
 <!-- Logo -->
 <div class="logo-sn ms-d-block-lg">
-    <a class="pl-0 ml-0 text-center" href=""> <img src="img/logo.png" alt="logo"> </a>
+    <a class="pl-0 ml-0 text-center" href=""> <img style="width:100px;" src="img/Logo-delimarket.jpeg" alt="logo"> </a>
 </div>
 
 <!-- Navigation -->
@@ -29,6 +29,21 @@
     <AuthorizeView Roles="cliente">
         <Authorized>
             <li class="menu-item">
+                <a href="perfilCliente">
+                    <span><i class="material-icons fs-16">widgets</i>Perfil</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="Usuario/Mapa">
+                    <span><i class="material-icons fs-16">widgets</i>Ubicación del cliente</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="metodoPago">
+                    <span><i class="material-icons fs-16">widgets</i>Método de pago</span>
+                </a>
+            </li>
+            <li class="menu-item">
                 <a href="#">
                     <span><i class="material-icons fs-16">widgets</i>Productos</span>
                 </a>
@@ -53,6 +68,16 @@
 
     <AuthorizeView Roles="mercado">
         <Authorized>
+            <li class="menu-item">
+                <a href="perfilCliente">
+                    <span><i class="material-icons fs-16">widgets</i>Perfil</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="Usuario/Mapa">
+                    <span><i class="material-icons fs-16">widgets</i>Ubicación del mercado</span>
+                </a>
+            </li>
             <li class="menu-item">
                 <a href="productos/buscar">
                     <span><i class="material-icons fs-16">widgets</i>Filtro Productos</span>
@@ -79,6 +104,16 @@
     <AuthorizeView Roles="repartidor">
         <Authorized>
             <li class="menu-item">
+                <a href="perfilCliente">
+                    <span><i class="material-icons fs-16">widgets</i>Perfil</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="Usuario/Mapa">
+                    <span><i class="material-icons fs-16">widgets</i>Ubicación del Repartidor</span>
+                </a>
+            </li>
+            <li class="menu-item">
                 <a href="#">
                     <span><i class="material-icons fs-16">widgets</i>Ordenes</span>
                 </a>
@@ -93,6 +128,16 @@
 
     <AuthorizeView Roles="admin">
         <Authorized>
+            <li class="menu-item">
+                <a href="perfilCliente">
+                    <span><i class="material-icons fs-16">widgets</i>Perfil</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="Usuario/Mapa">
+                    <span><i class="material-icons fs-16">widgets</i>Ubicación del cliente</span>
+                </a>
+            </li>
             <li class="menu-item">
                 <a href="productos/buscar">
                     <span><i class="material-icons fs-16">widgets</i>Filtro Productos</span>

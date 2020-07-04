@@ -14,7 +14,7 @@ namespace DeliMarket.Server.Controllers
 
     [Route("api/[controller]")]
     [Route("Dashboard/api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "admin")]
     public class CategoriasController: ControllerBase
     {
         private readonly ApplicationDbContext context;

@@ -3,7 +3,7 @@
 @inject IRepositorio  repositorio
 
 <h3>Entrega Programada</h3>
-<div>
+<div class="mt-3" style="margin-right:240px;">
     <ListadoProductos Productos="entregaProgramada" />
 </div>
 
@@ -13,7 +13,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        var httpResponse = await repositorio.Get<HomePageDTO>("api/productos");
+        var httpResponse = await repositorio.Get<HomePageDTO>("api/Usuarios/listaproductospersonalizada/false/true");
 
         if (httpResponse.Error)
         {

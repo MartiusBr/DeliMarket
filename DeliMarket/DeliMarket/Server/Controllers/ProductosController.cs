@@ -37,33 +37,33 @@ namespace DeliMarket.Server.Controllers
             this.userManager = userManager;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<HomePageDTO>> Get() //Retornamos un DTO para el inicio(modelo)
-        {
-            var limite = 6; //Limite de productos a mostrar en productos de envío rapido y Programado
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<HomePageDTO>> Get() //Retornamos un DTO para el inicio(modelo)
+        //{
+        //    var limite = 6; //Limite de productos a mostrar en productos de envío rapido y Programado
 
-            var productosEnvioRapido = await context.Productos  //Fitramos los productos que tengan Entrega rápida y tomamos los 6 primeros productos
-                .Where(x => x.EntregaRapida).Take(limite)
-                .OrderByDescending(x => x.Lanzamiento)      //Y los ordenamos por su Lanzamiento
-                .ToListAsync();         //Lo convertimos en Lista 
+        //    var productosEnvioRapido = await context.Productos  //Fitramos los productos que tengan Entrega rápida y tomamos los 6 primeros productos
+        //        .Where(x => x.EntregaRapida).Take(limite)
+        //        .OrderByDescending(x => x.Lanzamiento)      //Y los ordenamos por su Lanzamiento
+        //        .ToListAsync();         //Lo convertimos en Lista 
 
-            var fechaActual = DateTime.Today;   //Conseguimos la fecha de hoy
+        //    var fechaActual = DateTime.Today;   //Conseguimos la fecha de hoy
 
-            var productosEnvioProg = await context.Productos //Filtramos los productos que se lanzarán en el futuro
-                .Where(x => x.Lanzamiento > fechaActual)
-                .OrderBy(x => x.Lanzamiento).Take(limite) //Los ordenamos por Lamzamiento y tomamos los 6 primeros productos
-                .ToListAsync();         //Lo convertimos en Lista
+        //    var productosEnvioProg = await context.Productos //Filtramos los productos que se lanzarán en el futuro
+        //        .Where(x => x.Lanzamiento > fechaActual)
+        //        .OrderBy(x => x.Lanzamiento).Take(limite) //Los ordenamos por Lamzamiento y tomamos los 6 primeros productos
+        //        .ToListAsync();         //Lo convertimos en Lista
 
-            var response = new HomePageDTO() //Inicializamos el modelo
-            {
-                ProductosEnvioRapido = productosEnvioRapido, //Asignamos los productos de Envio Rapido al modelo
-                ProductosEnvioProg = productosEnvioProg     //Asignamos los productos de Envio programado al modelo
-            };
+        //    var response = new HomePageDTO() //Inicializamos el modelo
+        //    {
+        //        ProductosEnvioRapido = productosEnvioRapido, //Asignamos los productos de Envio Rapido al modelo
+        //        ProductosEnvioProg = productosEnvioProg     //Asignamos los productos de Envio programado al modelo
+        //    };
 
-            return response; //retornamos el modelo(DTO de Inicio)
+        //    return response; //retornamos el modelo(DTO de Inicio)
 
-        }
+        //}
 
         [HttpGet("productosMercado")]
         [AllowAnonymous]

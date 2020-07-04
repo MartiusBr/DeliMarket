@@ -158,7 +158,6 @@ namespace DeliMarket.Server.Controllers
 
             if (result.Succeeded)
             {
-
                 var usuario = await _userManager.FindByEmailAsync(userLogin.Email); //Obtengo el cliente por su Email
                 var roles = await _userManager.GetRolesAsync(usuario); //Obtengo sus roles
 
