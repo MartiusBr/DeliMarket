@@ -126,9 +126,11 @@ namespace DeliMarket.Server.Controllers
             {
                 Nombre = x.Mercado.Nombre,
                 Foto = x.Mercado.Foto,
-                Propietario = x.Propietario,
+                Propietario = x.Mercado.Propietario,
                 Id = x.MercadoId
             }).ToList(); //La convertimos en Lista
+
+            //model.Mercados = producto.ProductosMercado.Select(x => x.Mercado).ToList();
 
             model.PromedioVotos = promedioVotos; //Asignamos el Promedio de Votos del Producto
             model.VotoUsuario = votoUsuario;    //Asignamos el voto del Usuario (del Producto)

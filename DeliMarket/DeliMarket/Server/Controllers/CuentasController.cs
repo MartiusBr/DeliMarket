@@ -45,12 +45,15 @@ namespace DeliMarket.Server.Controllers
         {
             var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email,DNI = model.Dni ,PhoneNumber = model.NumeroCel }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
             var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario
-            var rolCliente = new List<string>(); //Creo una Lista vacia
-            rolCliente.Add("cliente"); //Le asigno el rol de cliente por defecto
+            var rolCliente = new List<string>
+            {
+                "cliente" //Le asigno el rol de cliente por defecto
+            }; 
             if (result.Succeeded)   //Si el resultado de crearlo es satisfactorio
             {
+                var userID = user.Id;
                 await _userManager.AddToRoleAsync(user,"cliente");
-                return BuildToken(model, rolCliente); //Le asigno un Token con la lista de Rol que tiene(Cliente por defecto)
+                return BuildToken(model, rolCliente, userID); //Le asigno un Token con la lista de Rol que tiene(Cliente por defecto)
             }
             else
             {
@@ -64,15 +67,19 @@ namespace DeliMarket.Server.Controllers
         {
             var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
             var result = await _userManager.CreateAsync(user, model.Password);
-            var rolRepartidor = new List<string>();
-            rolRepartidor.Add("noauth"); //Por defecto al registrarse el repartidor se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
+            var rolRepartidor = new List<string>
+            {
+                "noauth" //Por defecto al registrarse el repartidor se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
+            };
             if (result.Succeeded)
             {
-                var usuario = await _userManager.FindByEmailAsync(model.Email);
+                //var usuario = await _userManager.FindByEmailAsync(model.Email);
+                var userID = user.Id;
                 var repartidor = new Repartidor
                 {
                     Nombre = model.Nombre,
-                    User = usuario, //Se le asigna el usuario
+                    UserId = userID,
+                    User = user, //Se le asigna el usuario
                     DNI = model.DNI,
                     Email = model.Email,
                     NumeroCel = model.NumeroCel,
@@ -82,12 +89,11 @@ namespace DeliMarket.Server.Controllers
                 var userInfo = new UserInfo { Email = model.Email, Nombre = model.Nombre, NumeroCel = model.NumeroCel };
                 context.Add(repartidor);
                 await context.SaveChangesAsync();
-                return BuildToken(userInfo, rolRepartidor);
+                return BuildToken(userInfo, rolRepartidor, userID);
             }
             else
             {
                 var errores = result.Errors.ToList();
-
                 return BadRequest(errores);
                 //return BadRequest("Username or password invalid"); 
             }
@@ -100,18 +106,21 @@ namespace DeliMarket.Server.Controllers
             var usuarioLogged1 = HttpContext.User;
             var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email, PhoneNumber = model.NumeroCel };
             var result = await _userManager.CreateAsync(user, model.Password);
-            var rolMercado = new List<string>();
-            rolMercado.Add("noauth"); //Por defecto al registrarse el mercado se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
+            var rolMercado = new List<string>
+            {
+                "noauth" //Por defecto al registrarse el mercado se le asigna un rol anonimo hasta que se le asigne el rol de repartidor
+            };
             if (result.Succeeded)
             {
                 //var usuarioLogged = HttpContext.User;
                 //var usuario = await _userManager.GetUserAsync(usuarioLogged);
-                var usuario = await _userManager.FindByEmailAsync(model.Email);
-
+                //var usuario = await _userManager.FindByEmailAsync(model.Email);
+                var userID = user.Id;
                 var mercado = new Mercado
                 {
                     Email = model.Email,
-                    User = usuario,
+                    UserId = userID,
+                    User = user,
                     Nombre = model.Nombre,
                     RUC = model.RUC,
                     NumeroCel = model.NumeroCel,
@@ -123,7 +132,7 @@ namespace DeliMarket.Server.Controllers
                 var userInfo = new UserInfo { Email = model.Email, Nombre = model.Nombre, NumeroCel = model.NumeroCel };
                 context.Add(mercado);
                 await context.SaveChangesAsync();
-                return BuildToken(userInfo, rolMercado);
+                return BuildToken(userInfo, rolMercado, userID);
             }
             else
             {
@@ -146,7 +155,7 @@ namespace DeliMarket.Server.Controllers
             var usuario = await _userManager.FindByEmailAsync(userInfo.Email);
             var roles = await _userManager.GetRolesAsync(usuario);
 
-            return BuildToken(userInfo, roles);
+            return BuildToken(userInfo, roles, usuario.Id);
         }
 
         [HttpPost("Login")] //Accion para Login
@@ -158,12 +167,12 @@ namespace DeliMarket.Server.Controllers
 
             if (result.Succeeded)
             {
-                var usuario = await _userManager.FindByEmailAsync(userLogin.Email); //Obtengo el cliente por su Email
-                var roles = await _userManager.GetRolesAsync(usuario); //Obtengo sus roles
+                var roles = await _userManager.GetRolesAsync(user); //Obtengo sus roles
+                var userID = user.Id;
 
-                UserInfo userInfo = new UserInfo { Email = userLogin.Email, Nombre = usuario.UserName};
+                UserInfo userInfo = new UserInfo { Email = userLogin.Email, Nombre = user.UserName};
 
-                return BuildToken(userInfo, roles); //Construyo el token pasando como parametros el usuario(correo,nombre) y sus roles
+                return BuildToken(userInfo, roles, userID); //Construyo el token pasando como parametros el usuario(correo,nombre) y sus roles
             }
             else
             {
@@ -176,13 +185,13 @@ namespace DeliMarket.Server.Controllers
             return HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
-        private UserToken BuildToken(UserInfo userInfo, IList<string> roles) //Metodo para Construir un Token teniendo como parámetro al usuario y la Lista de Roles que posee
+        private UserToken BuildToken(UserInfo userInfo, IList<string> roles, string userID) //Metodo para Construir un Token teniendo como parámetro al usuario y la Lista de Roles que posee
         {
             var claims = new List<Claim>() //Creo una Lista de Claims (Informacion del usuario)
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email), //
                 new Claim(ClaimTypes.Name, userInfo.Nombre), //Su Nombre
-                new Claim("mivalor", "Lo que yo quiera"), //Cualquier llave - Valor
+                new Claim(ClaimTypes.NameIdentifier, userID), //Cualquier llave - Valor
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) //Id Unico del Token
             };
 

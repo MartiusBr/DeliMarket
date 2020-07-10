@@ -1,0 +1,102 @@
+﻿@page "/repartidor/perfil"
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+
+
+@if (repartidor == null)
+{
+    <text>Cargando...</text>
+}
+else
+{
+    <div class="ms-profile-overview">
+        <div class="ms-profile-cover">
+            <img class="ms-profile-img" src="https://via.placeholder.com/270x270" alt="people">
+            <div class="ms-profile-user-info">
+                <h1 class="ms-profile-username">@repartidor.User.UserName</h1>
+                <AuthorizeView>
+                        <Authorized>
+                            <h2 class="ms-profile-role">Rol : @context.User.FindFirst(System.Security.Claims.ClaimTypes.Role).Value</h2>
+                        </Authorized>
+                </AuthorizeView>
+            </div>
+            @*<div class="ms-profile-user-buttons">
+                <a href="#" class="btn btn-primary"> <i class="material-icons">person_add</i> Editar</a>
+            </div>*@
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xl-6 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-body">
+                    @*<ul class="ms-profile-stats">
+                            <li>
+                                <h3 class="ms-count">5790</h3>
+                                <span>Followers</span>
+                            </li>
+                            <li>
+                                <h3 class="ms-count">4.8</h3>
+                                <span>User Rating</span>
+                            </li>
+                        </ul>*@
+                    <h2 class="section-title">Información Básica</h2>
+                    <table class="table ms-profile-information">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Nombre</th>
+                                <td>@repartidor.User.UserName</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">DNI</th>
+                                <td>@repartidor.User.DNI</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email</th>
+                                <td>@repartidor.User.Email</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Número de celular</th>
+                                <td>+51 @repartidor.User.PhoneNumber</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Placa del vehículo</th>
+                                <td>+51 @repartidor.PlacaVehiculo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Dirección</th>
+                                <td>
+                                    @repartidor.User.AddressName &nbsp;
+                                <a href="Usuario/Mapa" class="btn btn-primary"> <i class="material-icons">person_add</i> Cambiar dirección</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+@code {
+
+    private Repartidor repartidor;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpResponse = await repositorio.Get<Repartidor>("api/usuarios/getRepartidor");
+        if (httpResponse.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError("Error al cargar los productos del mercado");
+        }
+        else
+        {
+            repartidor = httpResponse.Response;
+        }
+    }
+
+}

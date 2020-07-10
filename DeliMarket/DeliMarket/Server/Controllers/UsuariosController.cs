@@ -59,7 +59,47 @@ namespace DeliMarket.Server.Controllers
             }
 
             return usuarios;
+        }
 
+        [HttpGet("getCliente")]
+        public async Task<ActionResult<ApplicationUser>> GetCliente()
+        {
+            var userID = GetUserId();
+            var usuario = await userManager.FindByIdAsync(userID);
+            if (usuario == null)
+            {
+                return BadRequest("El cliente no existe");
+            }
+            return usuario;
+        }
+
+        [HttpGet("getMercado")]
+        public async Task<ActionResult<Mercado>> GetMercado()
+        {
+            var userID = GetUserId();
+            var mercado = await context.Mercados
+                                .Include(m => m.User)
+                                .FirstOrDefaultAsync(m => m.UserId.Equals(userID));
+            if (mercado == null)
+            {
+                return BadRequest("El mercado no existe");
+            }
+            return mercado;
+                                
+        }
+
+        [HttpGet("getRepartidor")]
+        public async Task<ActionResult<Repartidor>> GetRepartidor()
+        {
+            var userID = GetUserId();
+            var repartidor = await context.Repartidores
+                                    .Include(r => r.User)
+                                    .FirstOrDefaultAsync(m => m.UserId.Equals(userID));
+            if (repartidor == null)
+            {
+                return BadRequest("El repartidor no existe");
+            }
+            return repartidor;
         }
 
         [HttpGet("roles")]
@@ -116,6 +156,12 @@ namespace DeliMarket.Server.Controllers
                 return BadRequest(result.Errors);
             }
 
+        }
+
+        private string GetUserId()
+        {
+            var UserID = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return UserID;
         }
 
         [HttpGet("listaproductospersonalizada/{entregarapida}/{entregaprogramada}")]

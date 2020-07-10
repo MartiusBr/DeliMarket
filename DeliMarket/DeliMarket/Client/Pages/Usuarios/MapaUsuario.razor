@@ -9,6 +9,8 @@
 
 <h3>Ingresa tu Ubicación</h3>
 
+
+
 @*<EditForm Model="@latlong" OnValidSubmit="IngresarUbicacion">
     <DataAnnotationsValidator />
 
@@ -39,39 +41,58 @@
 
 </EditForm>*@
 
-    <input style="width:20em" type="text" id="address" name="address" placeholder="Address">
-    <br>
-    <br>
-    <input type="text" id="latitude" name="latitude" placeholder="Latitude" readonly>
-    <br>
-    <br>
-    <input type="text" id="longitude" name="longitude" placeholder="Longitude">
-    <br>
-    <h4>Si no encuentras tu ubicación Seleccionala en el mapa</h4>
+    <input style="width:20em" type="text" id="address" name="address" placeholder="Ingresa tu dirección">
+
+    <input  type="text" id="latitude" name="latitude" placeholder="Latitude" readonly>
+    <input  type="text" id="longitude" name="longitude" placeholder="Longitude" readonly>
+
+    <h3 class="mt-3">Si no encuentras tu ubicación ubícala en el mapa</h3>
     <br>
     <div id="map" style="width:100%;height:400px"></div>
-    <br>
-    <br>
 
-
-<button class="btn btn-info" @onclick="IngresarUbicacion">Agregar Ubicación</button>
+<button class="btn btn-info mt-3" @onclick="IngresarUbicacion">Agregar Ubicación</button>
 
 
 
 @code {
 
-
+    ApplicationUser usuario;
     private LatLong latlong = new LatLong();
 
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
+        var httpResponse = await repositorio.Get<ApplicationUser>("api/usuarios/GetCliente");
+        if (httpResponse.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError("Error al cargar la ubicación del usuario");
+        }
+        else
+        {
+            usuario = httpResponse.Response;
+        }
+
+        Console.WriteLine($"user : {usuario.UserName} ; lat: {usuario.Latitude} - long: {usuario.Longitude}");
+
         if (firstRender)
         {
-            await JSRuntime.InitMap();
+            await JSRuntime.InitMap(usuario.Latitude,usuario.Longitude);
         }
 
     }
+
+    //protected async override Task OnInitializedAsync()
+    //{
+    //    var httpResponse = await repositorio.Get<ApplicationUser>("api/usuarios/GetCliente");
+    //    if (httpResponse.Error)
+    //    {
+    //        await mostrarMensajes.MostrarMensajeError("Error al cargar la ubicación del usuario");
+    //    }
+    //    else
+    //    {
+    //        usuario = httpResponse.Response;
+    //    }
+    //}
 
     private async Task IngresarUbicacion()
     {

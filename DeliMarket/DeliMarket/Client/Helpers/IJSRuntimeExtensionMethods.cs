@@ -32,9 +32,9 @@ namespace DeliMarket.Client.Helpers
                 "localStorage.removeItem",
                 key);
 
-        public static async ValueTask InitMap(this IJSRuntime js)
+        public static async ValueTask InitMap(this IJSRuntime js, double lat, double lng)
         {
-            await js.InvokeVoidAsync("initMap");
+            await js.InvokeVoidAsync("initMap",lat,lng);
         }
 
         public static async ValueTask InitCosticWidgets(this IJSRuntime js)

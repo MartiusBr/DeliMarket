@@ -1,8 +1,8 @@
 ﻿
     var map, infoWindow, marker, address, autocomplete, geocoder;
     var pos = {
-        lat: 27.7172,
-        lng: 85.3240
+        lat: -12.045852889693455,
+        lng: -77.02134237109375
     };
     var options = {
         types: [],
@@ -20,7 +20,11 @@
         return DirLatLong
     }
 
-    function initMap() {
+    function initMap(lat, long) {
+        if (lat != null && long != null) {
+            pos.lat = lat;
+            pos.lng = long;
+        }
         geocoder = new google.maps.Geocoder;
         map = new google.maps.Map(
         document.getElementById('map'), {

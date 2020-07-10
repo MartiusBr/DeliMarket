@@ -127,7 +127,7 @@
                 .Select(x => new CategoriaProducto { CategoriaId = int.Parse(x.Llave) }).ToList();
 
             Producto.ProductosMercado = MercadosSeleccionados
-                .Select(x => new ProductoMercado { MercadoId = x.Id, Propietario = x.Propietario }).ToList();
+                .Select(x => new ProductoMercado { MercadoId = x.Id}).ToList();
 
             if (!string.IsNullOrWhiteSpace(Producto.Poster)) { posterTemporal = null; }
 

@@ -49,6 +49,9 @@ namespace DeliMarket.Server
         public DbSet<ProductoMercado> ProductosMercados { get; set; }
         public DbSet<VotoProducto> VotosProductos { get; set; }
         public DbSet<Repartidor> Repartidores { get; set; }
+        public DbSet<Detalle> Detalles { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
+
 
 
     }
