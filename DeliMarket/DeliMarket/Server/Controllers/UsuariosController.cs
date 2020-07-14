@@ -175,7 +175,8 @@ namespace DeliMarket.Server.Controllers
             double longitudsario = user.Longitude;
 
             //lista de productos inicial
-            List<Producto> productosgenerales = new List<Producto>();
+            List<ProductoMercado> productosgenerales = new List<ProductoMercado>();
+
 
             //valores de la lista
             var queryablemer = context.Mercados.AsQueryable();
@@ -184,6 +185,8 @@ namespace DeliMarket.Server.Controllers
             var queryablepromer = context.ProductosMercados.AsQueryable();
             var productomercadoDB = await queryablepromer.ToListAsync();
 
+            var queryablepro = context.Productos.AsQueryable();
+            var productoDB = await queryablepromer.ToListAsync();
 
             //metodo de seleccion
             foreach (var mer in mercadoDB)
@@ -221,9 +224,10 @@ namespace DeliMarket.Server.Controllers
                         {
                             if (promer.Stock > 0)
                             {
-                                int idpro = promer.ProductoId;
-                                var prod = await context.Productos.FirstAsync(x => x.Id == idpro);
-                                productosgenerales.Add(prod);
+                                /*int idpro = promer.ProductoId;
+                                var prod = await context.Productos.FirstAsync(x => x.Id == idpro);*/
+                                productosgenerales.Add(promer);
+
                             }
 
                         }
@@ -235,25 +239,30 @@ namespace DeliMarket.Server.Controllers
 
             //lista especifica de productos segun la orden
             List<Producto> productosespecificos = new List<Producto>();
-
+            List<ProductoMercado> productosmercadosespecificos = new List<ProductoMercado>();
             //clacificacion por orden
             foreach (var pro in productosgenerales)
             {
-
-                if (Boolean.Equals(entregarapida, pro.EntregaRapida))
+                var prod = await context.Productos.FirstOrDefaultAsync(x => x.Id == pro.ProductoId);
+                pro.Producto = prod;
+                if (Boolean.Equals(entregarapida, prod.EntregaRapida))
                 {
-                    productosespecificos.Add(pro);
+                    productosespecificos.Add(prod);
+                    productosmercadosespecificos.Add(pro);
                 }
-                else if (Boolean.Equals(entregaprogramada, pro.EntregaProgramada))
+                else if (Boolean.Equals(entregaprogramada, prod.EntregaProgramada))
                 {
-                    productosespecificos.Add(pro);
+                    productosespecificos.Add(prod);
+                    productosmercadosespecificos.Add(pro);
                 }
             }
 
             var response = new HomePageDTO() //Inicializamos el modelo
             {
                 ProductosEnvioRapido = productosespecificos, //Asignamos los productos de Envio Rapido al modelo
-                ProductosEnvioProg = productosespecificos     //Asignamos los productos de Envio programado al modelo
+                ProductosMercadoEnvioRapido = productosmercadosespecificos,
+                ProductosEnvioProg = productosespecificos,     //Asignamos los productos de Envio programado al modelo
+                ProductosMercadoEnvioProg = productosmercadosespecificos
             };
             return response;
         }

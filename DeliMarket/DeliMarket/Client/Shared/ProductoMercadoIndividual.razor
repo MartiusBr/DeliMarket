@@ -1,0 +1,45 @@
+﻿@inject OrdenEstado ordenEstado
+
+<div class="col-lg-4 col-md-6 col-sm-6">
+    <div class="ms-card">
+        <div class="ms-card-img">
+            <a href="@urlProducto">
+                <img src="@ProductoMercado.Producto.Poster" alt="card_img" style="height: 200px;">
+            </a>
+        </div>
+        <div class="ms-card-body ">
+            <div class="wrapper-new2 ">
+                <h6>@ProductoMercado.Producto.TituloCortado</h6>
+            </div>
+            <div class="wrapper-new1">
+                <span>Stock :<strong class="color-red"> @ProductoMercado.Stock unit</strong> </span>
+                <span>Precio :<strong class="color-red">S/ @ProductoMercado.Precio</strong></span>
+            </div>
+            <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
+            <button type="button" class="btn btn-info" @onclick="ordenEstado.ConfirmarDetalleProdMercado()">
+                Agregar a la bolsa
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public ProductoMercado ProductoMercado { get; set; }
+    private string urlProducto = string.Empty;
+
+    private Detalle detalle = new Detalle
+    {
+        
+    };
+
+    protected override void OnInitialized()
+    {
+        urlProducto = $"producto/{ProductoMercado.Producto?.Id}/{ProductoMercado.Producto?.Titulo?.Replace(" ", "-")}";
+    }
+
+
+
+
+
+}

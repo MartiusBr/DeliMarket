@@ -10,8 +10,16 @@ namespace DeliMarket.Shared.Entidades
         public int OrdenID { get; set; }
         public Orden Orden { get; set; }
         public ProductoMercado Productomercado { get; set; }
-        public double Cantidad { get; set; }
-        public double Precio { get; set; }
+        public int Cantidad { get; set; }
+        public double precio { get; set; }
+        public double GetTotalPrice()
+        {
+            return Productomercado.Precio * Cantidad;       
+        }
+        public string GetFormattedTotalPrice()
+        {
+            return GetTotalPrice().ToString("0.00");
+        }
 
     }
 }

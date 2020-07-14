@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DeliMarket.Shared.Entidades
@@ -18,5 +19,7 @@ namespace DeliMarket.Shared.Entidades
         public double Montototal { get; set; }
         public double Descuento { get; set; }
         public string Estado { get; set; }
+        public double GetTotalPrice() => Detalles.Sum(d => d.GetTotalPrice());
+        public string GetFormattedTotalPrice() => GetTotalPrice().ToString("0.00");
     }
 }

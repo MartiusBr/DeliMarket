@@ -26,7 +26,6 @@
             <AuthorizeView Roles="admin">
                 <Authorized>
                     <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
-                    <a class="btn btn-info" href="productos/editar/@Producto.Id">Editar</a>
                     <button type="button" class="btn btn-danger"
                             @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
                         Borrar

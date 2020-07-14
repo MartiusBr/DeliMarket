@@ -27,6 +27,7 @@ namespace DeliMarket.Client
         {
             services.AddOptions();
             services.AddSingleton<ServicioSingleton>();
+            services.AddSingleton<OrdenEstado>();
             services.AddTransient<ServicioTransient>();
             services.AddScoped<IRepositorio, Repositorio>(); //Cuando uso el Servicio IRepositorio, me retorna una instancia de Repositorio
             services.AddScoped<IMostrarMensajes, MostrarMensajes>();  //Cuando uso el Servicio IMostrarMensajes, me retorna una instancia de MostrarMensajes
