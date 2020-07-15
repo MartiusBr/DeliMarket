@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
@@ -14,12 +15,17 @@ namespace DeliMarket.Shared.Entidades
         public ApplicationUser User { get; set; }
         public string UserID { get; set; }
         public Repartidor Repartidor { get; set; }
-        public int RepartidorID { get; set; }
-        public List<Detalle> Detalles { get; set; }
+        public int? RepartidorID { get; set; }
+        public List<Detalle> Detalles { get; set; } = new List<Detalle>();
         public double Montototal { get; set; }
         public double Descuento { get; set; }
+        public string DireccionEnvio { get; set; }
         public string Estado { get; set; }
-        public double GetTotalPrice() => Detalles.Sum(d => d.GetTotalPrice());
+        public double GetTotalPrice() 
+        {
+           Montototal = Detalles.Sum(d => d.GetTotalPrice());
+           return Montototal;
+        } 
         public string GetFormattedTotalPrice() => GetTotalPrice().ToString("0.00");
     }
 }

@@ -925,22 +925,40 @@ body:not(.ms-aside-left-open) .ms-aside-toggler .ms-toggler-bar{
   margin-right: 5px;
 }
 
-#sidebar-wrapper {
-    z-index: 1;
-    position: fixed;
-    top: 0px;
-    right: 240px;
-    width: 240px;
-    height: 100%;
-    margin-right: -240px;
+.main {
+    flex-grow: 1;
     overflow-y: auto;
-    background: #d8d8e5;
-    padding-bottom: 90px;
+    background: linear-gradient(rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 80%);
+    padding: 1.5rem !important;
 }
+
+.checkout-cols {
+    display: flex;
+}
+
+    .checkout-cols h4 {
+        margin-bottom: 1.5rem;
+    }
+
+    .checkout-cols > div {
+        flex: 1;
+        margin: 1rem;
+        border: 1px solid #ddd;
+        background: rgba(255,255,255,0.3);
+        padding: 1.25rem 1rem;
+    }
+
+        .checkout-cols > div:first-child {
+            margin-left: 0;
+        }
+
+        .checkout-cols > div:last-child {
+            margin-right: 0;
+        }
 
 .order-contents {
     overflow-y: auto;
-    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    padding: 6rem 1.5rem 1.5rem 1.5rem;
     flex-grow: 1;
 }
 
@@ -1072,6 +1090,140 @@ body:not(.ms-aside-left-open) .ms-aside-toggler .ms-toggler-bar{
     display: flex;
     animation: dialog-container-entry 0.2s;
 }
+
+@keyframes dialog-container-entry {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.dialog {
+    background-color: white;
+    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    z-index: 2000;
+    align-self: center;
+    margin: auto;
+    width: 700px;
+    max-height: calc(100% - 3rem);
+    animation: dialog-entry 0.4s;
+    animation-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000);
+}
+
+@keyframes dialog-entry {
+    0% {
+        transform: translateY(30px) scale(0.95);
+    }
+
+    100% {
+        transform: translateX(0px) scale(1.0);
+    }
+}
+
+.dialog-title {
+    background-color: #444;
+    color: #fff2cc;
+    padding: 1.3rem 2rem;
+}
+
+    .dialog-title h2 {
+        color: white;
+        font-size: 1.4rem;
+        margin: 0;
+        font-family: 'Bahnschrift', Arial, Helvetica, sans-serif;
+        text-transform: uppercase;
+        line-height: 1.3rem;
+    }
+
+.dialog-body {
+    flex-grow: 1;
+    padding: 0.5rem 3rem 1rem 0;
+}
+
+.dialog-buttons {
+    height: 5rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    background-color: #eee;
+    padding: 0 1rem;
+}
+
+.dialog-body > div {
+    display: flex;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.dialog-body label {
+    text-align: right;
+    width: 200px;
+    margin: 0 1.5rem;
+}
+
+.dialog-body input, .dialog-body select {
+    flex-grow: 1;
+    width: unset;
+}
+
+.dialog-body .size-label {
+    min-width: 110px;
+    text-align: right;
+}
+
+.dialog .toppings {
+    text-align: center;
+    display: block;
+    padding-left: 4rem;
+}
+
+.dialog .topping {
+    display: inline-block;
+    background-color: #a04343;
+    color: white;
+    padding: 0.2rem 1rem;
+    border-radius: 2rem;
+    margin: 0.4rem 0.3rem;
+    font-weight: 700;
+}
+
+.dialog .topping-price {
+    font-weight: 100;
+    font-size: 0.8rem;
+}
+
+    .dialog .topping-price::before {
+        content: '£';
+    }
+
+.delete-topping {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.2rem 0.2rem 0.3rem 0.2rem;
+    cursor: pointer;
+}
+
+    .delete-topping:hover {
+        color: yellow;
+    }
+
+.form-message {
+    padding: 0.5rem;
+    font-weight: 700;
+}
+
+.dialog .price {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+
 
 /* Aside Navigation */
 .side-nav {
@@ -7643,12 +7795,13 @@ body:not(.ms-settings-open) .ms-settings-toggle:hover{
 #sidebar-wrapper {
     z-index: 1;
     position: fixed;
-    top:0px;
-    right: 240px;
-    width: 240px;
+    display: flex;
+    flex-direction: column;
+    top: 0px;
+    right: 300px;
+    width: 300px;
     height: 100%;
-    margin-right: -240px;
-    overflow-y: auto;
-    background: #d8d8e5;
-    padding-bottom: 90px;
+    margin-right: -300px;
+    background-color: #2b2b2b;
+    color: white;
 }

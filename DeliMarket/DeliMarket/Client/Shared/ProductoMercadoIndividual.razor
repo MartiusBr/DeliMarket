@@ -16,7 +16,7 @@
                 <span>Precio :<strong class="color-red">S/ @ProductoMercado.Precio</strong></span>
             </div>
             <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
-            <button type="button" class="btn btn-info" @onclick="ordenEstado.ConfirmarDetalleProdMercado()">
+            <button type="button" class="btn btn-info" @onclick="OnConfirm">
                 Agregar a la bolsa
             </button>
         </div>
@@ -26,20 +26,25 @@
 
 @code {
     [Parameter] public ProductoMercado ProductoMercado { get; set; }
-    private string urlProducto = string.Empty;
+    [Parameter] public EventCallback OnConfirm { get; set; }
 
-    private Detalle detalle = new Detalle
-    {
-        
-    };
+    private string urlProducto = string.Empty;
 
     protected override void OnInitialized()
     {
         urlProducto = $"producto/{ProductoMercado.Producto?.Id}/{ProductoMercado.Producto?.Titulo?.Replace(" ", "-")}";
     }
 
+    //private void AgregarBolsaDetalleProdMer()
+    //{
+    //    Console.WriteLine("entre a agregarbolsa");
+    //    var detalle = new Detalle
+    //    {
+    //        Productomercado = this.ProductoMercado,
+    //        Cantidad = 1,
+    //        Precio = ProductoMercado.Precio * 1,
+    //    };
 
-
-
+    //}
 
 }

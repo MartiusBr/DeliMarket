@@ -4,14 +4,16 @@ using DeliMarket.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliMarket.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200715002300_BigChangesSprint5")]
+    partial class BigChangesSprint5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,7 +243,7 @@ namespace DeliMarket.Server.Migrations
                     b.Property<bool>("OrdenRapida")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RepartidorID")
+                    b.Property<int>("RepartidorID")
                         .HasColumnType("int");
 
                     b.Property<string>("UserID")
@@ -409,28 +411,28 @@ namespace DeliMarket.Server.Migrations
                         new
                         {
                             Id = "89086180-b978-4f90-9dbd-a7040bc93f41",
-                            ConcurrencyStamp = "27d65497-3f1b-40ce-8cc2-cba4e67205ca",
+                            ConcurrencyStamp = "ad2baeb7-be7d-4208-8cd3-02340563674b",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = "eb39e7fb-0828-41db-8794-60c9db40171d",
-                            ConcurrencyStamp = "a296bacf-8429-4c43-b981-e530819aff60",
+                            ConcurrencyStamp = "b680ad49-3dff-4208-88af-be2c653c8733",
                             Name = "repartidor",
                             NormalizedName = "repartidor"
                         },
                         new
                         {
                             Id = "fa66c0c6-f867-4623-942c-5ae2debbb902",
-                            ConcurrencyStamp = "809cb2ac-299c-4a37-83ff-1476b5c46c0b",
+                            ConcurrencyStamp = "ed375e76-8e00-4d4a-ab12-28b008b0af22",
                             Name = "mercado",
                             NormalizedName = "mercado"
                         },
                         new
                         {
                             Id = "14200405-23f2-43c9-b0ba-607fcf35e52a",
-                            ConcurrencyStamp = "b1305f6b-bb42-4742-afdf-eb82d057d395",
+                            ConcurrencyStamp = "35ceb6f6-1a92-4b1d-bf15-513ff790b941",
                             Name = "cliente",
                             NormalizedName = "cliente"
                         });
@@ -579,7 +581,9 @@ namespace DeliMarket.Server.Migrations
                 {
                     b.HasOne("DeliMarket.Shared.Entidades.Repartidor", "Repartidor")
                         .WithMany()
-                        .HasForeignKey("RepartidorID");
+                        .HasForeignKey("RepartidorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DeliMarket.Shared.Entidades.ApplicationUser", "User")
                         .WithMany()

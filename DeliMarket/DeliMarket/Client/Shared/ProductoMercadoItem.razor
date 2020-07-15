@@ -1,7 +1,7 @@
 ﻿
 <div class="cart-item">
     <a @onclick="OnRemoved" class="delete-item">x</a>
-    <div class="title">@(Detalle.Productomercado.Producto.Titulo)</div>
+    <div class="title">@(Detalle.Productomercado.Producto.Titulo) - &nbsp; @Detalle.Cantidad unid.</div>
     <div class="item-price">
         @Detalle.GetFormattedTotalPrice()
     </div>

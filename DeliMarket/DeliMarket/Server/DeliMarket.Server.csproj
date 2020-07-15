@@ -48,6 +48,10 @@
     <Compile Include="Migrations\20200702060715_AgregandoCamposProdMercado.Designer.cs" />
     <Compile Include="Migrations\20200710015721_AgregandoOrdenDetalle.cs" />
     <Compile Include="Migrations\20200710015721_AgregandoOrdenDetalle.Designer.cs" />
+    <Compile Include="Migrations\20200715002300_BigChangesSprint5.cs" />
+    <Compile Include="Migrations\20200715002300_BigChangesSprint5.Designer.cs" />
+    <Compile Include="Migrations\20200715012854_BigChangesSprint5-v2.cs" />
+    <Compile Include="Migrations\20200715012854_BigChangesSprint5-v2.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

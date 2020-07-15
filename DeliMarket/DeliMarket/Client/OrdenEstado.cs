@@ -14,23 +14,16 @@ namespace DeliMarket.Client
 
         public Orden Orden { get; private set; } = new Orden();
 
-        //public void MostrarDetalleProdMerDialog(PizzaSpecial special)
-        //{
-        //    DetalleProdMercado = new Detalle()
-        //    {
-                
-        //    }
+        public void MostrarDetalleProdMerDialog(ProductoMercado productoMercado)
+        {
+            DetalleProdMercado = new Detalle()
+            {
+                Productomercado = productoMercado,
+                Cantidad = 1
+            };
 
-        //    ConfiguringPizza = new Pizza()
-        //    {
-        //        Special = special,
-        //        SpecialId = special.Id,
-        //        Size = Pizza.DefaultSize,
-        //        Toppings = new List<PizzaTopping>(),
-        //    };
-
-        //    ShowingConfigureDialog = true;
-        //}
+            ShowingConfigureDialog = true;
+        }
 
         public void CancelarDetalleProdMercado()
         {
@@ -38,11 +31,10 @@ namespace DeliMarket.Client
             ShowingConfigureDialog = false;
         }
 
-        public void ConfirmarDetalleProdMercado(Detalle DetalleProdMercado)
+        public void ConfirmarDetalleProdMercado()
         {
             Orden.Detalles.Add(DetalleProdMercado);
             DetalleProdMercado = null;
-
             ShowingConfigureDialog = false;
         }
 

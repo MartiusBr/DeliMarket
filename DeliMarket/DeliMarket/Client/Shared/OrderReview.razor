@@ -1,0 +1,21 @@
+﻿@foreach (var detalle in Orden.Detalles)
+{
+    <p>
+        <strong>
+            @(detalle.Cantidad)" unidades &nbsp; &nbsp;
+            @detalle.Productomercado.Producto.Titulo
+            (S/ @detalle.GetFormattedTotalPrice())
+        </strong>
+    </p>
+}
+<hr/>
+<p>
+    <strong>
+        Precio Total:
+        S/@Orden.GetFormattedTotalPrice()
+    </strong>
+</p>
+
+@code {
+    [Parameter] public Orden Orden { get; set; }
+}

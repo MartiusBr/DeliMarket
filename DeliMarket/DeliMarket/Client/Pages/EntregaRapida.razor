@@ -3,28 +3,28 @@
 @inject IRepositorio  repositorio
 @inject OrdenEstado ordenEstado
 @inject NavigationManager NavigationManager
-@inject JSRuntime JS
+@inject IJSRuntime js
 
 <h3>Entrega Rápida</h3>
-<div class="mt-3" style="margin-right:240px;">
+<div class="mt-3" style="margin-right:250px;">
     <div class="row mt-2">
         <ListadoGenerico Listado="entregaRapida">
             <HayRegistros Context="productoMercado">
-                <ProductoIndividual Producto="productoMercado"/>
+                <ProductoMercadoIndividual ProductoMercado="productoMercado" OnConfirm="@(()=>ordenEstado.MostrarDetalleProdMerDialog(productoMercado))" />
             </HayRegistros>
         </ListadoGenerico>
     </div>
 </div>
 
 <div id="sidebar-wrapper">
-    @if (orden.Detalles.Any())
+    @if (Orden.Detalles.Any())
     {
         <div class="order-contents">
             <h2>Tu Orden</h2>
 
-            @foreach (var detalle in orden.Detalles)
+            @foreach (var detalle in Orden.Detalles)
             {
-                <ProductoMercadoItem Detalle="detalle" OnRemoved="@(()=>RemoverDetalle(detalle))"/>
+                <ProductoMercadoItem Detalle="detalle" OnRemoved="@(()=>RemoverDetalle(detalle))" />
             }
         </div>
     }
@@ -33,29 +33,33 @@
         <div class="empty-cart">Selecciona un producto<br>para empezar</div>
     }
 
-    <div class="order-total @(orden.Detalles.Any() ? "" : "hidden")">
+    <div class="order-total @(Orden.Detalles.Any() ? "" : "hidden")">
         Total:
-        <span class="total-price">@orden.GetFormattedTotalPrice()</span>
-        <a href="checkout" class="@(orden.Detalles.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
+        <span class="total-price d-block">@Orden.GetFormattedTotalPrice()</span>
+        <a href="checkout" class="@(Orden.Detalles.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
             Order >
         </a>
     </div>
 
-    @*<TemplatedDialog Show="OrderState.ShowingConfigureDialog">
-        <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza"
-                              OnCancel="OrderState.CancelConfigurePizzaDialog"
-                              OnConfirm="OrderState.ConfirmConfigurePizzaDialog" />
-    </TemplatedDialog>*@
 </div>
+
+<TemplatedDialog Show="ordenEstado.ShowingConfigureDialog">
+    <ConfigDetalleProdMerDialog Detalle="ordenEstado.DetalleProdMercado"
+                                OnCancel="ordenEstado.CancelarDetalleProdMercado"
+                                OnConfirm="ordenEstado.ConfirmarDetalleProdMercado" />
+</TemplatedDialog>
 
 @code {
 
-    Orden orden => ordenEstado.Orden;
+    Orden Orden => ordenEstado.Orden;
 
     private List<ProductoMercado> entregaRapida;
 
     protected async override Task OnInitializedAsync()
     {
+
+        Console.WriteLine(Orden.Detalles.Any());
+
         var httpResponse = await repositorio.Get<HomePageDTO>("api/Usuarios/listaproductospersonalizada/true/false");
 
         if (httpResponse.Error)
@@ -70,7 +74,7 @@
 
     async Task RemoverDetalle(Detalle detalle)
     {
-        if (await JS.Confirm($"Remover {detalle.Productomercado.Producto.Titulo} de tu orden?"))
+        if (await js.Confirm($"Remover {detalle.Productomercado.Producto.Titulo} de tu orden?"))
         {
             ordenEstado.RemoverDetalle(detalle);
         }

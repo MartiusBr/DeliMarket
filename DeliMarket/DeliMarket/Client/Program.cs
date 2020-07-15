@@ -27,11 +27,10 @@ namespace DeliMarket.Client
         {
             services.AddOptions();
             services.AddSingleton<ServicioSingleton>();
-            services.AddSingleton<OrdenEstado>();
+            services.AddScoped<OrdenEstado>();
             services.AddTransient<ServicioTransient>();
             services.AddScoped<IRepositorio, Repositorio>(); //Cuando uso el Servicio IRepositorio, me retorna una instancia de Repositorio
             services.AddScoped<IMostrarMensajes, MostrarMensajes>();  //Cuando uso el Servicio IMostrarMensajes, me retorna una instancia de MostrarMensajes
-
             services.AddFileReaderService(options => options.InitializeOnFirstCall = true); //Configurando el servicio de lectura de archivos
             services.AddAuthorizationCore();    //Agregar Autorizacion
 

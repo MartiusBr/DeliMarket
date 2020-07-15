@@ -1,0 +1,49 @@
+﻿@page "/checkout"
+@attribute [Authorize]
+@inject OrdenEstado ordenEstado
+@inject NavigationManager navigationManager
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+@inject IJSRuntime JS
+
+<div class="main">
+
+        <div class="checkout-cols">
+            <div class="checkout-order-details">
+                <h4>Finalizar Orden</h4>
+                <OrderReview Orden="ordenEstado.Orden"/>
+            </div>
+
+        </div>
+
+        <button @onclick="PlaceOrder" type="submit" class="checkout-button btn btn-warning" disabled="@isSubmitting">
+            Realizar Orden
+        </button>
+
+
+</div>
+
+@code {
+    bool isSubmitting;
+
+    private async Task PlaceOrder()
+    {
+        isSubmitting = true;
+
+        var httpResponse = await repositorio.Post<Orden>("api/ordenes/realizarOrden", ordenEstado.Orden);
+        if (httpResponse.Error)
+        {
+            await mostrarMensajes.MostrarMensajeError("Error al realizar la orden ! :(");
+        }
+        else
+        {
+            ordenEstado.ResetOrder();
+            var idOrden = httpResponse.Response;
+            await mostrarMensajes.MostrarMensajeExitoso("La orden se realizó con éxito");
+            Console.WriteLine(idOrden);
+            navigationManager.NavigateTo("");
+            //navigationManager.NavigateTo($"misordenes/{idOrden}");
+        }
+
+    }
+}
