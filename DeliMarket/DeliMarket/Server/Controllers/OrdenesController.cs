@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DeliMarket.Server.Helpers;
+using DeliMarket.Shared.DTOs;
 using DeliMarket.Shared.Entidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -90,6 +91,60 @@ namespace DeliMarket.Server.Controllers
             return UserID;
         }
 
+
+
+
+        [AllowAnonymous]
+        [HttpGet("ListaOrdenPersonalizada")]
+        public async Task<ActionResult<List<Orden>>> ListaOrdenPersonalizada()// Devuelve las ordenes que tenga un usuario a su nombre
+        {            
+            List<Orden> ordenes = new List<Orden>();
+            string usuarioID = GetUserId();
+            var repartidor = await context.Repartidores.FirstOrDefaultAsync(x => x.UserId == usuarioID);
+            
+            var qordenes = context.Ordenes.AsQueryable();
+            var ordenDB = await qordenes.ToListAsync();
+            foreach (var ord in ordenDB)
+            {
+                if (repartidor == null)
+                {
+                    if (ord.UserID == usuarioID)
+                    {
+                        ordenes.Add(ord);
+                    }
+                }
+                else if (ord.RepartidorID == repartidor.Id)
+                {
+                    ordenes.Add(ord);
+
+                }
+                
+                
+            }
+                        
+            return ordenes;
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("ListaOrdenDisponibles")]
+        public async Task<ActionResult<List<Orden>>> ListaOrdenesDisponibles() //ordenes que esten disponibles para el repartidor
+        {
+            
+            List<Orden> ordenes = new List<Orden>();
+            
+            var qordenes = context.Ordenes.AsQueryable();
+            var ordenDB = await qordenes.ToListAsync();
+            foreach (var ord in ordenDB)
+            {
+                if (ord.Estado.Equals("disponible"))
+                {
+                    ordenes.Add(ord);
+                }
+            }
+            
+            return ordenes;
+        }
 
     }
 }

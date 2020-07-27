@@ -1,0 +1,110 @@
+﻿@inject IJSRuntime js
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+@inject NavigationManager navigationManager
+@page "/ReporteM"
+<div class="h4">Reportin :D</div>
+
+<div>
+    <EditForm Model="rep" OnValidSubmit="data">
+        <div class="form-group">
+            <label>Año:</label>
+            <div>
+                <InputNumber class="form-control" @bind-Value="@ano" />
+                <ValidationMessage For="@(() => ano)" />
+            </div>
+            <label for="meses">Meses:</label>
+
+            <InputSelectNumber class="form-control"
+                               ValueChanged="@((int value)=>cambioMes(value))"
+                               ValueExpression="@(()=>mes)"
+                               Value="mes">
+                <option value="0">--Seleccione un mes</option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </InputSelectNumber>
+
+        </div>        
+        <button type="submit" id="submitButton" class="btn btn-pill btn-outline-warning cloudy-knoxville-gradient waves-effect" >Mostrar</button>
+    </EditForm>
+</div>
+
+<div class="row">
+    <div class="card mt-4 mb-4 grey lighten-4">
+        <div class="h3 card-header  mt-4 mb-4 text-center">Cantidad de productos vendidos</div>
+        <canvas id="pie-chart-m1" width="701" height="350" readonly></canvas>
+    </div>
+    <div class="card mt-4 mb-4 grey lighten-4">
+        <div class="h3 card-header  mt-4 mb-4 text-center">Ganancia Obtenida</div>
+        <canvas id="pie-chart-m2" width="701" height="350" readonly></canvas>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public List<ProductoMercado> Productos { get; set; }
+    private List<ReporteMercadoDTO> Reporte { get; set; }
+    ReporteMercadoDTO rep { get; set; }
+    private int mes { get; set; }
+    private int ano { get; set; }
+
+    protected void cambioMes(int value)
+    {
+        mes = value;
+    }
+    private async void data()
+    {
+        
+        var responseHttp = await repositorio.Get<List<ReporteMercadoDTO>>($"api/Reportes/FiltroMercado/{ano}/{mes}");
+
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetBody();
+                await mostrarMensajes.MostrarMensajeError(mensajeError);
+            }
+        }
+        else
+        {
+            Reporte = responseHttp.Response;
+        }
+        StateHasChanged();
+        cuadro();
+    }
+
+    private async void cuadro()
+    {
+
+        await js.InvokeVoidAsync("piecharts", Reporte);
+        StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        rep = new ReporteMercadoDTO();
+        //mes = System.DateTime.Now.Month;
+        mes = System.DateTime.Now.Month;
+        ano = System.DateTime.Now.Year;
+        data();
+
+
+
+
+
+    }
+}

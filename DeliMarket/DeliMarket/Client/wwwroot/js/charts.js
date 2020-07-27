@@ -1,5 +1,115 @@
-(function($) {
-  'use strict';
+function barcharts(reporte,fecha) {
+    'use strict';
+    var button = document.getElementById("submitButton");
+    submitButton.addEventListener("click", function () {
+        chart.destroy();
+    });
+    
+
+    //el metodo
+    var dias=[]
+    var ordenes = [];
+
+    for (var i = 0; i < 20; i++) {
+        ordenes[i] = [];
+    }
+    var or = [];
+    
+    //debugger;
+    for (var x = 0; x < ordenes.length; x++) {
+        for (var y = 0; y < 31; y++) {            
+            for (var i = 0; i < reporte.length; i++) {                                
+                if (reporte[i].fechaDia - 1 == y) {
+                    if (ordenes[x][y] == null) {
+                        if (or.indexOf(reporte[i].ordenID) == -1) {
+
+                            ordenes[x][y] = reporte[i].total;
+
+                            or.push(reporte[i].ordenID);
+
+
+                        }
+                    }
+                }
+                
+                
+            }
+        }
+    }
+
+
+
+
+    //poner los dias
+    //debugger;
+    if (fecha == 2) {
+        if (fecha % 4 == 0) {
+            dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+        } else {
+            dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+        }
+
+    } else if (fecha % 2 != 0) {
+        dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    } else {
+        dias = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+    }
+
+
+    var ctx = document.getElementById("barcharts").getContext("2d");
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        
+        
+        data: {
+            
+            labels: dias,
+            for() {
+
+            },
+            datasets: [{   
+                backgroundColor: "#ff0018", 
+                
+                
+                data: ordenes[0]
+            },
+            {
+
+                backgroundColor:"#f7b11b",
+                
+                data: ordenes[1]
+            },
+            {
+
+                    backgroundColor: "#ff6c60",
+
+                data: ordenes[2]
+
+                //agegar 27 mas
+            }]
+            },
+        options: {
+            responsive:true,
+            legend: { display: false },                        
+            scales: {
+                xAxes: [{
+                    stacked:true
+                }],
+                yAxes: [{
+                    stacked:true,
+                    ticks: {
+                        beginAtZero: true,     
+                        
+                    }
+                }]
+            }
+            
+        }
+    });
+    
+   //window.alert(ordenes[1][16]);
+  
+    /*
     //Pie Chart
   new Chart(document.getElementById("pie-chart"), {
     type: 'pie',
@@ -18,9 +128,9 @@
       }
     }
   });
+  */
 
-
-
+/*
   // Bar chart
   var barChart = new Chart(document.getElementById("bar-chart"), {
       type: 'bar',
@@ -79,7 +189,7 @@
         }]
     },
     options: {
-        legend: {
+    /*    legend: {
         display: false,
         position: "bottom"
         },
@@ -152,7 +262,7 @@
     options: {
       title: {
         display: true,
-        text: 'Predicted world population (millions) in 2050'
+    /*    text: 'Predicted world population (millions) in 2050'
       }
     }
   });
@@ -221,5 +331,100 @@
       legend: { display: false }
     }
   });
+  */
+};
 
-})(jQuery);
+function piecharts(reporte) {
+    'use strict';
+    //destructor
+    var button = document.getElementById("submitButton");
+    submitButton.addEventListener("click", function () {
+        chart.destroy();
+    });
+
+    //varaibles
+    var producto = [];
+    var cantidad = [];
+    var ganancia =[];
+
+    for (var x = 0; x < reporte.length; x++) {
+        producto.push(reporte[x].producto);
+        cantidad.push(reporte[x].ventatotal)
+        ganancia.push(reporte[x].gananciatotal)
+    }
+
+    //cuadros
+    new Chart(document.getElementById("pie-chart-m1"), {
+        type: 'pie',
+        data: {
+            labels: producto,
+            datasets: [{
+                label: "Population (millions)",
+                backgroundColor: ["#ff0018", "#f7b11b", "#ff6c60", "#8663e1", "#08bf6f"],
+                data: cantidad
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Predicted Resturant Ratings (millions) in 2050'
+            }
+        }
+    });
+
+    new Chart(document.getElementById("pie-chart-m2"), {
+        type: 'pie',
+        data: {
+            labels: producto,
+            datasets: [{
+                label: "Population (millions)",
+                backgroundColor: ["#ff0018", "#f7b11b", "#ff6c60", "#8663e1", "#08bf6f"],
+                data: ganancia
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Predicted Resturant Ratings (millions) in 2050'
+            }
+        }
+    });
+};
+
+function piechartsadmin(reporte) {
+    'use strict';
+    //destructor
+    var button = document.getElementById("submitButton");
+    submitButton.addEventListener("click", function () {
+        chart.destroy();
+    });
+
+    //varaibles
+    var nombre = [];    
+    var ganancia = [];
+
+    for (var x = 0; x < reporte.length; x++) {
+        nombre.push(reporte[x].nombre);        
+        ganancia.push(reporte[x].gananciatotal)
+    }
+
+    //cuadros
+    new Chart(document.getElementById("pie-chart-adm1"), {
+        type: 'pie',
+        data: {
+            labels: nombre,
+            datasets: [{
+                label: "Population (millions)",
+                backgroundColor: ["#ff0018", "#f7b11b", "#ff6c60", "#8663e1", "#08bf6f"],
+                data: ganancia
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Predicted Resturant Ratings (millions) in 2050'
+            }
+        }
+    });
+    
+};

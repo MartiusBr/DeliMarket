@@ -5369,13 +5369,13 @@ table.dataTable thead .sorting_desc_disabled:after{
   flex: 1 1 auto;
   height: 100vh;
 }
-.ms-auth-bg{
-  position: relative;
-  height: 100%;
-  background-image: url('https://via.placeholder.com/1000x700');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
+.ms-auth-bg {
+    position: relative;
+    height: 100%;
+    background-image: url('../img/DelimarketenLogin.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 .ms-auth-form{
   position: relative;
@@ -5729,8 +5729,8 @@ a.ms-g-plus,
   position: relative;
   display: flex;
   align-items: flex-end;
-  background-image: url('https://via.placeholder.com/1920x400');
-  background-size: cover;
+  background-image: url('../img/delibanner.png');
+  background-size: contain;
   background-position: center bottom;
   background-repeat: no-repeat;
   height: 87%;

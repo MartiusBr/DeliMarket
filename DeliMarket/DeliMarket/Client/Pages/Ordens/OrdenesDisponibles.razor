@@ -1,0 +1,88 @@
+﻿@inject IJSRuntime js
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+@inject NavigationManager navigationManager
+@page "/listaordenD"
+<h3>Lista de ordenes disponibles</h3>
+<div class="row mt-2">
+    <table class="table">
+        <ListadoGenerico Listado="Ordenes">
+            <HayRegistros Context="orden">
+                <tr>
+                    <td>
+                        <div class="col">
+                            <h5>@orden.FechaCreacion</h5>
+                            Items:
+                            <strong>cantidad de objetos</strong>;
+                            Total price:
+                            <strong>@orden.Montototal</strong>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col">
+                            Status: <strong>@orden.Estado</strong>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col flex-grow-0">
+                            <a href="myorders/@orden.Id" class="btn btn-success">
+                                Info &gt;
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(1,orden.Id))">Disponible</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(2,orden.Id))">Procesando</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(3,orden.Id))">Enviando</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(4,orden.Id))">Completado</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </HayRegistros>
+        </ListadoGenerico>
+    </table>
+
+</div>
+
+
+
+@code {
+    [Parameter] public List<ProductoMercado> Productos { get; set; }
+    private List<Orden> Ordenes { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHttp = await repositorio.Get<List<Orden>>($"api/Ordenes/ListaOrdenDisponibles");
+
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetBody();
+                await mostrarMensajes.MostrarMensajeError(mensajeError);
+            }
+        }
+        else
+        {
+            Ordenes = responseHttp.Response;
+        }
+    }
+
+    protected async Task ActualizarEstado(int estado, int id)
+    {
+        //aca el metod para actualizar el estado
+    }
+}
