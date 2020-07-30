@@ -34,7 +34,7 @@ namespace DeliMarket.Server
             services.AddDbContext<ApplicationDbContext>(options => 
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>() //Configuracion de Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.User.AllowedUserNameCharacters = String.Empty; }) //Configuracion de Identity
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

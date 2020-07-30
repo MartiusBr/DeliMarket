@@ -11,13 +11,15 @@
 
 <div class="ms-auth-container">
     <div class="ms-auth-col">
-        <div class="ms-auth-bg"></div>
+        <div class="ms-auth-bg">
+            <img style="width:290px" src="img/DelimarketenLogin.png" alt="Alternate Text" />
+        </div>
     </div>
     <div class="ms-auth-col">
         <div class="ms-auth-form">
-            <EditForm Model="@mercadoInfo" class="needs-validation" OnValidSubmit="CrearMercado">
+            <EditForm Model="@mercadoInfo" style="margin-top:100px" class="needs-validation" OnValidSubmit="CrearMercado">
                 <DataAnnotationsValidator />
-                <h1>Registro Mercado</h1>
+                <h3>Registro Mercado</h3>
                 <p>Porfavor ingresa los siguientes datos para continuar</p>
                 <div class="mb-3">
                     <label>RUC</label>
@@ -90,7 +92,8 @@
         else
         {
             await loginService.Login(httpResponse.Response);
-            navigationManager.NavigateTo("Usuario/Mapa");
+            await loginService.Logout();
+            navigationManager.NavigateTo("EstadoSolicitud");
         }
     }
 }

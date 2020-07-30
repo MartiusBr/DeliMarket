@@ -52,6 +52,10 @@
     <Compile Include="Migrations\20200715002300_BigChangesSprint5.Designer.cs" />
     <Compile Include="Migrations\20200715012854_BigChangesSprint5-v2.cs" />
     <Compile Include="Migrations\20200715012854_BigChangesSprint5-v2.Designer.cs" />
+    <Compile Include="Migrations\20200728020933_addNewRole.cs" />
+    <Compile Include="Migrations\20200728020933_addNewRole.Designer.cs" />
+    <Compile Include="Migrations\20200730004748_AgregandoCantidadTotalenOrden.cs" />
+    <Compile Include="Migrations\20200730004748_AgregandoCantidadTotalenOrden.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

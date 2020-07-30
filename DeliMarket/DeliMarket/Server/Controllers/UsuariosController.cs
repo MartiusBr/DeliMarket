@@ -110,6 +110,20 @@ namespace DeliMarket.Server.Controllers
             return ListaRoles;
         }
 
+        //[HttpPost("asignarRol")]
+        //public async Task<ActionResult> AsignarRolUsuario(EditarRolDTO editarRolDTO)
+        //{
+        //    var usuario = await userManager.FindByIdAsync(editarRolDTO.UserId); //Buscamos al usuario por el Id Proporcionado en el model
+        //    if (await userManager.IsInRoleAsync(usuario, editarRolDTO.RoleId)) //Si el usuario ya posee el rol no lo sobreescribiremos y le mostramos el mensaje
+        //    {
+        //        var rolsito = await roleManager.FindByNameAsync(editarRolDTO.RoleId);
+        //        Console.WriteLine($"El usuario ya posee el rol de {rolsito.NormalizedName}");
+        //        return NoContent();
+        //    }
+        //    await userManager.AddToRoleAsync(usuario, editarRolDTO.RoleId);
+        //    return NoContent();
+        //}
+
         [HttpPost("asignarRol")]
         public async Task<ActionResult> AsignarRolUsuario(EditarRolDTO editarRolDTO)
         {
@@ -120,7 +134,9 @@ namespace DeliMarket.Server.Controllers
                 Console.WriteLine($"El usuario ya posee el rol de {rolsito.NormalizedName}");
                 return NoContent();
             }
-            await userManager.AddToRoleAsync(usuario, editarRolDTO.RoleId);
+            var roles = await userManager.GetRolesAsync(usuario);   //conseguimos todos los roles del usuario
+            await userManager.RemoveFromRolesAsync(usuario, roles.ToArray()); //Removemos todos sus roles
+            await userManager.AddToRoleAsync(usuario, editarRolDTO.RoleId); //Para asignarle un nuevo Rol
             return NoContent();
         }
 

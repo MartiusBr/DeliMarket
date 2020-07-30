@@ -95,6 +95,7 @@ namespace DeliMarket.Server.Controllers
             //var usuario = await userManager.FindByEmailAsync(HttpContext.User.Identity.Name);
             var usuario = await userManager.FindByEmailAsync(mercado.Email);
 
+            await userManager.RemoveFromRoleAsync(usuario, "noauth");
             await userManager.AddToRoleAsync(usuario, "mercado");
 
             await context.SaveChangesAsync();
@@ -128,11 +129,11 @@ namespace DeliMarket.Server.Controllers
             if (!existe) { return NotFound(); }
             var mercado = await context.Mercados.FirstAsync(x => x.Id == id);
             //context.Remove(new Mercado { Id = id });
-            context.Remove(mercado);
             var usuarioMercado = await userManager.FindByEmailAsync(mercado.Email);
             var result = await userManager.DeleteAsync(usuarioMercado);
             if (result.Succeeded)
             {
+                context.Remove(mercado);
                 await context.SaveChangesAsync();
                 return NoContent();
             }

@@ -61,13 +61,14 @@ namespace DeliMarket.Server.Controllers
             orden.UserID = idUsuario;
             orden.DireccionEnvio = usuario.AddressName;
             orden.Estado = "disponible";
-            //orden.User = usuario;
+            //orden.User = usuario
 
             foreach (var detalle in orden.Detalles)
             {
                 detalle.ProductoId = detalle.Productomercado.ProductoId;
                 detalle.MercadoId = detalle.Productomercado.MercadoId;
                 detalle.Productomercado = null;
+                orden.CantidadTotal += detalle.Cantidad;
             }
 
             context.Add(orden);
@@ -91,9 +92,6 @@ namespace DeliMarket.Server.Controllers
             return UserID;
         }
 
-
-
-
         [AllowAnonymous]
         [HttpGet("ListaOrdenPersonalizada")]
         public async Task<ActionResult<List<Orden>>> ListaOrdenPersonalizada()// Devuelve las ordenes que tenga un usuario a su nombre
@@ -101,7 +99,6 @@ namespace DeliMarket.Server.Controllers
             List<Orden> ordenes = new List<Orden>();
             string usuarioID = GetUserId();
             var repartidor = await context.Repartidores.FirstOrDefaultAsync(x => x.UserId == usuarioID);
-            
             var qordenes = context.Ordenes.AsQueryable();
             var ordenDB = await qordenes.ToListAsync();
             foreach (var ord in ordenDB)
@@ -116,12 +113,8 @@ namespace DeliMarket.Server.Controllers
                 else if (ord.RepartidorID == repartidor.Id)
                 {
                     ordenes.Add(ord);
-
-                }
-                
-                
-            }
-                        
+                }     
+            }        
             return ordenes;
         }
 

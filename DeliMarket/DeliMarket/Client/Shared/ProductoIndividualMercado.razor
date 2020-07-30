@@ -11,10 +11,10 @@
                 <h6>@Producto.TituloCortado</h6>
                 @*<span class="white">$15</span>*@
             </div>
-            <div class="wrapper-new1">
+            @*<div class="wrapper-new1">
                 <span>Total Ordenes :<strong class="color-red"> 150</strong> </span>
                 <span>Ingresos :<strong class="color-red"> $1000</strong></span>
-            </div>
+            </div>*@
             <a href="@urlProducto" class="btn btn-light btn-block">Actualizar Producto</a>
             <button type="button" class="btn btn-danger"
                     @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">

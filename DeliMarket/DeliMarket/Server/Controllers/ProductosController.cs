@@ -318,6 +318,20 @@ namespace DeliMarket.Server.Controllers
             return NoContent();                             //No retorno ningun contenido
         }
 
+        [HttpGet("GetProductoMercado/{id}")] 
+        public async Task<ActionResult<ProdMercado>> GetProductoMercado(int id)
+        {
+            var mercado = await context.Mercados            
+                .FirstOrDefaultAsync(x => x.Email == HttpContext.User.Identity.Name);
+            var existe = await context.ProductosMercados
+                .AnyAsync(x => x.ProductoId == id && x.MercadoId == mercado.Id); // Verificamos si existe dicho producto
+            if (!existe) { return BadRequest(); }              //Si no existe retorno NotFound()
+            var productoMercado = await context.ProductosMercados
+                .FirstOrDefaultAsync(x => x.ProductoId == id && x.MercadoId == mercado.Id);
+            var prodMercadoPriceStock = new ProdMercado { precio = productoMercado.Precio, stock = productoMercado.Stock };
+            return prodMercadoPriceStock;                             
+        }
+
         [HttpDelete("DeleteProductoMercado/{id}")] //Eliminar un producto de la lista de productos que ofrece el mercado
         public async Task<ActionResult> DeleteProductoMercado(int id)
         {

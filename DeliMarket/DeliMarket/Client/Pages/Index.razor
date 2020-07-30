@@ -6,25 +6,16 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-<AuthorizeView Roles="admin,mercado,cliente,repartidor">
+<AuthorizeView Roles="admin,cliente">
     <Authorized>
-
         <div class="col-md-12 h1">Bievenido @userName</div>
-
         <div class=" h2 text-center">¿Que tipo de orden deseas? </div>
         <div class="row p-4">
-
-
-
-
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="ms-card  text-center">
-                    
-                        
                         <div class="ms-card-img ">
                             <img  class="" style="height:180px" src="img/entrega-rapida.jpg" alt="Cliente-img">
                         </div>
-                    
                     <div class="ms-card-body">
                          <div class="row align-items-center">
                         <div class="h3 col-8">Entrega rápida</div>
@@ -50,12 +41,23 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </Authorized>
-    <NotAuthorized>
-        <Login/>
-    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="repartidor">
+    <Authorized>
+        <DeliMarket.Client.Pages.Ordens.OrdenesDisponibles/>
+    </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="mercado">
+    <Authorized>
+        <DeliMarket.Client.Pages.Mercados.MisProductos/>
+    </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="noauth">
+    <Authorized>
+        <DeliMarket.Client.Pages.Auth.EstadoSolicitud/>
+    </Authorized>
 </AuthorizeView>
 
 
@@ -67,5 +69,6 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userName = authState.User.Identity.Name;
+        //var rol = authState.User.Identity.
     }
 }

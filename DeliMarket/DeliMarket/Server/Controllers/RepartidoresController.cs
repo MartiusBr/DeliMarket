@@ -63,6 +63,7 @@ namespace DeliMarket.Server.Controllers
 
             var usuario = await userManager.FindByEmailAsync(repartidor.Email);
 
+            await userManager.RemoveFromRoleAsync(usuario, "noauth");
             await userManager.AddToRoleAsync(usuario, "repartidor");
 
             await context.SaveChangesAsync();
@@ -72,11 +73,37 @@ namespace DeliMarket.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var existe = await context.Repartidores.AnyAsync(x => x.Id == id);
+            var existe = await context.Mercados.AnyAsync(x => x.Id == id);
             if (!existe) { return NotFound(); }
-            context.Remove(new Repartidor { Id = id });
-            await context.SaveChangesAsync();
-            return NoContent();
+            var repartidor = await context.Mercados.FirstAsync(x => x.Id == id);
+            //context.Remove(new Mercado { Id = id });
+            var usuarioRepartidor = await userManager.FindByEmailAsync(repartidor.Email);
+            var result = await userManager.DeleteAsync(usuarioRepartidor);
+            if (result.Succeeded)
+            {
+                context.Remove(repartidor); 
+                await context.SaveChangesAsync();
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            //var existe = await context.Repartidores.AnyAsync(x => x.Id == repartidor.Id);
+            //if (!existe) { return NotFound(); }
+            //context.Remove(new Repartidor { Id = repartidor.Id });
+            //var user = await userManager.FindByIdAsync(repartidor.UserId);
+            //var result = await userManager.DeleteAsync(user);
+            //if (result.Succeeded)
+            //{
+            //    await context.SaveChangesAsync();
+            //    return NoContent();
+            //}
+            //else
+            //{
+            //    return BadRequest();
+            //}
         }
 
     }

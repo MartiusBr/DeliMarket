@@ -21,6 +21,7 @@ namespace DeliMarket.Shared.Entidades
         public double Descuento { get; set; }
         public string DireccionEnvio { get; set; }
         public string Estado { get; set; }
+        public int CantidadTotal { get; set; }
         public double GetTotalPrice() 
         {
            Montototal = Detalles.Sum(d => d.GetTotalPrice());

@@ -83,6 +83,23 @@
 
     protected async Task ActualizarEstado(int estado, int id)
     {
-        //aca el metod para actualizar el estado
+        var responseHttp = await repositorio.Get<List<Orden>>($"api/Ordenes/ListaOrdenDisponibles");
+
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetBody();
+                await mostrarMensajes.MostrarMensajeError(mensajeError);
+            }
+        }
+        else
+        {
+            Ordenes = responseHttp.Response;
+        }
     }
 }

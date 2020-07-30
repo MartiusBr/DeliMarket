@@ -35,10 +35,13 @@ namespace DeliMarket.Server
             { Id = "fa66c0c6-f867-4623-942c-5ae2debbb902", Name = "mercado", NormalizedName = "mercado" };
             var roleCliente = new IdentityRole()
             { Id = "14200405-23f2-43c9-b0ba-607fcf35e52a", Name = "cliente", NormalizedName = "cliente" };
+            var rolenoAuth = new IdentityRole()
+            { Id = "f05a8d3e-4fe9-45e6-a91d-9904118eada3", Name = "noauth", NormalizedName = "noauth" };
             modelBuilder.Entity<IdentityRole>().HasData(roleAdmin);
             modelBuilder.Entity<IdentityRole>().HasData(roleRepartidor);
             modelBuilder.Entity<IdentityRole>().HasData(roleMercado);
             modelBuilder.Entity<IdentityRole>().HasData(roleCliente);
+            modelBuilder.Entity<IdentityRole>().HasData(rolenoAuth);
 
         }
 

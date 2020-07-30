@@ -74,6 +74,7 @@ namespace DeliMarket.Server.Controllers
             if (result.Succeeded)
             {
                 //var usuario = await _userManager.FindByEmailAsync(model.Email);
+                await _userManager.AddToRoleAsync(user, "noauth");
                 var userID = user.Id;
                 var repartidor = new Repartidor
                 {
@@ -115,6 +116,7 @@ namespace DeliMarket.Server.Controllers
                 //var usuarioLogged = HttpContext.User;
                 //var usuario = await _userManager.GetUserAsync(usuarioLogged);
                 //var usuario = await _userManager.FindByEmailAsync(model.Email);
+                await _userManager.AddToRoleAsync(user, "noauth");
                 var userID = user.Id;
                 var mercado = new Mercado
                 {
