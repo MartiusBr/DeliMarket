@@ -56,6 +56,22 @@
     <Compile Include="Migrations\20200728020933_addNewRole.Designer.cs" />
     <Compile Include="Migrations\20200730004748_AgregandoCantidadTotalenOrden.cs" />
     <Compile Include="Migrations\20200730004748_AgregandoCantidadTotalenOrden.Designer.cs" />
+    <Compile Include="Migrations\20200730151019_sa.cs" />
+    <Compile Include="Migrations\20200730151019_sa.Designer.cs" />
+    <Compile Include="Migrations\20200730160429_res.cs" />
+    <Compile Include="Migrations\20200730160429_res.Designer.cs" />
+    <Compile Include="Migrations\20200730192620_fer.cs" />
+    <Compile Include="Migrations\20200730192620_fer.Designer.cs" />
+    <Compile Include="Migrations\20200730193010_fers.cs" />
+    <Compile Include="Migrations\20200730193010_fers.Designer.cs" />
+    <Compile Include="Migrations\20200730231736_ferss.cs" />
+    <Compile Include="Migrations\20200730231736_ferss.Designer.cs" />
+    <Compile Include="Migrations\20200730234736_fersss.cs" />
+    <Compile Include="Migrations\20200730234736_fersss.Designer.cs" />
+    <Compile Include="Migrations\20200731005400_final.cs" />
+    <Compile Include="Migrations\20200731005400_final.Designer.cs" />
+    <Compile Include="Migrations\20200731005925_finals.cs" />
+    <Compile Include="Migrations\20200731005925_finals.Designer.cs" />
     <Compile Include="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 

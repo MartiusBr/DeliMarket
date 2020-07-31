@@ -4,14 +4,16 @@ using DeliMarket.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliMarket.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200731005400_final")]
+    partial class final
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -415,35 +417,35 @@ namespace DeliMarket.Server.Migrations
                         new
                         {
                             Id = "89086180-b978-4f90-9dbd-a7040bc93f41",
-                            ConcurrencyStamp = "5cbe69b6-c73b-4e90-af3b-940b2453265d",
+                            ConcurrencyStamp = "7f16a221-255e-4b8a-9ce6-ee7d506c1a69",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = "eb39e7fb-0828-41db-8794-60c9db40171d",
-                            ConcurrencyStamp = "21d84c8a-e11c-4611-8d10-664437fe783e",
+                            ConcurrencyStamp = "c6093f08-7ea8-4645-a633-6804d4feb55f",
                             Name = "repartidor",
                             NormalizedName = "repartidor"
                         },
                         new
                         {
                             Id = "fa66c0c6-f867-4623-942c-5ae2debbb902",
-                            ConcurrencyStamp = "0a5f437d-7d22-4472-b39e-939b3af2fc24",
+                            ConcurrencyStamp = "67d81312-b9a5-41fe-be5d-d50472d84401",
                             Name = "mercado",
                             NormalizedName = "mercado"
                         },
                         new
                         {
                             Id = "14200405-23f2-43c9-b0ba-607fcf35e52a",
-                            ConcurrencyStamp = "99e449f3-ccb5-48e9-a2d0-7785427980ec",
+                            ConcurrencyStamp = "704cc871-a078-49dd-a38e-a10913c7e89c",
                             Name = "cliente",
                             NormalizedName = "cliente"
                         },
                         new
                         {
                             Id = "f05a8d3e-4fe9-45e6-a91d-9904118eada3",
-                            ConcurrencyStamp = "2f2af9c9-6b7f-4484-9d2d-189892aecd87",
+                            ConcurrencyStamp = "00a3ab0b-8396-41b3-945a-5bfe78b5dd85",
                             Name = "noauth",
                             NormalizedName = "noauth"
                         });

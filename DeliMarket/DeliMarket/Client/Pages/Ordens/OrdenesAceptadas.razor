@@ -2,21 +2,16 @@
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
 @inject NavigationManager navigationManager
-@page "/listaordenC"
-
-<h1>Lista de ordenes Cliente</h1>
+@page "/listaordenAceptadas"
+<h3>Lista de ordenes aceptadas</h3>
 <div class="row mt-2">
-
-
-
-
-    <table class="table">       
+    <table class="table">
         <ListadoGenerico Listado="Ordenes">
             <HayRegistros Context="orden">
                 <tr>
                     <td>
                         <div class="col">
-                            <h5>@orden.FechaCreacion.Value.ToShortDateString()</h5>
+                            <h5>@orden.FechaCreacion</h5>
                             Items:
                             <strong>@orden.CantidadTotal</strong>;
                             Total price:
@@ -27,9 +22,6 @@
                         <div class="col">
                             @switch (orden.Estado)
                             {
-                                case 1:
-                                    estados = "disponible";
-                                    break;
                                 case 2:
                                     estados = "procesando";
                                     break;
@@ -41,17 +33,32 @@
                                     break;
 
                             }
-                            Status: <strong>@estados</strong>
+                        Status: <strong>@estados</strong>
+                        </div>
+                    </td>                    
+                    <td>
+                        <div class="row">                                                        
+                            <div class="col">
+                                @if (orden.Estado == 4)
+                                {
+                                    <button type="button" class="btn btn-warning btn-rounded disabled" @onclick="@(e=> ActualizarEstado(3,orden.Id))">Enviando</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(3,orden.Id))">Enviando</button>
+                                }
+
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(4,orden.Id))">Completado</button>
+                            </div>
                         </div>
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-rounded" @onclick="@(e=> ActualizarEstado(5,orden.Id))">Cancelar</button>
-                    </td>
-
                 </tr>
             </HayRegistros>
         </ListadoGenerico>
     </table>
+
 </div>
 
 
@@ -59,10 +66,12 @@
 @code {
     [Parameter] public List<ProductoMercado> Productos { get; set; }
     private List<Orden> Ordenes { get; set; }
-    string estados { get; set; }
+    private string estados { get; set; }
+
     protected async Task Lista()
     {
-        var responseHttp = await repositorio.Get<List<Orden>>($"api/ordenes/ListaOrdenPersonalizada");
+        var responseHttp = await repositorio.Get<List<Orden>>($"api/Ordenes/ListaOrdenAceptadas");
+
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -78,7 +87,6 @@
         else
         {
             Ordenes = responseHttp.Response;
-
         }
     }
 
@@ -89,19 +97,24 @@
 
     protected async Task ActualizarEstado(int estado, int id)
     {
-
         var rpta = await repositorio.Get<int>($"api/ordenes/ActualizarEstadoOrden/{estado}/{id}");
-        if (rpta.Response == 0)
+
+        if (rpta.Error)
         {
-            await mostrarMensajes.MostrarMensajeError("Su orden se esta enviado o ya se completo");
+            if (rpta.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("");
+            }
+            else
+            {
+                var mensajeError = await rpta.GetBody();
+                await mostrarMensajes.MostrarMensajeError(mensajeError);
+            }
         }
         else
         {
-            await mostrarMensajes.MostrarMensajeExitoso("Su orden se cancelo con exito");
+            await mostrarMensajes.MostrarMensajeExitoso("estado Actualizado");
         }
-
         await Lista();
-
     }
-
 }

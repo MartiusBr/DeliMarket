@@ -43,7 +43,7 @@ namespace DeliMarket.Server.Controllers
         [HttpPost("CrearCliente")] //Crear un usuario (Cliente por defecto)
         public async Task<ActionResult<UserToken>> CrearClient([FromBody] UserInfo model) //Crea un usuario y retorna un Token
         {
-            var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email,DNI = model.Dni ,PhoneNumber = model.NumeroCel }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
+            var user = new ApplicationUser { UserName = model.Nombre, Email = model.Email,DNI = model.Dni ,PhoneNumber = model.NumeroCel, MetodoPago=model.MetodoPago }; //Almacenamos al Usuario(modelo que viene de parámetri) en una variable
             var result = await _userManager.CreateAsync(user, model.Password); //Creamos al usuario
             var rolCliente = new List<string>
             {
@@ -127,8 +127,7 @@ namespace DeliMarket.Server.Controllers
                     RUC = model.RUC,
                     NumeroCel = model.NumeroCel,
                     NroSanidad = model.NroSanidad,
-                    Fecha = DateTime.Now,
-                    Propietario = model.Propietario,
+                    Fecha = DateTime.Now,                    
                     Autorizado = false //Por defecto al registrarse el repartidor este tiene que ser validador por el 
                 };
                 var userInfo = new UserInfo { Email = model.Email, Nombre = model.Nombre, NumeroCel = model.NumeroCel };

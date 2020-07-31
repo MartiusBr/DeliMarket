@@ -1,7 +1,7 @@
 ﻿@inject IJSRuntime js
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
-
+@inject NavigationManager navigationManager
 
 <div class="row mt-2">
     <ListadoGenerico Listado="Productos">
@@ -28,7 +28,8 @@
             }
             else
             {
-                Productos.Remove(producto);
+                //Productos.Remove(producto);
+                producto.estado = false;
             }
         }
     }

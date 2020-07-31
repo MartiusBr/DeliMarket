@@ -11,18 +11,17 @@ else
 {
     <div class="ms-profile-overview">
         <div class="ms-profile-cover">
-            <img class="ms-profile-img" src="https://via.placeholder.com/270x270" alt="people">
             <div class="ms-profile-user-info">
                 <h1 class="ms-profile-username">@Cliente.UserName</h1>
                 <AuthorizeView>
-                        <Authorized>
-                            <h2 class="ms-profile-role">Rol : @context.User.FindFirst(System.Security.Claims.ClaimTypes.Role).Value</h2>
-                        </Authorized>
+                    <Authorized>
+                        <h2 class="ms-profile-role">Rol : @context.User.FindFirst(System.Security.Claims.ClaimTypes.Role).Value</h2>
+                    </Authorized>
                 </AuthorizeView>
             </div>
             @*<div class="ms-profile-user-buttons">
-                <a href="#" class="btn btn-primary"> <i class="material-icons">person_add</i> Editar</a>
-            </div>*@
+            <a href="#" class="btn btn-primary"> <i class="material-icons">person_add</i> Editar</a>
+        </div>*@
         </div>
     </div>
 
@@ -62,10 +61,17 @@ else
                             </tr>
                             <tr>
                                 <th scope="row">Dirección</th>
-                                <td>@Cliente.AddressName &nbsp; 
-                                    <a href="Usuario/Mapa" class="btn btn-primary"> <i class="material-icons">person_add</i> Cambiar dirección</a>
+                                <td>
+                                    @Cliente.AddressName &nbsp;
+                                  <a href="Usuario/Mapa" class="btn btn-primary"> <i class="material-icons">person_add</i> Cambiar dirección</a>
                                 </td>
                             </tr>
+                        <tr>
+                            <th scope="row">CambiarDatos</th>
+                            <td>                                
+                            <a href="#" class="btn btn-primary disabled">Proximamente :D</a>
+                        </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

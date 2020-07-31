@@ -4,14 +4,16 @@ using DeliMarket.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliMarket.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200730160429_res")]
+    partial class res
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,9 +57,6 @@ namespace DeliMarket.Server.Migrations
 
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
-
-                    b.Property<int>("MetodoPago")
-                        .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -200,6 +199,9 @@ namespace DeliMarket.Server.Migrations
                     b.Property<string>("NumeroCel")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Propietario")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RUC")
                         .HasColumnType("nvarchar(max)");
 
@@ -229,8 +231,8 @@ namespace DeliMarket.Server.Migrations
                     b.Property<string>("DireccionEnvio")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
+                    b.Property<string>("Estado")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("FechaCreacion")
                         .HasColumnType("datetime2");
@@ -415,35 +417,35 @@ namespace DeliMarket.Server.Migrations
                         new
                         {
                             Id = "89086180-b978-4f90-9dbd-a7040bc93f41",
-                            ConcurrencyStamp = "5cbe69b6-c73b-4e90-af3b-940b2453265d",
+                            ConcurrencyStamp = "e9281ba6-0235-45de-b18d-0b12ae8c62f3",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = "eb39e7fb-0828-41db-8794-60c9db40171d",
-                            ConcurrencyStamp = "21d84c8a-e11c-4611-8d10-664437fe783e",
+                            ConcurrencyStamp = "c9253fd5-d641-4df7-91da-7b3a53e057c9",
                             Name = "repartidor",
                             NormalizedName = "repartidor"
                         },
                         new
                         {
                             Id = "fa66c0c6-f867-4623-942c-5ae2debbb902",
-                            ConcurrencyStamp = "0a5f437d-7d22-4472-b39e-939b3af2fc24",
+                            ConcurrencyStamp = "3b8322e6-656d-4319-becf-32fcd023ac57",
                             Name = "mercado",
                             NormalizedName = "mercado"
                         },
                         new
                         {
                             Id = "14200405-23f2-43c9-b0ba-607fcf35e52a",
-                            ConcurrencyStamp = "99e449f3-ccb5-48e9-a2d0-7785427980ec",
+                            ConcurrencyStamp = "5e70f909-14f6-4134-bf02-7fbeb6ac7139",
                             Name = "cliente",
                             NormalizedName = "cliente"
                         },
                         new
                         {
                             Id = "f05a8d3e-4fe9-45e6-a91d-9904118eada3",
-                            ConcurrencyStamp = "2f2af9c9-6b7f-4484-9d2d-189892aecd87",
+                            ConcurrencyStamp = "68b9947f-6bc0-4e12-8a46-e05401f1ea65",
                             Name = "noauth",
                             NormalizedName = "noauth"
                         });

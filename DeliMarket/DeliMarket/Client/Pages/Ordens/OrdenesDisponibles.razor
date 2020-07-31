@@ -13,37 +13,21 @@
                         <div class="col">
                             <h5>@orden.FechaCreacion</h5>
                             Items:
-                            <strong>cantidad de objetos</strong>;
+                            <strong>@orden.CantidadTotal</strong>;
                             Total price:
                             <strong>@orden.Montototal</strong>
                         </div>
                     </td>
                     <td>
                         <div class="col">
-                            Status: <strong>@orden.Estado</strong>
+                            Status: <strong>Disponible</strong>
                         </div>
-                    </td>
+                    </td>                    
                     <td>
-                        <div class="col flex-grow-0">
-                            <a href="myorders/@orden.Id" class="btn btn-success">
-                                Info &gt;
-                            </a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="row">
+                        <div class="row">                            
                             <div class="col">
-                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(1,orden.Id))">Disponible</button>
-                            </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(2,orden.Id))">Procesando</button>
-                            </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(3,orden.Id))">Enviando</button>
-                            </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(4,orden.Id))">Completado</button>
-                            </div>
+                                <button type="button" class="btn btn-warning btn-rounded" @onclick="@(e=> ActualizarEstado(2,orden.Id))">Aceptar</button>
+                            </div>                            
                         </div>
                     </td>
                 </tr>
@@ -59,7 +43,7 @@
     [Parameter] public List<ProductoMercado> Productos { get; set; }
     private List<Orden> Ordenes { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    protected async  Task Lista()
     {
         var responseHttp = await repositorio.Get<List<Orden>>($"api/Ordenes/ListaOrdenDisponibles");
 
@@ -80,26 +64,31 @@
             Ordenes = responseHttp.Response;
         }
     }
+    protected async override Task OnInitializedAsync()
+    {
+        await Lista();
+    }
 
     protected async Task ActualizarEstado(int estado, int id)
     {
-        var responseHttp = await repositorio.Get<List<Orden>>($"api/Ordenes/ListaOrdenDisponibles");
+        var rpta = await repositorio.Get<int>($"api/ordenes/ActualizarEstadoOrden/{estado}/{id}");
 
-        if (responseHttp.Error)
+        if (rpta.Error)
         {
-            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (rpta.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 navigationManager.NavigateTo("");
             }
             else
             {
-                var mensajeError = await responseHttp.GetBody();
+                var mensajeError = await rpta.GetBody();
                 await mostrarMensajes.MostrarMensajeError(mensajeError);
             }
         }
         else
         {
-            Ordenes = responseHttp.Response;
+            await mostrarMensajes.MostrarMensajeExitoso("estado Actualizado");
         }
+        await Lista();
     }
 }

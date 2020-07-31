@@ -20,5 +20,7 @@ namespace DeliMarket.Shared.DTOs
 
         [Required(ErrorMessage = "Por favor ingresa una contraseña"), MaxLength(30)]
         public string Password { get; set; }
+
+        public int MetodoPago { get; set;  }
     }
 }

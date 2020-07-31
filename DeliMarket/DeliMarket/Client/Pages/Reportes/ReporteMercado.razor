@@ -10,7 +10,7 @@
         <div class="form-group">
             <label>Año:</label>
             <div>
-                <InputNumber class="form-control" @bind-Value="@ano" />
+                <InputNumber class="form-control" @bind-Value="@ano" readonly/>
                 <ValidationMessage For="@(() => ano)" />
             </div>
             <label for="meses">Meses:</label>

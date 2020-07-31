@@ -238,14 +238,17 @@ namespace DeliMarket.Server.Controllers
                     {
                         if (mer.Id == promer.MercadoId)
                         {
-                            if (promer.Stock > 0)
+                            var producto = await context.Productos.FirstOrDefaultAsync(x => x.Id == promer.ProductoId);
+                            if (producto.estado == true)
                             {
-                                /*int idpro = promer.ProductoId;
-                                var prod = await context.Productos.FirstAsync(x => x.Id == idpro);*/
-                                productosgenerales.Add(promer);
+                                if (promer.Stock > 0)
+                                {
+                                    /*int idpro = promer.ProductoId;
+                                    var prod = await context.Productos.FirstAsync(x => x.Id == idpro);*/
+                                    productosgenerales.Add(promer);
 
+                                }
                             }
-
                         }
                     }
                 }
@@ -260,7 +263,7 @@ namespace DeliMarket.Server.Controllers
             foreach (var pro in productosgenerales)
             {
                 var prod = await context.Productos.FirstOrDefaultAsync(x => x.Id == pro.ProductoId);
-                pro.Producto = prod;
+                pro.Producto = prod;                
                 if (Boolean.Equals(entregarapida, prod.EntregaRapida))
                 {
                     productosespecificos.Add(prod);

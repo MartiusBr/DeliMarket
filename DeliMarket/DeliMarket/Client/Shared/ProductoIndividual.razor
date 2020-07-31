@@ -30,6 +30,15 @@
                             @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
                         Borrar
                     </button>
+                    @if (@Producto.estado == false)
+                    {
+                        estados = "No disponible";
+                    }
+                    else
+                    {
+                        estados = "Disponible";
+                    }
+                    <h4>Estado: @estados</h4>
                     <a class="btn btn-info" href="productos/editar/@Producto.Id">Editar</a>
                 </Authorized>
             </AuthorizeView>
@@ -48,7 +57,7 @@
     [Parameter] public bool MostrarBotones { get; set; } = false;
     [Parameter] public EventCallback<Producto> EliminarProducto { get; set; }
     private string urlProducto = string.Empty;
-
+    private string estados;
     protected override void OnInitialized()
     {
         urlProducto = $"producto/{Producto?.Id}/{Producto?.Titulo?.Replace(" ", "-")}";

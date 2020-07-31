@@ -42,7 +42,7 @@ namespace DeliMarket.Server.Controllers
             //Lista para cliente
             var consulta = await context.Users.Where(x => x.Id == usuarioid)
                 .Join(
-                context.Ordenes.Where(x => x.Estado == "completado"),
+                context.Ordenes.Where(x => x.Estado == 4),
                 user => user.Id,
                 order => order.UserID,
                 (user, order) => new
@@ -173,7 +173,7 @@ namespace DeliMarket.Server.Controllers
 
             //join
             //Lista para mercado
-            var consulta = await context.Ordenes.Where(x => x.Estado == "completado")
+            var consulta = await context.Ordenes.Where(x => x.Estado == 4)
                 .Join(
                 context.Detalles,
                 ord => ord.Id,
@@ -316,7 +316,7 @@ namespace DeliMarket.Server.Controllers
             
             //join
             //Lista para mercado
-            var consulta = await context.Ordenes.Where(x => x.Estado == "completado")
+            var consulta = await context.Ordenes.Where(x => x.Estado == 4)
                 .Join(
                 context.Detalles,
                 ord => ord.Id,

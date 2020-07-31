@@ -20,7 +20,7 @@ namespace DeliMarket.Shared.Entidades
         public double Montototal { get; set; }
         public double Descuento { get; set; }
         public string DireccionEnvio { get; set; }
-        public string Estado { get; set; }
+        public int Estado { get; set; }
         public int CantidadTotal { get; set; }
         public double GetTotalPrice() 
         {

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DeliMarket.Server.Controllers
@@ -74,7 +75,7 @@ namespace DeliMarket.Server.Controllers
                     .Where(x => x.MercadoId == mercado.Id)
                     .Select(x => x.ProductoId)
                     .ToListAsync();
-            var productos = await context.Productos.Where(p => idsProductosMercado.Contains(p.Id)).ToListAsync();
+            var productos = await context.Productos.Where(p => idsProductosMercado.Contains(p.Id) && p.estado==true).ToListAsync();
         
             return productos; //retornamos el modelo(DTO de Inicio)
 
@@ -125,8 +126,7 @@ namespace DeliMarket.Server.Controllers
             new Mercado                         //tomamos los campos que necesitamos y las asignamos a Mercado
             {
                 Nombre = x.Mercado.Nombre,
-                Foto = x.Mercado.Foto,
-                Propietario = x.Mercado.Propietario,
+                Foto = x.Mercado.Foto,                
                 Id = x.MercadoId
             }).ToList(); //La convertimos en Lista
 
@@ -142,6 +142,13 @@ namespace DeliMarket.Server.Controllers
         public async Task<ActionResult<List<Producto>>> Get([FromQuery] ParametrosBusquedaProductos parametrosBusqueda)
         {
             var productosQueryable = context.Productos.AsQueryable(); //Convierto Los Productos Como IQueryable, parecido a(IEnumerable). Nos permite hacer Querys
+            var usuarioid = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var mer = await context.Mercados.FirstOrDefaultAsync(x => x.UserId == usuarioid);
+            
+            if (mer != null) {
+                productosQueryable = context.Productos.Where(x => x.estado == true);
+            }
+            
 
             if (!string.IsNullOrWhiteSpace(parametrosBusqueda.Titulo)) //Si es ingreso un Titulo en el filtro
             {
@@ -277,12 +284,13 @@ namespace DeliMarket.Server.Controllers
             var productoActionResult = await Get(id); //consigo el producto dando como parámetro su id(Action Result)
             if (productoActionResult.Result is NotFoundResult) { return NotFound(); } // Si no se encuentra el producto retorno NoEncontrado
             var producto = productoActionResult.Value; //Consigo el vallor del ActionResult dando como resultado el producto
+            
             var mercado = await context.Mercados.FirstAsync(x => x.Email == HttpContext.User.Identity.Name);
 
             var existeProdMer = context.ProductosMercados.Any(x => x.MercadoId == mercado.Id && x.ProductoId == id);
             if (existeProdMer)  //Solo actualizo
             {
-                var BDprodMer = await context.ProductosMercados.FirstAsync(x => x.MercadoId == mercado.Id);
+                var BDprodMer = await context.ProductosMercados.FirstAsync(x => x.MercadoId == mercado.Id && x.ProductoId == id);
                 context.ProductosMercados.Attach(BDprodMer);
                 BDprodMer.Precio = prodmercado.precio;
                 BDprodMer.Stock = prodmercado.stock;
@@ -313,7 +321,9 @@ namespace DeliMarket.Server.Controllers
         {
             var existe = await context.Productos.AnyAsync(x => x.Id == id); // Verificamos si existe dicho producto
             if (!existe) { return NotFound(); }              //Si no existe retorno NotFound()
-            context.Remove(new Producto { Id = id });       //Remuevo el producto cuyo id es el pasado en el parámetro
+            var pro = await context.Productos.FirstOrDefaultAsync(X => X.Id == id);
+            pro.estado = false;
+            //context.Remove(new Producto { Id = id });       //Remuevo el producto cuyo id es el pasado en el parámetro
             await context.SaveChangesAsync();               //Guardo cambios asincronamente
             return NoContent();                             //No retorno ningun contenido
         }
@@ -328,7 +338,7 @@ namespace DeliMarket.Server.Controllers
             if (!existe) { return BadRequest(); }              //Si no existe retorno NotFound()
             var productoMercado = await context.ProductosMercados
                 .FirstOrDefaultAsync(x => x.ProductoId == id && x.MercadoId == mercado.Id);
-            var prodMercadoPriceStock = new ProdMercado { precio = productoMercado.Precio, stock = productoMercado.Stock };
+            var prodMercadoPriceStock = new ProdMercado { precio = productoMercado.Precio, stock = productoMercado.Stock };            
             return prodMercadoPriceStock;                             
         }
 

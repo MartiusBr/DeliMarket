@@ -19,6 +19,7 @@ namespace DeliMarket.Shared.Entidades
         public List<CategoriaProducto> CategoriasProducto { get; set; } = new List<CategoriaProducto>();
         //public List<MarcaProducto> MarcasProducto { get; set; } = new List<MarcaProducto>();
         public List<ProductoMercado> ProductosMercado { get; set; }
+        public bool estado { get; set; }
         public string TituloCortado
         {
             get

@@ -33,6 +33,13 @@
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
+                                <label>Disponible:</label>
+                                <div>
+                                    <InputCheckbox @bind-Value="@Producto.estado" />
+                                    <ValidationMessage For="@(() => Producto.estado)" />
+                                </div>
+                            </div>                            
+                            <div class="col-md-6 mb-3">
                                 <label>Fecha Lanzamiento:</label>
                                 <div>
                                     <InputDate class="form-control" @bind-Value="@Producto.Lanzamiento" />
@@ -54,7 +61,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
-                                    <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada"/>
+                                <InputImg Label="Foto" ImagenSeleccionada="ImagenSeleccionada" />
                             </div>
                         </div>
                         <button class="btn btn-primary d-block" type="submit">Guardar y continuar</button>
@@ -62,7 +69,7 @@
                 </div>
             </div>
         </div>
-
+        <!--
         <div class="col-xl-6 col-md-12">
             <div class="row">
                 <div class="col-md-12">
@@ -83,7 +90,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
     
 

@@ -5,7 +5,10 @@
 <form class="dialog-body">
     <div>
         <label>Cantidad:</label>
-        <input type="number" min="1" max="@Detalle.Productomercado.Stock" step="1" @bind="Detalle.Cantidad" @bind:event="oninput" />
+        <input type="range" min="1" max="@Detalle.Productomercado.Stock" step="1" @bind="Detalle.Cantidad" @bind:event="oninput" />
+        <span class="size-label h5">
+            @(Detalle.Cantidad) 
+        </span>
     </div>
 </form>
 

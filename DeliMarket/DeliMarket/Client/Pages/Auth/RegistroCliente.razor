@@ -54,7 +54,30 @@
                         <ValidationMessage For="@(() => userInfo.Password)" />
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="ms-list ms-list-display">
+                            <li>
+                                <label class="ms-checkbox-wrap ms-checkbox-primary">
+                                    <input type="radio" value="" name="radioExample2" disabled>
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Efectivo </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="ms-list ms-list-display">
+                            <li>
+                                <label class="ms-checkbox-wrap ms-checkbox-warning">
+                                    <input type="radio" @onchange=@(e=> userInfo.MetodoPago=2) name="radioExample2">
+                                    <i class="ms-checkbox-check"></i>
+                                </label>
+                                <span> Dinero Electrónico </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
 
             </EditForm>

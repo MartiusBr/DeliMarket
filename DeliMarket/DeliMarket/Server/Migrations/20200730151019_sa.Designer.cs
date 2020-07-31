@@ -4,14 +4,16 @@ using DeliMarket.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeliMarket.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200730151019_sa")]
+    partial class sa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,9 +57,6 @@ namespace DeliMarket.Server.Migrations
 
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
-
-                    b.Property<int>("MetodoPago")
-                        .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -200,6 +199,9 @@ namespace DeliMarket.Server.Migrations
                     b.Property<string>("NumeroCel")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Propietario")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RUC")
                         .HasColumnType("nvarchar(max)");
 
@@ -229,8 +231,8 @@ namespace DeliMarket.Server.Migrations
                     b.Property<string>("DireccionEnvio")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
+                    b.Property<string>("Estado")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("FechaCreacion")
                         .HasColumnType("datetime2");
@@ -285,9 +287,6 @@ namespace DeliMarket.Server.Migrations
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("estado")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -415,35 +414,35 @@ namespace DeliMarket.Server.Migrations
                         new
                         {
                             Id = "89086180-b978-4f90-9dbd-a7040bc93f41",
-                            ConcurrencyStamp = "5cbe69b6-c73b-4e90-af3b-940b2453265d",
+                            ConcurrencyStamp = "ef3651b4-ae71-43cb-813b-176b8b01e43d",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = "eb39e7fb-0828-41db-8794-60c9db40171d",
-                            ConcurrencyStamp = "21d84c8a-e11c-4611-8d10-664437fe783e",
+                            ConcurrencyStamp = "4258277e-fa93-4b95-8d93-dd664433ab67",
                             Name = "repartidor",
                             NormalizedName = "repartidor"
                         },
                         new
                         {
                             Id = "fa66c0c6-f867-4623-942c-5ae2debbb902",
-                            ConcurrencyStamp = "0a5f437d-7d22-4472-b39e-939b3af2fc24",
+                            ConcurrencyStamp = "a91580b0-464e-4e00-bdbd-c2845bdacf21",
                             Name = "mercado",
                             NormalizedName = "mercado"
                         },
                         new
                         {
                             Id = "14200405-23f2-43c9-b0ba-607fcf35e52a",
-                            ConcurrencyStamp = "99e449f3-ccb5-48e9-a2d0-7785427980ec",
+                            ConcurrencyStamp = "35f9772c-1593-4383-b6be-3d295c3c882f",
                             Name = "cliente",
                             NormalizedName = "cliente"
                         },
                         new
                         {
                             Id = "f05a8d3e-4fe9-45e6-a91d-9904118eada3",
-                            ConcurrencyStamp = "2f2af9c9-6b7f-4484-9d2d-189892aecd87",
+                            ConcurrencyStamp = "d6709eb6-297d-44b9-bab7-f5e8211f8d3a",
                             Name = "noauth",
                             NormalizedName = "noauth"
                         });

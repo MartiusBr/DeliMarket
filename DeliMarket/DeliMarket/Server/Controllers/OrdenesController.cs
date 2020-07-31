@@ -57,16 +57,19 @@ namespace DeliMarket.Server.Controllers
             var idUsuario = GetUserId();
             var usuario = await userManager.FindByIdAsync(idUsuario);
 
+            orden.OrdenRapida = true; //temporal
             orden.FechaCreacion = DateTime.Now;
             orden.UserID = idUsuario;
             orden.DireccionEnvio = usuario.AddressName;
-            orden.Estado = "disponible";
+            orden.Estado = 1;
             //orden.User = usuario
 
             foreach (var detalle in orden.Detalles)
             {
                 detalle.ProductoId = detalle.Productomercado.ProductoId;
                 detalle.MercadoId = detalle.Productomercado.MercadoId;
+                var promer = await context.ProductosMercados.FirstOrDefaultAsync(x => x.ProductoId == detalle.ProductoId && x.MercadoId == detalle.MercadoId);
+                promer.Stock = promer.Stock - detalle.Cantidad;
                 detalle.Productomercado = null;
                 orden.CantidadTotal += detalle.Cantidad;
             }
@@ -130,7 +133,7 @@ namespace DeliMarket.Server.Controllers
             var ordenDB = await qordenes.ToListAsync();
             foreach (var ord in ordenDB)
             {
-                if (ord.Estado.Equals("disponible"))
+                if (ord.Estado==1)
                 {
                     ordenes.Add(ord);
                 }
@@ -138,6 +141,75 @@ namespace DeliMarket.Server.Controllers
             
             return ordenes;
         }
+
+        [AllowAnonymous]
+        [HttpGet("ListaOrdenAceptadas")]
+        public async Task<ActionResult<List<Orden>>> ListaOrdenesAcepatadas() //ordenes que esten disponibles para el repartidor
+        {
+
+            List<Orden> ordenes = new List<Orden>();
+
+            var qordenes = context.Ordenes.AsQueryable();
+            var ordenDB = await qordenes.ToListAsync();
+            foreach (var ord in ordenDB)
+            {
+                if (ord.Estado != 1 )
+                {
+                    ordenes.Add(ord);
+                }
+            }
+
+            return ordenes;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("ActualizarEstadoOrden/{estado}/{idorden}")]
+        public async Task<int> ActualizarEstadoOrden(int estado, int idorden) { //ordenes que esten disponibles para el repartidor
+            
+            var usuarioid = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var repartidor = await context.Repartidores.FirstOrDefaultAsync(x => x.UserId == usuarioid);
+
+            var orden = await context.Ordenes.FirstOrDefaultAsync(x => x.Id == idorden);
+            var detalles = await context.Detalles.Where(x => x.OrdenID == idorden).ToListAsync();
+            int ars= 1;
+            switch (estado)
+            {
+                case 2:
+                    //Procesando
+                    orden.Estado = 2;
+                    orden.RepartidorID = repartidor.Id;
+                    break;
+                case 3:
+                    //Enviando
+                    orden.Estado = 3;
+                    break;
+                case 4:
+                    //Completado
+                    orden.Estado = 4;
+                    break;
+                case 5:
+                    //Cacelado
+                    if (orden.Estado < 3)
+                    {
+                        foreach (var det in detalles)
+                        {
+                            context.Detalles.Remove(det);
+                        }
+                        context.Ordenes.Remove(orden);
+                    }
+                    else
+                    {
+                        ars = 0;
+                    }
+                    break;
+
+
+            }
+            context.SaveChanges();
+            return ars;
+        }
+            
 
     }
 }

@@ -17,8 +17,7 @@ namespace DeliMarket.Shared.Entidades
         public string Nombre { get; set; }
         public string Email { get; set; }
         public string NumeroCel { get; set; }
-        public string NroSanidad { get; set; }
-        public string Propietario { get; set; }
+        public string NroSanidad { get; set; }        
         public string Descripcion { get; set; }
         public string Foto { get; set; }
         public bool Autorizado { get; set; }

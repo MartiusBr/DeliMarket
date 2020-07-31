@@ -1,6 +1,7 @@
 ﻿
 <AuthorizeView>
     <Authorized>
+        <!--
         <li class="ms-nav-item dropdown">
             <a href="#" class="text-disabled ms-has-notification" id="mailDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flaticon-mail"></i></a>
             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="mailDropdown">
@@ -82,17 +83,18 @@
                 </li>
             </ul>
         </li>
+        -->
         <li class="ms-nav-item ms-nav-user dropdown">
             <a href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="ms-user-img ms-img-round float-right" src="https://via.placeholder.com/270x270" alt="people">
-            </a>
+            </a>            
             <ul class="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="userDropdown">
                 <li class="dropdown-menu-header">
                     <h6 class="dropdown-header ms-inline m-0"><span class="text-disabled">Bienvenido, @context.User.Identity.Name</span></h6>
                 </li>
                 <li class="dropdown-divider"></li>
                 <li class="ms-dropdown-list">
-                    <a class="media fs-14 p-2" href="#">
+                    <a class="media fs-14 p-2" href="cliente/perfil">
                         <span><i class="flaticon-user mr-2"></i> Perfil</span>
                     </a>
                     <a class="media fs-14 p-2" href="#">
