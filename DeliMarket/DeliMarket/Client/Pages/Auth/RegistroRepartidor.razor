@@ -9,66 +9,65 @@
 @using DeliMarket.Client.Auth
 
 
-<div class="ms-auth-container">
-    <div class="ms-auth-col">
-        <div class="ms-auth-bg">
-            <img style="width:290px" src="img/DelimarketenLogin.png" alt="Alternate Text" />
+    <div class="ms-auth-container">
+        <div class="ms-auth-col">
         </div>
-    </div>
-    <div class="ms-auth-col">
-        <div class="ms-auth-form">
-            <EditForm Model="@repartidorInfo" style="margin-top:100px" class="needs-validation" OnValidSubmit="CrearRepartidor">
-                <DataAnnotationsValidator />
-                <h3>Registro Repartidor</h3>
-                <p>Porfavor ingresa los siguientes datos para continuar</p>
-                <div class="mb-3">
-                    <label>Nombre</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@repartidorInfo.Nombre" />
-                        <ValidationMessage For="@(() => repartidorInfo.Nombre)" />
+        <div class="ms-auth-col">
+            <div class="ms-auth-form">
+                <EditForm Model="@repartidorInfo" style="margin-top:100px" class="needs-validation" OnValidSubmit="CrearRepartidor">
+                    <DataAnnotationsValidator />
+                    <h3>Registro Repartidor</h3>
+                    <p>Porfavor ingresa los siguientes datos para continuar</p>
+                    <div class="mb-3">
+                        <label>Nombre</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@repartidorInfo.Nombre" />
+                            <ValidationMessage For="@(() => repartidorInfo.Nombre)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>DNI</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@repartidorInfo.DNI" />
-                        <ValidationMessage For="@(() => repartidorInfo.DNI)" />
+                    <div class="mb-3">
+                        <label>DNI</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@repartidorInfo.DNI" />
+                            <ValidationMessage For="@(() => repartidorInfo.DNI)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Correo</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@repartidorInfo.Email" />
-                        <ValidationMessage For="@(() => repartidorInfo.Email)" />
+                    <div class="mb-3">
+                        <label>Correo</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@repartidorInfo.Email" />
+                            <ValidationMessage For="@(() => repartidorInfo.Email)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Numero de Celular</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@repartidorInfo.NumeroCel" />
-                        <ValidationMessage For="@(() => repartidorInfo.NumeroCel)" />
+                    <div class="mb-3">
+                        <label>Numero de Celular</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@repartidorInfo.NumeroCel" />
+                            <ValidationMessage For="@(() => repartidorInfo.NumeroCel)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Placa del Vehículo</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@repartidorInfo.PlacaVehiculo" />
-                        <ValidationMessage For="@(() => repartidorInfo.PlacaVehiculo)" />
+                    <div class="mb-3">
+                        <label>Placa del Vehículo</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@repartidorInfo.PlacaVehiculo" />
+                            <ValidationMessage For="@(() => repartidorInfo.PlacaVehiculo)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Contraseña</label>
-                    <div class="input-group">
-                        <InputPassword Class="form-control" @bind-Value="@repartidorInfo.Password" />
-                        <ValidationMessage For="@(() => repartidorInfo.Password)" />
+                    <div class="mb-3">
+                        <label>Contraseña</label>
+                        <div class="input-group">
+                            <InputPassword Class="form-control" @bind-Value="@repartidorInfo.Password" />
+                            <ValidationMessage For="@(() => repartidorInfo.Password)" />
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
+                    <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
 
-            </EditForm>
+                </EditForm>
+            </div>
+        </div>
+        <div class="ms-auth-col">
         </div>
     </div>
-</div>
 
 
 @code {

@@ -117,7 +117,7 @@ namespace DeliMarket.Server.Controllers
                 clientreport.nombremercado = report.marketname;
                 clientreport.nombreproducto = report.productname;
                 clientreport.cantidad = report.amount;
-                clientreport.precio = report.price;
+                clientreport.precio = (report.price /report.amount);
                 clientreport.total = report.total;
 
                 listareporte.Add(clientreport);
@@ -477,12 +477,204 @@ namespace DeliMarket.Server.Controllers
             return reporte;
         }
 
-     
-        
+
+        [AllowAnonymous]
+        [HttpGet("FiltroAdmins/{ano}/{mes}")]
+        public async Task<List<ReporteMercadoDTO>> FiltroAdmins(int ano, int mes)
+        {
+            DateTime actual = DateTime.Now;
+            if (mes == 0)
+            {
+                mes = actual.Month;
+            }
+            if (ano == 0)
+            {
+                ano = actual.Year;
+            }
+            var repor = await AdminxProductoxTiempo();
+            var listareporte = repor.Value;
+
+
+            List<ReporteMercadoDTO> reporte = new List<ReporteMercadoDTO>();
+            List<string> producto = new List<string>();
+            foreach (var rep in listareporte)
+            {
+                if (rep.fechaAno == ano)
+                {
+                    if (rep.fechaMes == mes)
+                    {
+                        if (reporte.Count != 0)
+                        {
+                            if (producto.Contains(rep.producto))
+                            {
+                                int id = producto.IndexOf(rep.producto);
+                                reporte.ElementAt(id).ventatotal = reporte.ElementAt(id).ventatotal + rep.cantidad;
+                                reporte.ElementAt(id).gananciatotal = reporte.ElementAt(id).gananciatotal + rep.precio;
+                            }
+                            else
+                            {
+                                ReporteMercadoDTO parcial = new ReporteMercadoDTO();
+                                parcial.nombre = rep.nombre;
+                                parcial.producto = rep.producto;
+                                parcial.ventatotal = rep.cantidad;
+                                parcial.gananciatotal = rep.precio;
+                                producto.Add(rep.producto);
+                                reporte.Add(parcial);
+                            }
+
+                        }
+                        else
+                        {
+                            ReporteMercadoDTO parcial = new ReporteMercadoDTO();
+                            parcial.nombre = rep.nombre;
+                            parcial.producto = rep.producto;
+                            parcial.ventatotal = rep.cantidad;
+                            parcial.gananciatotal = rep.precio;
+                            producto.Add(rep.producto);
+                            reporte.Add(parcial);
+                        }
+
+
+                    }
+                }
+
+            }
+
+            var bakaa = "bakka";
+            return reporte;
+        }
 
 
 
+        [AllowAnonymous]
+        [HttpGet("ReporteRepartidor")]
+        public async Task<ActionResult<List<ReporteClienteDTO>>> RepartidorxProductoxTiempo()
+        {
+            var usuarioid = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+
+            //join
+            //Lista para cliente
+            var consulta = await context.Repartidores.Where(x => x.UserId == usuarioid)
+               .Join(
+               context.Ordenes.Where(x => x.Estado == 4),
+               user => user.Id,
+               order => order.RepartidorID,
+               (user, order) => new
+               {
+                   name = user.Nombre,
+                   orderid = order.Id,
+                   date = order.FechaCreacion,
+                   total = order.Montototal,
+               }
+               )//obetenemos todos los pedidos hechos x cada dia
+                .Join(
+                context.Detalles,
+                user => user.orderid,
+                detail => detail.OrdenID,
+                (user, detail) => new
+                {
+                    user.name,
+                    user.orderid,
+                    user.date,
+                    user.total,
+                    productid = detail.ProductoId,
+                    marketid = detail.MercadoId,
+                    amount = detail.Cantidad,
+                    price = detail.Precio,
+                }
+                )//otenemos todos los detalles con su precio y producto
+                .Join(
+                context.Mercados,
+                user => user.marketid,
+                market => market.Id,
+                (user, market) => new
+                {
+                    user.name,
+                    user.orderid,
+                    user.date,
+                    user.total,
+                    user.productid,
+                    marketname = market.Nombre,
+                    user.amount,
+                    user.price,
+                }
+                )//obtenemos el nombre del mercado 
+                .Join(
+                context.Productos,
+                user => user.productid,
+                product => product.Id,
+                (user, product) => new
+                {
+                    user.name,
+                    user.orderid,
+                    user.date,
+                    user.total,
+                    productname = product.Titulo,
+                    user.marketname,
+                    user.amount,
+                    user.price,
+                }
+                )//obtenemos el nombre del producto
+                .ToListAsync();
+            List<ReporteClienteDTO> listareporte = new List<ReporteClienteDTO>();
+
+            //transformacion al DTO
+            foreach (var report in consulta)
+            {
+                ReporteClienteDTO clientreport = new ReporteClienteDTO();
+                clientreport.NombreUsuario = report.name;
+                clientreport.OrdenID = report.orderid;
+                clientreport.Fecha = (DateTime)report.date;
+                clientreport.FechaDia = report.date.Value.Day;
+                clientreport.FechaMes = report.date.Value.Month;
+                clientreport.FechaAno = report.date.Value.Year;
+                clientreport.nombremercado = report.marketname;
+                clientreport.nombreproducto = report.productname;
+                clientreport.cantidad = report.amount;
+                clientreport.precio = (report.price/report.amount);
+                clientreport.total = report.total;
+
+                listareporte.Add(clientreport);
+            }
+            return listareporte;
+
+        }
+
+        [AllowAnonymous]
+        [HttpGet("FiltroRepartidor/{ano}/{mes}")]
+        public async Task<List<ReporteClienteDTO>> FiltroRepartidor(int ano, int mes)
+        {
+            DateTime actual = DateTime.Now;
+            if (mes == 0)
+            {
+                mes = actual.Month;
+            }
+            if (ano == 0)
+            {
+                ano = actual.Year;
+            }
+            var repor = await RepartidorxProductoxTiempo();
+            var listareporte = repor.Value;
+
+
+            List<ReporteClienteDTO> reporte = new List<ReporteClienteDTO>();
+
+            foreach (var rep in listareporte)
+            {
+                if (rep.FechaAno == ano)
+                {
+                    if (rep.FechaMes == mes)
+                    {
+                        reporte.Add(rep);
+                    }
+                }
+
+            }
+
+
+            return reporte;
+        }
 
     }   
 }

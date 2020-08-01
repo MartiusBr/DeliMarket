@@ -25,6 +25,11 @@ namespace DeliMarket.Client.Helpers
             await MostrarMensaje("Exitoso", mensaje, "success");
         }
 
+        public async Task MostrarMensajeInformativo(string mensaje)
+        {
+            await MostrarMensaje("Informo", mensaje, "info");
+        }
+
         private async ValueTask MostrarMensaje(string titulo, string mensaje, string tipoMensaje)
         {
             await js.InvokeVoidAsync("Swal.fire", titulo, mensaje, tipoMensaje);

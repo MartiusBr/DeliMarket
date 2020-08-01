@@ -8,6 +8,7 @@
 @using DeliMarket.Client.Auth
 
 <div class="h2">Dirección de Entrega</div>
+<div class="h4">Permite tu ubicacion no lo olvides</div>
 
 
 
@@ -72,6 +73,7 @@
         else
         {
             usuario = httpResponse.Response;
+            
         }
 
         Console.WriteLine($"user : {usuario.UserName} ; lat: {usuario.Latitude} - long: {usuario.Longitude}");
@@ -79,6 +81,7 @@
         if (firstRender)
         {
             await JSRuntime.InitMap(usuario.Latitude, usuario.Longitude);
+            
         }
 
     }

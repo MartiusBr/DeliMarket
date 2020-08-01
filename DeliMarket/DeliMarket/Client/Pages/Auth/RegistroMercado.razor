@@ -9,66 +9,65 @@
 @using DeliMarket.Client.Auth
 
 
-<div class="ms-auth-container">
-    <div class="ms-auth-col">
-        <div class="ms-auth-bg">
-            <img style="width:290px" src="img/DelimarketenLogin.png" alt="Alternate Text" />
+    <div class="ms-auth-container">
+        <div class="ms-auth-col">
         </div>
-    </div>
-    <div class="ms-auth-col">
-        <div class="ms-auth-form">
-            <EditForm Model="@mercadoInfo" style="margin-top:100px" class="needs-validation" OnValidSubmit="CrearMercado">
-                <DataAnnotationsValidator />
-                <h3>Registro Mercado</h3>
-                <p>Porfavor ingresa los siguientes datos para continuar</p>
-                <div class="mb-3">
-                    <label>RUC</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@mercadoInfo.RUC" />
-                        <ValidationMessage For="@(() => mercadoInfo.RUC)" />
+        <div class="ms-auth-col">
+            <div class="ms-auth-form">
+                <EditForm Model="@mercadoInfo" style="margin-top:100px" class="needs-validation" OnValidSubmit="CrearMercado">
+                    <DataAnnotationsValidator />
+                    <h3>Registro Mercado</h3>
+                    <p>Porfavor ingresa los siguientes datos para continuar</p>
+                    <div class="mb-3">
+                        <label>RUC</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@mercadoInfo.RUC" />
+                            <ValidationMessage For="@(() => mercadoInfo.RUC)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Nombre Mercado</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@mercadoInfo.Nombre" />
-                        <ValidationMessage For="@(() => mercadoInfo.Nombre)" />
+                    <div class="mb-3">
+                        <label>Nombre Mercado</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@mercadoInfo.Nombre" />
+                            <ValidationMessage For="@(() => mercadoInfo.Nombre)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Correo</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@mercadoInfo.Email" />
-                        <ValidationMessage For="@(() => mercadoInfo.Email)" />
+                    <div class="mb-3">
+                        <label>Correo</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@mercadoInfo.Email" />
+                            <ValidationMessage For="@(() => mercadoInfo.Email)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Numero de Celular</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@mercadoInfo.NumeroCel" />
-                        <ValidationMessage For="@(() => mercadoInfo.NumeroCel)" />
+                    <div class="mb-3">
+                        <label>Numero de Celular</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@mercadoInfo.NumeroCel" />
+                            <ValidationMessage For="@(() => mercadoInfo.NumeroCel)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label>Número de sanidad</label>
-                    <div class="input-group">
-                        <InputText Class="form-control" @bind-Value="@mercadoInfo.NroSanidad" />
-                        <ValidationMessage For="@(() => mercadoInfo.NroSanidad)" />
+                    <div class="mb-3">
+                        <label>Número de sanidad</label>
+                        <div class="input-group">
+                            <InputText Class="form-control" @bind-Value="@mercadoInfo.NroSanidad" />
+                            <ValidationMessage For="@(() => mercadoInfo.NroSanidad)" />
+                        </div>
                     </div>
-                </div>               
-                <div class="mb-3">
-                    <label>Contraseña</label>
-                    <div class="input-group">
-                        <InputPassword Class="form-control" @bind-Value="@mercadoInfo.Password" />
-                        <ValidationMessage For="@(() => mercadoInfo.Password)" />
+                    <div class="mb-3">
+                        <label>Contraseña</label>
+                        <div class="input-group">
+                            <InputPassword Class="form-control" @bind-Value="@mercadoInfo.Password" />
+                            <ValidationMessage For="@(() => mercadoInfo.Password)" />
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
+                    <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
 
-            </EditForm>
+                </EditForm>
+            </div>
+        </div>
+        <div class="ms-auth-col">
         </div>
     </div>
-</div>
 
 
 @code {

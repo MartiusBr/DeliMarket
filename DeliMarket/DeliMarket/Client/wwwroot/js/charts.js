@@ -86,7 +86,150 @@ function barcharts(reporte,fecha) {
                 data: ordenes[2]
 
                 //agegar 27 mas
-            }]
+                },
+            {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[3]
+
+                    //agegar 27 mas
+            },
+            {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[4]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[5]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[6]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[7]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[8]
+
+                    //agegar 27 mas
+                }, {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[9]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[10]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[11]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[12]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[13]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[14]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[15]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[16]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[17]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[18]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[19]
+
+                    //agegar 27 mas
+                },
+                {
+
+                    backgroundColor: "#ff6c60",
+
+                    data: ordenes[20]
+
+                    //agegar 27 mas
+                }]
             },
         options: {
             responsive:true,
@@ -359,15 +502,15 @@ function piecharts(reporte) {
         data: {
             labels: producto,
             datasets: [{
-                label: "Population (millions)",
+                
                 backgroundColor: ["#ff0018", "#f7b11b", "#ff6c60", "#8663e1", "#08bf6f"],
                 data: cantidad
             }]
         },
         options: {
             title: {
-                display: true,
-                text: 'Predicted Resturant Ratings (millions) in 2050'
+                display: false,
+                
             }
         }
     });
@@ -377,15 +520,15 @@ function piecharts(reporte) {
         data: {
             labels: producto,
             datasets: [{
-                label: "Population (millions)",
+                
                 backgroundColor: ["#ff0018", "#f7b11b", "#ff6c60", "#8663e1", "#08bf6f"],
                 data: ganancia
             }]
         },
         options: {
             title: {
-                display: true,
-                text: 'Predicted Resturant Ratings (millions) in 2050'
+                display: false,
+                
             }
         }
     });
@@ -414,15 +557,15 @@ function piechartsadmin(reporte) {
         data: {
             labels: nombre,
             datasets: [{
-                label: "Population (millions)",
+                
                 backgroundColor: ["#ff0018", "#f7b11b", "#ff6c60", "#8663e1", "#08bf6f"],
                 data: ganancia
             }]
         },
         options: {
             title: {
-                display: true,
-                text: 'Predicted Resturant Ratings (millions) in 2050'
+                display: false,
+                
             }
         }
     });

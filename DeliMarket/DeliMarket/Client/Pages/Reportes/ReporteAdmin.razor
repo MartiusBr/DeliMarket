@@ -41,17 +41,30 @@
 </div>
 
 <div class="row">
-    <div class="card mt-4 mb-4 grey lighten-4">
+    <div class="col"></div>
+    <div class="col card mt-4 mb-4 grey lighten-4">
         <div class="h3 card-header  mt-4 mb-4 text-center">Ganancia de los mercados</div>
         <canvas id="pie-chart-adm1" width="701" height="350" readonly></canvas>
+    </div>    
+    <div class="col"></div>
+</div>
+<div class="row">
+    <div class="col-5 card mt-4 mb-4 grey lighten-4">
+        <div class="h3 card-header  mt-4 mb-4 text-center">Cantidad de productos vendidos</div>
+        <canvas id="pie-chart-m1" width="701" height="350" readonly></canvas>
     </div>
-    
+    <div class="col-2"></div>
+    <div class="col-5 card mt-4 mb-4 grey lighten-4">
+        <div class="h3 card-header  mt-4 mb-4 text-center">Ganancia de productos vendidos</div>
+        <canvas id="pie-chart-m2" width="701" height="350" readonly></canvas>
+    </div>
 </div>
 
 
 @code {
     [Parameter] public List<ProductoMercado> Productos { get; set; }
     private List<ReporteMercadoDTO> Reporte { get; set; }
+    private List<ReporteMercadoDTO> ReportePro { get; set; }
     ReporteMercadoDTO rep { get; set; }
     private int mes { get; set; }
     private int ano { get; set; }
@@ -62,7 +75,7 @@
     }
     private async void data()
     {
-        
+
         var responseHttp = await repositorio.Get<List<ReporteMercadoDTO>>($"api/Reportes/FiltroAdmin/{ano}/{mes}");
 
         if (responseHttp.Error)
@@ -81,6 +94,24 @@
         {
             Reporte = responseHttp.Response;
         }
+
+        var rep= await repositorio.Get<List<ReporteMercadoDTO>>($"api/Reportes/FiltroAdmins/{ano}/{mes}");
+        if (rep.Error)
+        {
+            if (rep.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("");
+            }
+            else
+            {
+                var mensajeError = await rep.GetBody();
+                await mostrarMensajes.MostrarMensajeError(mensajeError);
+            }
+        }
+        else
+        {
+            ReportePro = rep.Response;
+        }
         StateHasChanged();
         cuadro();
     }
@@ -89,6 +120,7 @@
     {
 
         await js.InvokeVoidAsync("piechartsadmin", Reporte);
+        await js.InvokeVoidAsync("piecharts", ReportePro);
         StateHasChanged();
     }
 

@@ -134,7 +134,7 @@ namespace DeliMarket.Server.Controllers
             foreach (var ord in ordenDB)
             {
                 if (ord.Estado==1)
-                {
+                {                   
                     ordenes.Add(ord);
                 }
             }
@@ -146,14 +146,15 @@ namespace DeliMarket.Server.Controllers
         [HttpGet("ListaOrdenAceptadas")]
         public async Task<ActionResult<List<Orden>>> ListaOrdenesAcepatadas() //ordenes que esten disponibles para el repartidor
         {
-
+            var us = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var rep = await context.Repartidores.FirstOrDefaultAsync(x => x.UserId == us);
             List<Orden> ordenes = new List<Orden>();
 
             var qordenes = context.Ordenes.AsQueryable();
             var ordenDB = await qordenes.ToListAsync();
             foreach (var ord in ordenDB)
             {
-                if (ord.Estado != 1 )
+                if (ord.Estado != 1 && ord.RepartidorID== rep.Id)
                 {
                     ordenes.Add(ord);
                 }
@@ -203,7 +204,21 @@ namespace DeliMarket.Server.Controllers
                         ars = 0;
                     }
                     break;
-
+                case 6:
+                    if(orden.Estado == 4)
+                    {
+                        foreach (var det in detalles)
+                        {
+                            context.Detalles.Remove(det);
+                        }
+                        context.Ordenes.Remove(orden);
+                        ars = 2;
+                    }
+                    else
+                    {
+                        ars = 0;
+                    }
+                    break;
 
             }
             context.SaveChanges();

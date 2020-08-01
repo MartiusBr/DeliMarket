@@ -2,7 +2,7 @@
 @inject IRepositorio repositorio
 @inject IMostrarMensajes mostrarMensajes
 @inject NavigationManager navigationManager
-@page "/ReporteM"
+@page "/ReporteRepartidor"
 <div class="h4">Reportin :D</div>
 
 <div>
@@ -39,23 +39,47 @@
     </EditForm>
 </div>
 
-<div class="row">
-    <div class="col-5 card mt-4 mb-4 grey lighten-4">
-        <div class="h3 card-header  mt-4 mb-4 text-center">Cantidad de productos vendidos</div>
-        <canvas id="pie-chart-m1" width="701" height="350" readonly></canvas>
-    </div>
-    <div class="col-2"></div>
-    <div class="col-5 card mt-4 mb-4 grey lighten-4">
-        <div class="h3 card-header  mt-4 mb-4 text-center">Ganancia Obtenida</div>
-        <canvas id="pie-chart-m2" width="701" height="350" readonly></canvas>
+
+<div class="card mt-4 mb-4 grey lighten-4">
+    <div class="h3 card-header  mt-4 mb-4 text-center">Ordenes hechas en el dia</div>
+    <canvas id="barcharts" width="701" height="350" readonly></canvas>
+</div>
+
+<div class="card mt-4">
+    <div class=" table-responsive">
+        <table class="table table-bordered ">
+            <thead>
+                <tr class="sunny-morning-gradient">
+                    <th class="h5 text-center" scope="col">N° de Orden</th>
+                    <th class="h5 text-center" scope="col">Fecha</th>
+                    <th class="h5 text-center" scope="col">Producto</th>
+                    <th class="h5 text-center" scope="col">Cantidad</th>
+                    <th class="h5 text-center" scope="col">Precio</th>
+                    <th class="h5 text-center" scope="col">Total Producto</th>
+                    <th class="h5 text-center" scope="col">Total Orden</th>
+                </tr>
+            </thead>
+            <ListadoGenerico Listado="Reporte">
+                <HayRegistros Context="reporte">
+                    <tr class="grey lighten-4">
+                        <th class="text-center" scope="row">@reporte.OrdenID</th>
+                        <td class="text-center">@reporte.FechaDia / @reporte.FechaMes / @reporte.FechaAno </td>
+                        <td class="text-center">@reporte.nombreproducto</td>
+                        <td class="text-center">@reporte.cantidad</td>
+                        <td class="text-center">@reporte.precio</td>
+                        <td class="text-center">@(reporte.cantidad*reporte.precio)</td>
+                        <td class="text-center">@reporte.total</td>
+                    </tr>
+                </HayRegistros>
+            </ListadoGenerico>
+        </table>
     </div>
 </div>
 
-
 @code {
     [Parameter] public List<ProductoMercado> Productos { get; set; }
-    private List<ReporteMercadoDTO> Reporte { get; set; }
-    ReporteMercadoDTO rep { get; set; }
+    private List<ReporteClienteDTO> Reporte { get; set; }
+    ReporteClienteDTO rep { get; set; }
     private int mes { get; set; }
     private int ano { get; set; }
 
@@ -66,7 +90,7 @@
     private async void data()
     {
         
-        var responseHttp = await repositorio.Get<List<ReporteMercadoDTO>>($"api/Reportes/FiltroMercado/{ano}/{mes}");
+        var responseHttp = await repositorio.Get<List<ReporteClienteDTO>>($"api/Reportes/FiltroRepartidor/{ano}/{mes}");
 
         if (responseHttp.Error)
         {
@@ -91,13 +115,13 @@
     private async void cuadro()
     {
 
-        await js.InvokeVoidAsync("piecharts", Reporte);
+        await js.InvokeVoidAsync("barcharts", Reporte,mes);
         StateHasChanged();
     }
 
     protected async override Task OnInitializedAsync()
     {
-        rep = new ReporteMercadoDTO();
+        rep = new ReporteClienteDTO();
         //mes = System.DateTime.Now.Month;
         mes = System.DateTime.Now.Month;
         ano = System.DateTime.Now.Year;

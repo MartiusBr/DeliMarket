@@ -9,81 +9,82 @@
 @using DeliMarket.Client.Auth
 
 
-<div class="ms-auth-container">
-    <div class="ms-auth-col">
-        <div class="ms-auth-bg"></div>
-    </div>
-    <div class="ms-auth-col">
-        <div class="ms-auth-form">
-            <EditForm Model="@userInfo" class="needs-validation" OnValidSubmit="CrearUsuario">
-                <DataAnnotationsValidator />
-                <h1>Registro Cliente</h1>
-                <p>Porfavor ingresa los siguientes datos para continuar</p>
-                <div class="mb-3">
-                    <label for="nombre">Nombre</label>
-                    <div class="input-group">
-                        <InputText name="nombre" Class="form-control" @bind-Value="@userInfo.Nombre" />
-                        <ValidationMessage For="@(() => userInfo.Nombre)" />
+    <div class="ms-auth-container">
+        <div class="ms-auth-col">
+        </div>
+        <div class="ms-auth-col">
+            <div class="ms-auth-form">
+                <EditForm Model="@userInfo" class="needs-validation" OnValidSubmit="CrearUsuario">
+                    <DataAnnotationsValidator />
+                    <h3>Registro Cliente</h3>
+                    <p>Porfavor ingresa los siguientes datos para continuar</p>
+                    <div class="mb-3">
+                        <label for="nombre">Nombre</label>
+                        <div class="input-group">
+                            <InputText name="nombre" Class="form-control" @bind-Value="@userInfo.Nombre" />
+                            <ValidationMessage For="@(() => userInfo.Nombre)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="numerocel">Numero de Celular</label>
-                    <div class="input-group">
-                        <InputText name="numerocel" Class="form-control" @bind-Value="@userInfo.NumeroCel" />
-                        <ValidationMessage For="@(() => userInfo.NumeroCel)" />
+                    <div class="mb-3">
+                        <label for="numerocel">Numero de Celular</label>
+                        <div class="input-group">
+                            <InputText name="numerocel" Class="form-control" @bind-Value="@userInfo.NumeroCel" />
+                            <ValidationMessage For="@(() => userInfo.NumeroCel)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="dni">DNI</label>
-                    <div class="input-group">
-                        <InputText name="dni" Class="form-control" @bind-Value="@userInfo.Dni" />
-                        <ValidationMessage For="@(() => userInfo.Dni)" />
+                    <div class="mb-3">
+                        <label for="dni">DNI</label>
+                        <div class="input-group">
+                            <InputText name="dni" Class="form-control" @bind-Value="@userInfo.Dni" />
+                            <ValidationMessage For="@(() => userInfo.Dni)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="email">Correo</label>
-                    <div class="input-group">
-                        <InputText name="email" Class="form-control" @bind-Value="@userInfo.Email" />
-                        <ValidationMessage For="@(() => userInfo.Email)" />
+                    <div class="mb-3">
+                        <label for="email">Correo</label>
+                        <div class="input-group">
+                            <InputText name="email" Class="form-control" @bind-Value="@userInfo.Email" />
+                            <ValidationMessage For="@(() => userInfo.Email)" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label for="paswd">Contraseña</label>
-                    <div class="input-group">
-                        <InputPassword name="paswd" Class="form-control" @bind-Value="@userInfo.Password" />
-                        <ValidationMessage For="@(() => userInfo.Password)" />
+                    <div class="mb-3">
+                        <label for="paswd">Contraseña</label>
+                        <div class="input-group">
+                            <InputPassword name="paswd" Class="form-control" @bind-Value="@userInfo.Password" />
+                            <ValidationMessage For="@(() => userInfo.Password)" />
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="ms-list ms-list-display">
-                            <li>
-                                <label class="ms-checkbox-wrap ms-checkbox-primary">
-                                    <input type="radio" value="" name="radioExample2" disabled>
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Efectivo </span>
-                            </li>
-                        </ul>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="ms-list ms-list-display">
+                                <li>
+                                    <label class="ms-checkbox-wrap ms-checkbox-primary">
+                                        <input type="radio" value="" name="radioExample2" disabled>
+                                        <i class="ms-checkbox-check"></i>
+                                    </label>
+                                    <span> Efectivo </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="ms-list ms-list-display">
+                                <li>
+                                    <label class="ms-checkbox-wrap ms-checkbox-warning">
+                                        <input type="radio" @onchange=@(e=> userInfo.MetodoPago=2) name="radioExample2">
+                                        <i class="ms-checkbox-check"></i>
+                                    </label>
+                                    <span> Dinero Electrónico </span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <ul class="ms-list ms-list-display">
-                            <li>
-                                <label class="ms-checkbox-wrap ms-checkbox-warning">
-                                    <input type="radio" @onchange=@(e=> userInfo.MetodoPago=2) name="radioExample2">
-                                    <i class="ms-checkbox-check"></i>
-                                </label>
-                                <span> Dinero Electrónico </span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
+                    <button type="submit" class="btn btn-primary mt-4 d-block w-100">Registrarse</button>
 
-            </EditForm>
+                </EditForm>
+            </div>
+        </div>
+        <div class="ms-auth-col">
         </div>
     </div>
-</div>
 
 
 @code {

@@ -1,14 +1,14 @@
 ﻿
 <div class="col-lg-4 col-md-6 col-sm-6">
     <div class="ms-card">
-        <div class="ms-card-img">
+        <div class="ms-card-img text-center">
             <a href="@urlProducto">
                 <img src="@Producto.Poster" alt="card_img" style="height: 200px;">
             </a>
         </div>
         <div class="ms-card-body ">
-            <div class="wrapper-new2 ">
-                <h6>@Producto.TituloCortado</h6>
+            <div class="wrapper-new2  text-center">
+                <h4>@Producto.TituloCortado</h4>
                 @*<span class="white">$15</span>*@
             </div>
             @*<div class="wrapper-new1">
@@ -17,7 +17,7 @@
             </div>*@
             <AuthorizeView Roles="cliente">
                 <Authorized>
-                    <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
+                    <a href="@urlProducto" class="btn btn-light btn-block btn-pill">Ver Más</a>
                     <button type="button" class="btn btn-info">
                         Agregar a la bolsa
                     </button>
@@ -25,11 +25,7 @@
             </AuthorizeView>
             <AuthorizeView Roles="admin">
                 <Authorized>
-                    <a href="@urlProducto" class="btn btn-light btn-block">Ver Más</a>
-                    <button type="button" class="btn btn-danger"
-                            @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
-                        Borrar
-                    </button>
+                    <a href="@urlProducto" class="btn btn-light btn-block btn-pill">Ver Más</a>
                     @if (@Producto.estado == false)
                     {
                         estados = "No disponible";
@@ -38,8 +34,16 @@
                     {
                         estados = "Disponible";
                     }
-                    <h4>Estado: @estados</h4>
-                    <a class="btn btn-info" href="productos/editar/@Producto.Id">Editar</a>
+                    <div class="h5 text-center mt-3">Estado: @estados</div>
+                    <div class="row">
+                        <button type="button" class="btn btn-danger col btn-pill"
+                                @onclick="@(() => EliminarProducto.InvokeAsync(Producto))">
+                            Borrar
+                        </button>
+
+                        <a class="btn btn-info col btn-pill" href="productos/editar/@Producto.Id">Editar</a>
+                    </div>
+                    
                 </Authorized>
             </AuthorizeView>
             <AuthorizeView Roles="mercado">

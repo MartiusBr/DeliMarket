@@ -9,5 +9,6 @@ namespace DeliMarket.Client.Helpers
     {
         Task MostrarMensajeError(string mensaje);
         Task MostrarMensajeExitoso(string mensaje);
+        Task MostrarMensajeInformativo(string mensaje);
     }
 }

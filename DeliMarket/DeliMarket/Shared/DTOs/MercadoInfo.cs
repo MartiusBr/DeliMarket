@@ -17,9 +17,7 @@ namespace DeliMarket.Shared.DTOs
         public string NumeroCel { get; set; }
         [Required(ErrorMessage = "Ingrese el número de Sanidad del mercado")]
         public string NroSanidad { get; set; }
-        [Required(ErrorMessage = "Ingrese el propietario del mercado")]
-        public string Propietario { get; set; }
-        [Required(ErrorMessage = "Ingrese una contraseña")]
+        [Required(ErrorMessage = "Ingrese el propietario del mercado")]        
         public string Password { get; set; }
     }
 }

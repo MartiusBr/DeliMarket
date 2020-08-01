@@ -19,7 +19,7 @@
                             <h5>@orden.FechaCreacion.Value.ToShortDateString()</h5>
                             Items:
                             <strong>@orden.CantidadTotal</strong>;
-                            Total price:
+                            Precio Total:
                             <strong>@orden.Montototal</strong>
                         </div>
                     </td>
@@ -47,6 +47,7 @@
                     <td>
                         <button type="button" class="btn btn-danger btn-rounded" @onclick="@(e=> ActualizarEstado(5,orden.Id))">Cancelar</button>
                     </td>
+                   
 
                 </tr>
             </HayRegistros>
@@ -93,11 +94,15 @@
         var rpta = await repositorio.Get<int>($"api/ordenes/ActualizarEstadoOrden/{estado}/{id}");
         if (rpta.Response == 0)
         {
-            await mostrarMensajes.MostrarMensajeError("Su orden se esta enviado o ya se completo");
+            await mostrarMensajes.MostrarMensajeInformativo("Su orden se esta enviado o ya se completo");
+        }
+        else if(rpta.Response == 1)
+        {
+            await mostrarMensajes.MostrarMensajeExitoso("Su orden se cancelo con exito");
         }
         else
         {
-            await mostrarMensajes.MostrarMensajeExitoso("Su orden se cancelo con exito");
+            await mostrarMensajes.MostrarMensajeInformativo("Su orden se elimino con exito");
         }
 
         await Lista();
